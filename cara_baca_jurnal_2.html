@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Critical Appraisal Farmasi Klinis — ApotekerRy</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap');
+
+:root {
+  --ink:    #1C1612;
+  --cream:  #F7F2EA;
+  --teal:   #0E5C52;
+  --teal-l: #E2F0EE;
+  --rust:   #B5451B;
+  --rust-l: #F5E8E3;
+  --gold:   #C8922A;
+  --gold-l: #FBF3E2;
+  --blue:   #2C4A7A;
+  --blue-l: #E4EBF5;
+  --plum:   #5C2D6E;
+  --plum-l: #F0E8F5;
+  --dust:   #7A6E62;
+  --border: #DDD5C8;
+  --white:  #FFFFFF;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--ink);font-family:'Libre Baskerville',Georgia,serif;line-height:1.75;}
+
+/* NAV */
+.nav{background:var(--ink);padding:14px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.nav-brand{display:flex;flex-direction:column;}
+.nav-logo{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--cream);letter-spacing:0.06em;}
+.nav-logo span{color:var(--teal);}
+.nav-sub{font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:0.12em;margin-top:1px;}
+.nav-part{font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:0.12em;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0A2E28 0%,#0E3D35 55%,#132C48 100%);padding:68px 40px 60px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-100px;right:-60px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(14,92,82,0.25) 0%,transparent 65%);}
+.hero::after{content:'';position:absolute;bottom:-80px;left:15%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(200,146,42,0.1) 0%,transparent 65%);}
+.hero-inner{max-width:820px;margin:0 auto;position:relative;z-index:2;}
+.hero-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
+.hero-tag{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--teal);letter-spacing:0.18em;text-transform:uppercase;border:1px solid rgba(14,92,82,0.5);background:rgba(14,92,82,0.15);padding:4px 14px;border-radius:20px;}
+.hero-part{font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:0.12em;}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,4.5vw,3.2rem);font-weight:800;color:var(--white);line-height:1.08;margin-bottom:14px;}
+.hero h1 em{font-style:italic;font-family:'Libre Baskerville',serif;color:#88C4BA;font-weight:400;}
+.hero-sub{font-size:1rem;color:rgba(255,255,255,0.5);max-width:600px;line-height:1.72;margin-bottom:32px;}
+.hero-pills{display:flex;gap:10px;flex-wrap:wrap;}
+.hero-pill{font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,0.55);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:4px;}
+
+/* PROG NAV */
+.prog-nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;display:flex;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;position:sticky;top:49px;z-index:99;}
+.prog-nav::-webkit-scrollbar{height:3px;}
+.prog-nav::-webkit-scrollbar-thumb{background:var(--border);}
+.prog-btn{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--dust);padding:14px 16px;border:none;background:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;letter-spacing:0.05em;transition:all 0.2s;}
+.prog-btn:hover{color:var(--ink);}
+.prog-btn.active{color:var(--teal);border-bottom-color:var(--teal);}
+
+/* MAIN */
+.main{max-width:860px;margin:0 auto;padding:56px 40px 100px;}
+.section{display:none;}
+.section.active{display:block;}
+
+/* SECTION HEADER */
+.section-header{margin-bottom:40px;}
+.section-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--dust);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:10px;}
+.section-title{font-family:'Syne',sans-serif;font-size:clamp(1.5rem,3vw,2.1rem);font-weight:700;color:var(--ink);line-height:1.15;margin-bottom:12px;}
+.section-lead{font-size:1rem;color:var(--dust);line-height:1.75;max-width:680px;border-left:3px solid var(--teal);padding-left:18px;}
+
+/* PROSE */
+.prose{font-size:0.975rem;line-height:1.82;color:#3A3028;margin-bottom:22px;}
+.prose strong{color:var(--ink);font-weight:700;}
+
+h3.block-title{font-family:'Syne',sans-serif;font-size:1.08rem;font-weight:700;color:var(--ink);margin:36px 0 14px;display:flex;align-items:center;gap:10px;}
+h3.block-title::before{content:'';display:inline-block;width:16px;height:3px;background:var(--teal);flex-shrink:0;}
+
+/* CALLOUTS */
+.callout{border-radius:8px;padding:18px 22px;margin:22px 0;border-left:4px solid;}
+.callout.teal{background:var(--teal-l);border-color:var(--teal);}
+.callout.rust{background:var(--rust-l);border-color:var(--rust);}
+.callout.gold{background:var(--gold-l);border-color:var(--gold);}
+.callout.blue{background:var(--blue-l);border-color:var(--blue);}
+.callout.plum{background:var(--plum-l);border-color:var(--plum);}
+.callout-label{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:6px;}
+.callout.teal .callout-label{color:var(--teal);}
+.callout.rust .callout-label{color:var(--rust);}
+.callout.gold .callout-label{color:var(--gold);}
+.callout.blue .callout-label{color:var(--blue);}
+.callout.plum .callout-label{color:var(--plum);}
+.callout p,.callout li{font-size:0.92rem;line-height:1.7;}
+
+/* CARDS */
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0;}
+.card{background:var(--white);border-radius:10px;padding:20px 22px;border:1px solid var(--border);box-shadow:0 2px 12px rgba(28,22,18,0.05);}
+.card-icon{font-size:22px;margin-bottom:10px;}
+.card-title{font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.card-body{font-size:0.88rem;color:var(--dust);line-height:1.6;}
+.card-tag{display:inline-block;font-family:'DM Mono',monospace;font-size:9px;font-weight:500;letter-spacing:0.1em;padding:2px 8px;border-radius:20px;text-transform:uppercase;margin-bottom:8px;}
+.tag-teal{background:var(--teal-l);color:var(--teal);}
+.tag-rust{background:var(--rust-l);color:var(--rust);}
+.tag-gold{background:var(--gold-l);color:var(--gold);}
+.tag-blue{background:var(--blue-l);color:var(--blue);}
+.tag-plum{background:var(--plum-l);color:var(--plum);}
+
+/* FORMULA */
+.formula{background:var(--ink);border-radius:8px;padding:20px 24px;margin:18px 0;font-family:'DM Mono',monospace;color:var(--cream);font-size:0.9rem;line-height:1.9;}
+.formula .f-label{color:var(--gold);font-size:0.78rem;letter-spacing:0.15em;text-transform:uppercase;display:block;margin-bottom:8px;}
+.formula .f-main{color:var(--white);font-size:1rem;}
+.formula .f-note{color:rgba(247,242,234,0.42);font-size:0.8rem;margin-top:8px;display:block;}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;margin:20px 0;}
+table{width:100%;border-collapse:collapse;font-size:0.875rem;background:var(--white);border-radius:8px;overflow:hidden;box-shadow:0 2px 12px rgba(28,22,18,0.05);}
+thead th{background:var(--ink);color:var(--cream);padding:12px 16px;text-align:left;font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;}
+tbody td{padding:11px 16px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:nth-child(even){background:#FAFAF8;}
+.td-g{color:var(--teal);font-weight:700;}
+.td-r{color:var(--rust);font-weight:700;}
+.td-o{color:var(--gold);font-weight:700;}
+
+/* ACCORDION */
+.accordion{margin:16px 0;}
+.acc-item{background:var(--white);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;overflow:hidden;}
+.acc-head{padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-family:'Syne',sans-serif;font-size:0.93rem;font-weight:700;user-select:none;transition:background 0.2s;}
+.acc-head:hover{background:#FAF7F2;}
+.acc-head.open{background:#F0F7F5;color:var(--teal);}
+.acc-arrow{font-size:18px;transition:transform 0.25s;color:var(--dust);}
+.acc-head.open .acc-arrow{transform:rotate(180deg);color:var(--teal);}
+.acc-body{display:none;padding:16px 18px 20px;font-size:0.9rem;line-height:1.75;color:#3A3028;border-top:1px solid var(--border);}
+.acc-body.open{display:block;}
+
+/* STEPS */
+.steps{margin:20px 0;}
+.step{display:flex;gap:18px;margin-bottom:20px;position:relative;}
+.step:not(:last-child)::after{content:'';position:absolute;left:18px;top:42px;width:2px;height:calc(100% + 8px);background:var(--border);}
+.step-num{width:38px;height:38px;border-radius:50%;background:var(--teal);color:var(--white);font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1;}
+.step-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--ink);margin-bottom:5px;}
+.step-body{font-size:0.9rem;color:var(--dust);line-height:1.7;}
+
+/* CHECKLIST */
+.checklist{list-style:none;padding:0;margin:16px 0;}
+.checklist li{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid #F0EBE4;font-size:0.92rem;line-height:1.6;}
+.checklist li:last-child{border-bottom:none;}
+.chk-box{width:20px;height:20px;border-radius:4px;border:2px solid var(--border);flex-shrink:0;margin-top:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.chk-box.checked{background:var(--teal);border-color:var(--teal);}
+.chk-box.checked::after{content:'✓';color:white;font-size:11px;}
+
+/* DOT LIST */
+ul.dot{list-style:none;padding:0;margin:12px 0;}
+ul.dot li{padding:5px 0 5px 20px;position:relative;font-size:0.92rem;color:#3A3028;line-height:1.65;}
+ul.dot li::before{content:'—';position:absolute;left:0;color:var(--teal);font-weight:700;}
+
+/* HIGHLIGHT BOX */
+.highlight{background:var(--teal);color:var(--white);border-radius:10px;padding:22px 26px;margin:22px 0;}
+.highlight .hl-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.6;margin-bottom:8px;}
+.highlight p{font-size:0.95rem;line-height:1.7;opacity:0.92;}
+.highlight strong{opacity:1;font-weight:700;}
+
+/* COMPARISON */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0;}
+.compare-card{border-radius:10px;padding:18px 20px;}
+.compare-card.good{background:var(--teal-l);border:1.5px solid var(--teal);}
+.compare-card.bad{background:var(--rust-l);border:1.5px solid var(--rust);}
+.compare-label{font-family:'DM Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:8px;}
+.compare-card.good .compare-label{color:var(--teal);}
+.compare-card.bad .compare-label{color:var(--rust);}
+.compare-card p{font-size:0.88rem;line-height:1.65;color:#3A3028;}
+
+/* NAV BTNS */
+.nav-btns{display:flex;justify-content:space-between;margin-top:56px;padding-top:28px;border-top:1px solid var(--border);}
+.nav-btn{font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:700;padding:10px 24px;border-radius:6px;border:none;cursor:pointer;transition:all 0.2s;}
+.nav-btn.prev{background:var(--white);color:var(--ink);border:1px solid var(--border);}
+.nav-btn.prev:hover{background:#F0EBE4;}
+.nav-btn.next{background:var(--teal);color:var(--white);}
+.nav-btn.next:hover{background:#0B4A41;}
+.nav-btn:disabled{opacity:0.3;cursor:not-allowed;}
+
+/* FOOTER */
+.page-footer{background:var(--ink);padding:28px 40px;text-align:center;}
+.page-footer p{font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;}
+.page-footer span{color:var(--teal);}
+
+@media(max-width:600px){
+  .card-grid,.compare{grid-template-columns:1fr;}
+  .main{padding:36px 20px 80px;}
+  .hero{padding:48px 20px 40px;}
+  .prog-nav{padding:0 16px;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">
+    <div class="nav-logo">Apoteker<span>Ry</span> <span style="color:rgba(255,255,255,0.3);font-weight:400;">|</span> <span style="color:rgba(255,255,255,0.7);font-size:13px;font-weight:600;">Farmasi Klinis</span></div>
+    <div class="nav-sub">Critical Appraisal · Bagian 2 dari 2</div>
+  </div>
+  <div class="nav-part">Spesifik · Farmasi &amp; Kardiologi</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">
+      <div class="hero-tag">Bagian 2 dari 2</div>
+      <div class="hero-part">// Lanjutan dari Panduan Umum</div>
+    </div>
+    <h1>Critical Appraisal<br><em>Farmasi Klinis &amp; Kardiologi</em></h1>
+    <p class="hero-sub">Membaca studi PK/PD, farmakoepidemiologi, outcome kardiovaskular, dan menyikapi guideline yang bertentangan — dengan kacamata apoteker klinis.</p>
+    <div class="hero-pills">
+      <span class="hero-pill">Studi PK/PD</span>
+      <span class="hero-pill">Farmakoepidemiologi</span>
+      <span class="hero-pill">Outcome kardiovaskular</span>
+      <span class="hero-pill">Guideline bertentangan</span>
+      <span class="hero-pill">Drug interaction studies</span>
+    </div>
+  </div>
+</div>
+
+<div class="prog-nav" id="progNav">
+  <button class="prog-btn active" onclick="goTo(0)">01 · Studi PK/PD</button>
+  <button class="prog-btn" onclick="goTo(1)">02 · Farmakoepidemiologi</button>
+  <button class="prog-btn" onclick="goTo(2)">03 · Studi Outcome CV</button>
+  <button class="prog-btn" onclick="goTo(3)">04 · Studi Interaksi Obat</button>
+  <button class="prog-btn" onclick="goTo(4)">05 · Guideline Bertentangan</button>
+  <button class="prog-btn" onclick="goTo(5)">06 · Studi di ICU/Kritis</button>
+  <button class="prog-btn" onclick="goTo(6)">07 · Checklist Final</button>
+</div>
+
+<div class="main">
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 0 — PK/PD -->
+<!-- ══════════════════════════════════════════ -->
+<div class="section active" id="s0">
+  <div class="section-header">
+    <div class="section-num">// 01</div>
+    <div class="section-title">Membaca Studi Farmakokinetik &amp; Farmakodinamik</div>
+    <div class="section-lead">Studi PK/PD adalah fondasi dari semua rekomendasi dosis. Tanpa memahami cara membacanya, kamu tidak bisa tahu apakah rekomendasi dosis yang kamu terapkan benar-benar sesuai untuk pasienmu.</div>
+  </div>
+
+  <div class="prose">Farmakokinetik (PK) menjawab pertanyaan: <strong>"Apa yang tubuh lakukan terhadap obat?"</strong> — absorpsi, distribusi, metabolisme, ekskresi. Farmakodinamik (FD) menjawab: <strong>"Apa yang obat lakukan terhadap tubuh?"</strong> — mekanisme kerja dan hubungan konsentrasi-efek.</div>
+
+  <h3 class="block-title">Parameter PK yang Sering Muncul — dan Artinya</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Parameter</th><th>Singkatan</th><th>Artinya</th><th>Relevansi Klinis</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Area Under the Curve</strong></td><td>AUC</td><td>Total pajanan obat selama interval waktu tertentu</td><td>Predictor efektivitas untuk antibiotik (AUC/MIC) dan toksisitas (vankomisin)</td></tr>
+        <tr><td><strong>Maximum Concentration</strong></td><td>C<sub>max</sub></td><td>Konsentrasi puncak setelah pemberian dosis</td><td>Relevan untuk antibiotik concentration-dependent (aminoglikosida)</td></tr>
+        <tr><td><strong>Trough Concentration</strong></td><td>C<sub>trough</sub></td><td>Konsentrasi terendah sebelum dosis berikutnya</td><td>Target TDM untuk vankomisin, tacrolimus, digoksin</td></tr>
+        <tr><td><strong>Half-life</strong></td><td>t½</td><td>Waktu untuk konsentrasi turun 50%</td><td>Menentukan frekuensi dosis dan waktu washout</td></tr>
+        <tr><td><strong>Volume of Distribution</strong></td><td>Vd</td><td>Volume hipotetis tempat obat terdistribusi</td><td>Vd besar = terdistribusi luas ke jaringan (e.g., klorokuin, amiodaron). Penting untuk loading dose</td></tr>
+        <tr><td><strong>Clearance</strong></td><td>CL</td><td>Volume plasma yang dibersihkan dari obat per satuan waktu</td><td>Dasar penyesuaian dosis pada gangguan ginjal/hati</td></tr>
+        <tr><td><strong>Bioavailabilitas</strong></td><td>F</td><td>Fraksi dosis yang mencapai sirkulasi sistemik</td><td>Menentukan ekuivalensi dosis IV vs oral</td></tr>
+        <tr><td><strong>Protein Binding</strong></td><td>%PB</td><td>Persentase obat terikat protein plasma</td><td>Hanya fraksi bebas yang aktif. Penting pada hipoalbuminemia (ICU, malnutrisi)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="block-title">Pertanyaan Kritis untuk Studi PK</h3>
+  <div class="accordion">
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>👥 Populasi Studi — Apakah Mirip dengan Pasienmu?</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Sebagian besar studi PK dilakukan pada <strong>sukarelawan sehat dewasa muda</strong>. Ini sangat berbeda dari pasien kritis di ICU yang punya:</p>
+        <ul class="dot">
+          <li>Fungsi ginjal berfluktuasi (AKI, ARC — Augmented Renal Clearance)</li>
+          <li>Hipoalbuminemia berat → protein binding berubah → fraksi bebas meningkat</li>
+          <li>Perubahan Vd akibat edema masif atau resusitasi cairan</li>
+          <li>Disfungsi hati → metabolisme terganggu</li>
+          <li>Interaksi obat multipel dari polifarmasi ICU</li>
+        </ul>
+        <div class="callout rust" style="margin-top:12px;">
+          <div class="callout-label">⚠️ Implikasi</div>
+          <p>Rekomendasi dosis dari studi populasi sehat mungkin <strong>tidak applicable</strong> langsung ke pasien kritismu. Ini alasan mengapa TDM (Therapeutic Drug Monitoring) sangat penting di ICU.</p>
+        </div>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>📊 Target PK/PD — Apakah Didukung Data Outcome?</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Banyak target PK/PD (seperti AUC/MIC untuk vankomisin, atau Cmin tertentu untuk tacrolimus) ditetapkan berdasarkan studi <strong>surrogate endpoint</strong> — bukan langsung pada outcome klinis seperti kesembuhan atau mortalitas.</p>
+        <p style="margin-top:10px;">Tanyakan: <strong>"Apakah mencapai target PK ini terbukti meningkatkan outcome klinis, atau hanya surrogate?"</strong> Contoh: target AUC/MIC ≥400 untuk vankomisin — evidence untuk ini terus berkembang dan tidak konsisten di semua populasi.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>🔬 Model PK vs Data Aktual</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Banyak panduan dosis berbasis <strong>model populasi PK</strong> (population PK modeling) — bukan pengukuran langsung di setiap individu. Model ini menggunakan data dari banyak pasien untuk memprediksi PK individu.</p>
+        <p style="margin-top:10px;">Cek: <strong>dari populasi mana model ini dikembangkan?</strong> Model yang dikembangkan dari pasien Eropa mungkin tidak akurat untuk pasien Asia dengan karakteristik genetik metabolisme yang berbeda.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="block-title">PD Indices — Tiga Pola Pembunuhan Bakteri oleh Antibiotik</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-tag tag-teal">Time-Dependent</div>
+      <div class="card-title">%T &gt; MIC</div>
+      <div class="card-body">Efektivitas bergantung pada <em>berapa lama</em> konsentrasi di atas MIC. Contoh: beta-laktam (amoksisilin, piperasilin). Implikasi: infus kontinu atau dosis lebih sering lebih baik dari dosis besar jarang.</div>
+    </div>
+    <div class="card">
+      <div class="card-tag tag-rust">Concentration-Dependent</div>
+      <div class="card-title">C<sub>max</sub>/MIC</div>
+      <div class="card-body">Efektivitas bergantung pada <em>seberapa tinggi</em> puncak konsentrasi. Contoh: aminoglikosida, fluorokuinolon. Implikasi: dosis besar sekali sehari lebih efektif.</div>
+    </div>
+    <div class="card">
+      <div class="card-tag tag-gold">AUC-Dependent</div>
+      <div class="card-title">AUC/MIC</div>
+      <div class="card-body">Efektivitas bergantung pada total pajanan. Contoh: vankomisin, azitromisin. Implikasi: pemantauan AUC lebih relevan dari pemantauan trough saja.</div>
+    </div>
+    <div class="card">
+      <div class="card-tag tag-blue">PAE</div>
+      <div class="card-title">Post-Antibiotic Effect</div>
+      <div class="card-body">Efek penghambatan pertumbuhan bakteri yang berlanjut setelah konsentrasi turun di bawah MIC. Aminoglikosida punya PAE panjang → mendukung sekali sehari.</div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" disabled>← Sebelumnya</button>
+    <button class="nav-btn next" onclick="goTo(1)">Farmakoepidemiologi →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 1 — FARMAKOEPIDEMIOLOGI -->
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s1">
+  <div class="section-header">
+    <div class="section-num">// 02</div>
+    <div class="section-title">Membaca Studi Farmakoepidemiologi</div>
+    <div class="section-lead">Farmakoepidemiologi adalah studi tentang penggunaan dan efek obat di populasi besar dalam kondisi real-world. Kekuatannya besar — tapi jebakan metodologisnya sama besar.</div>
+  </div>
+
+  <div class="prose">Studi RCT bagus untuk menjawab "apakah obat ini bekerja dalam kondisi ideal?" Tapi untuk menjawab "bagaimana obat ini bekerja pada pasien nyata dengan semua kompleksitasnya?" — farmakoepidemiologi lebih relevan. Ini sering disebut <strong>real-world evidence (RWE)</strong>.</div>
+
+  <h3 class="block-title">Bias Utama yang Mengancam Studi Farmakoepidemiologi</h3>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">Confounding by Indication</div>
+        <div class="step-body">Obat tertentu diberikan kepada pasien yang lebih sakit (itulah indikasinya). Jika pasien yang diberi obat lebih parah penyakitnya sejak awal, outcome lebih buruk mungkin karena keparahannya — bukan karena obatnya. <strong>Ini bias paling sering dan paling sulit diatasi di studi farmakoepidemiologi.</strong></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">Immortal Time Bias</div>
+        <div class="step-body">Jika waktu antara awal studi dan mulai pengobatan dihitung sebagai "waktu terpapar" — tapi pasien tidak mungkin meninggal di periode itu karena mereka belum menerima obat (dan harus survive untuk menerimanya). Ini menghasilkan estimasi manfaat yang semu.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">Depletion of Susceptibles</div>
+        <div class="step-body">Pada pengguna obat jangka panjang, pasien yang paling rentan terhadap efek samping sudah "tersaring" di awal penggunaan. Yang tersisa adalah yang toleran — membuat obat tampak lebih aman dari sebenarnya untuk pengguna baru.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-title">Healthy User Bias</div>
+        <div class="step-body">Pasien yang patuh minum satu obat cenderung juga lebih patuh terhadap gaya hidup sehat dan obat lain. Manfaat yang terlihat mungkin sebagian besar karena mereka adalah "healthy users" — bukan karena obatnya sendiri.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="block-title">Metode untuk Mengontrol Confounding</h3>
+  <div class="accordion">
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>⚖️ Propensity Score — Mensimulasikan Randomisasi</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p><strong>Propensity score</strong> adalah probabilitas seseorang mendapat intervensi tertentu berdasarkan karakteristik baseline mereka. Dengan menyeimbangkan propensity score antar kelompok, kita bisa mengurangi confounding yang terukur.</p><br>
+        <p>Metode penggunaan PS:<br>
+        — <strong>PS Matching</strong>: Pascarkan pasien dengan PS mirip di kedua kelompok<br>
+        — <strong>IPTW</strong>: Beri bobot pada tiap pasien berdasarkan kebalikan probabilitasnya<br>
+        — <strong>Stratifikasi PS</strong>: Bagi populasi ke dalam kuintil PS<br></p>
+        <div class="callout rust" style="margin-top:12px;">
+          <div class="callout-label">⚠️ Limitasi PS</div>
+          <p>PS hanya mengontrol confounding yang <em>terukur</em>. Confounding yang tidak tercatat di data (unmeasured confounding) tidak bisa dikontrol dengan PS. Jika ada faktor penting yang tidak ada di database — PS tidak akan membantu.</p>
+        </div>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>📉 Competing Risk Analysis — Ketika Ada Lebih dari Satu Outcome</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Pada pasien dengan penyakit berat, kematian sering bersaing dengan outcome lain (misalnya: "readmisi karena GJ" tidak bisa terjadi jika pasien sudah meninggal). Analisis Kaplan-Meier standar mengabaikan competing risk ini — dan bisa overestimate insidensi outcome.</p><br>
+        <p><strong>Fine-Gray subdistribution hazard model</strong> adalah pendekatan yang lebih tepat ketika ada competing risk. Cari apakah studi yang kamu baca mempertimbangkan ini, terutama pada studi dengan mortalitas tinggi seperti di ICU atau pasien kanker.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>📊 Sensitivity Analysis — Seberapa Kuat Hasilnya?</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Studi farmakoepidemiologi yang baik menyertakan <strong>sensitivity analysis</strong> — mengulang analisis dengan asumsi atau definisi yang berbeda untuk melihat apakah kesimpulan tetap konsisten.</p><br>
+        <p>Contoh: E-value analysis (mengukur seberapa kuat unmeasured confounder harus ada untuk menghilangkan asosiasi yang ditemukan). Jika E-value kecil — hubungan yang ditemukan mudah digugurkan oleh confounding tak terukur.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout teal">
+    <div class="callout-label">💡 Relevansi untuk Apoteker</div>
+    <p>Sebagian besar bukti tentang drug-related problems, adherence, dan medication outcomes di populasi nyata datang dari studi farmakoepidemiologi. Kemampuan menilai kualitas studi ini — terutama mengenali bias yang ada — adalah kompetensi kritis apoteker klinis yang sering diremehkan.</p>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(0)">← Studi PK/PD</button>
+    <button class="nav-btn next" onclick="goTo(2)">Outcome Kardiovaskular →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 2 — STUDI OUTCOME CV -->
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s2">
+  <div class="section-header">
+    <div class="section-num">// 03</div>
+    <div class="section-title">Membaca Studi Outcome Kardiovaskular</div>
+    <div class="section-lead">Studi outcome kardiovaskular menggunakan terminologi dan endpoint yang spesifik. Memahaminya adalah kunci — karena istilah yang berbeda punya implikasi yang sangat berbeda untuk praktik.</div>
+  </div>
+
+  <h3 class="block-title">Composite Endpoint — Kekuatan dan Kelemahannya</h3>
+  <div class="prose">Sebagian besar studi kardiovaskular besar menggunakan <strong>composite endpoint</strong> — misalnya MACE (Major Adverse Cardiovascular Events): kematian kardiovaskular + infark miokard + stroke. Ini dilakukan untuk meningkatkan power studi dengan ukuran sampel yang lebih kecil.</div>
+
+  <div class="compare">
+    <div class="compare-card good">
+      <div class="compare-label">✓ Kekuatan</div>
+      <p>Meningkatkan event rate → power studi lebih tinggi dengan sampel lebih sedikit. Mencakup semua outcome yang relevan secara klinis.</p>
+    </div>
+    <div class="compare-card bad">
+      <div class="compare-label">✗ Kelemahan</div>
+      <p>Komponen yang berbeda bobotnya berbeda. Manfaat di komponen yang "ringan" bisa mendominasi dan menyembunyikan tidak adanya manfaat di komponen yang paling penting (kematian).</p>
+    </div>
+  </div>
+
+  <div class="callout rust">
+    <div class="callout-label">⚠️ Selalu Tanya</div>
+    <p>Ketika composite endpoint bermakna statistik: <strong>"komponen mana yang paling berkontribusi?"</strong> Jika manfaat hanya dari hospitalisasi (dan bukan kematian atau MI), implikasinya sangat berbeda dari manfaat yang merata di semua komponen.</p>
+  </div>
+
+  <h3 class="block-title">Surrogate vs Clinical Outcome</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Surrogate Endpoint</th><th>Clinical Endpoint</th><th>Kekuatan Surrogate</th><th>Risiko</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>LDL kolesterol</td>
+          <td>Infark miokard, kematian CV</td>
+          <td class="td-g">Kuat — terbukti korelasi di banyak studi</td>
+          <td>Obat yang turunkan LDL tidak selalu turunkan mortalitas (contoh: beberapa studi niacin)</td>
+        </tr>
+        <tr>
+          <td>Tekanan darah</td>
+          <td>Stroke, gagal jantung, kematian</td>
+          <td class="td-g">Kuat secara umum</td>
+          <td>Penurunan TD yang terlalu agresif bisa berbahaya pada beberapa populasi</td>
+        </tr>
+        <tr>
+          <td>Ejection Fraction (EF)</td>
+          <td>Mortalitas, rawat inap GJ</td>
+          <td class="td-o">Sedang — EF naik tidak selalu berkorelasi dengan outcome lebih baik</td>
+          <td>Beberapa obat meningkatkan EF tapi tidak meningkatkan survival</td>
+        </tr>
+        <tr>
+          <td>HbA1c</td>
+          <td>Komplikasi mikrovaskular, mortalitas</td>
+          <td class="td-g">Kuat untuk mikrovaskular</td>
+          <td>Penurunan HbA1c agresif tidak selalu turunkan mortalitas (ACCORD trial)</td>
+        </tr>
+        <tr>
+          <td>QTc interval</td>
+          <td>Torsades de pointes, kematian mendadak</td>
+          <td class="td-o">Sedang — QTc panjang adalah faktor risiko, tapi korelasi tidak sempurna</td>
+          <td>Beberapa obat panjangkan QTc tanpa meningkatkan aritmia nyata</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="block-title">Analisis Survival — Membaca Kurva Kaplan-Meier</h3>
+  <div class="prose">Kurva Kaplan-Meier adalah visualisasi standar untuk studi time-to-event di kardiologi. Tapi ada banyak cara salah membacanya:</div>
+
+  <div class="accordion">
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>📈 Ekor Kurva yang Lebar — Waspada Estimasi Tidak Stabil</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Di akhir periode follow-up, jumlah pasien yang tersisa sering sangat sedikit. Ini membuat kurva di bagian ekor sangat tidak stabil — satu event bisa mengubah kurva drastis. Lihat angka "at risk" di bawah kurva. Jika &lt;30 di titik tertentu, interpretasi di titik itu dengan sangat hati-hati.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>⚔️ Proportional Hazards Assumption — Apakah Hazard Ratio Konstan?</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Cox regression (yang menghasilkan HR) mengasumsikan bahwa rasio hazard antara dua kelompok konstan sepanjang waktu. Jika kurva Kaplan-Meier bersilangan atau berkonvergen — asumsi ini mungkin dilanggar. HR menjadi ringkasan yang menyesatkan dari efek yang sebenarnya berubah seiring waktu.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>📊 Restricted Mean Survival Time — Alternatif yang Lebih Informatif</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>RMST (Restricted Mean Survival Time) adalah rata-rata waktu event-free sampai titik waktu tertentu. Lebih mudah diinterpretasikan secara klinis: "Pasien di kelompok intervensi rata-rata hidup 4,2 bulan lebih lama dalam 3 tahun pertama dibanding kelompok kontrol."</p>
+        <p style="margin-top:8px;">Ini lebih baik dari HR dalam banyak kasus, tapi tidak selalu dilaporkan. Jika ada — baca RMST, bukan hanya HR.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="block-title">Uji Klinis Kardiovaskular Besar yang Wajib Kamu Kenali</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Studi</th><th>Topik</th><th>Temuan Kunci</th><th>Implikasi</th></tr></thead>
+      <tbody>
+        <tr><td><strong>PARADIGM-HF</strong></td><td>ARNI vs enalapril pada HFrEF</td><td>Sakubitril-valsartan turunkan mortalitas CV 20% vs enalapril</td><td>Dasar rekomendasi ARNI sebagai standar GJ</td></tr>
+        <tr><td><strong>DAPA-HF</strong></td><td>Dapagliflozin pada HFrEF ± DM</td><td>Turunkan composite outcome GJ 26%, efektif tanpa DM</td><td>SGLT2i bukan hanya antidiabetes — ini obat GJ</td></tr>
+        <tr><td><strong>EMPEROR-Reduced</strong></td><td>Empagliflozin pada HFrEF</td><td>Konfirmasi manfaat SGLT2i, efek renoprotektif kuat</td><td>Memperkuat rekomendasi "Fantastic Four"</td></tr>
+        <tr><td><strong>RALES</strong></td><td>Spironolakton pada GJ berat</td><td>Turunkan mortalitas 30% pada NYHA III-IV</td><td>MRA menjadi standar pada HFrEF berat</td></tr>
+        <tr><td><strong>PLATO</strong></td><td>Ticagrelor vs clopidogrel pada ACS</td><td>Ticagrelor superior untuk MACE, tapi lebih banyak perdarahan</td><td>Dasar preferensi ticagrelor pada ACS</td></tr>
+        <tr><td><strong>ACCORD</strong></td><td>Target HbA1c intensif pada DM</td><td>HbA1c &lt;6% meningkatkan mortalitas vs target 7–7,9%</td><td>Target HbA1c pada DM harus individual, tidak selalu serendah mungkin</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(1)">← Farmakoepidemiologi</button>
+    <button class="nav-btn next" onclick="goTo(3)">Studi Interaksi Obat →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 3 — INTERAKSI OBAT -->
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s3">
+  <div class="section-header">
+    <div class="section-num">// 04</div>
+    <div class="section-title">Membaca Studi Interaksi Obat</div>
+    <div class="section-lead">Database interaksi obat sering memberikan peringatan yang berlebihan — dan kadang melewatkan yang benar-benar berbahaya. Memahami dasar cara membaca studi interaksi membuatmu lebih presisi dalam menilai risiko nyata.</div>
+  </div>
+
+  <h3 class="block-title">Hierarki Bukti Interaksi Obat</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">Studi Klinis Formal (Drug Interaction Study)</div>
+        <div class="step-body">Desain terbaik. Sukarelawan sehat mendapat obat A saja, lalu obat A + B, diukur PK keduanya. Memberikan data kuantitatif tentang besaran perubahan AUC/Cmax.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">Population PK Analysis</div>
+        <div class="step-body">Analisis retrospektif data TDM — apakah komedikasi X berkorelasi dengan perubahan PK obat target? Kurang terkontrol tapi lebih relevan untuk populasi pasien nyata.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">In Vitro / In Silico</div>
+        <div class="step-body">Studi laboratorium atau simulasi komputer. Sering digunakan untuk prediksi awal — tapi in vitro inhibition CYP tidak selalu berkorelasi dengan interaksi klinis yang bermakna in vivo.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-title">Case Report / Spontaneous Reporting</div>
+        <div class="step-body">Bukti paling lemah untuk kausalitas — tapi penting untuk sinyal awal interaksi langka atau serius yang tidak akan tertangkap di studi formal.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="block-title">Pertanyaan Kritis untuk Studi Interaksi</h3>
+  <div class="accordion">
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>📐 Seberapa Besar Perubahan PK — dan Apakah Bermakna Klinis?</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Perubahan AUC atau Cmax sebesar tertentu apakah bermakna klinis bergantung pada:</p>
+        <ul class="dot">
+          <li><strong>Therapeutic index obat:</strong> Warfarin (sempit) vs amoksisilin (lebar). Perubahan 30% AUC warfarin sangat berbahaya; perubahan 30% AUC amoksisilin mungkin tidak bermakna.</li>
+          <li><strong>Konsentrasi saat ini relatif terhadap therapeutic range:</strong> Jika pasien sudah di batas atas range terapeutik, peningkatan 20% bisa jadi toksik.</li>
+          <li><strong>Perubahan ke arah mana:</strong> Inhibisi (konsentrasi naik) vs induksi (konsentrasi turun). Keduanya berbahaya tapi dengan cara berbeda.</li>
+        </ul>
+        <div class="formula" style="margin-top:14px;">
+          <span class="f-label">Threshold FDA untuk interaksi bermakna klinis</span>
+          <div class="f-main">AUC ratio ≥ 2× atau ≤ 0,5× dianggap interaksi kuat</div>
+          <span class="f-note">Ratio 1,25–2×: interaksi moderat. &lt;1,25×: interaksi lemah/tidak bermakna</span>
+        </div>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>🧬 Mekanisme Interaksi — Mengapa Ini Penting?</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Memahami mekanisme membantu kamu memprediksi interaksi yang belum pernah diteliti. Contoh:</p>
+        <ul class="dot">
+          <li>Rifampisin menginduksi CYP3A4 kuat → semua substrat CYP3A4 (warfarin, statin, ARV, kontrasepsi) akan terkena</li>
+          <li>Amiodaron menginhibisi CYP2D6 dan CYP3A4 → meningkatkan kadar banyak obat jantung lain</li>
+          <li>Verapamil menginhibisi P-glikoprotein → meningkatkan absorpsi digoksin</li>
+        </ul>
+        <p style="margin-top:10px;">Jika kamu tahu suatu obat adalah inhibitor kuat CYP tertentu — kamu bisa mengantisipasi interaksi dengan semua substrat CYP tersebut, meski belum ada studi spesifik.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>⏰ Onset dan Durasi Interaksi</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Interaksi yang dimediasi inhibisi enzim biasanya onset cepat (jam ke hari). Interaksi yang dimediasi induksi enzim (rifampisin, karbamazepin) butuh 1–2 minggu untuk efek penuh — dan butuh 1–4 minggu setelah dihentikan untuk kembali normal.</p>
+        <p style="margin-top:10px;"><strong>Implikasi klinis:</strong> Jika rifampisin dimulai pada pasien yang pakai warfarin → INR akan turun bertahap selama 2 minggu. Jika rifampisin dihentikan → warfarin akan naik bertahap lagi. Monitoring intensif diperlukan di kedua momen transisi ini.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout teal">
+    <div class="callout-label">🔑 Prinsip Kunci</div>
+    <p>Database interaksi obat (Lexicomp, Micromedex, Stockley) berguna sebagai titik awal — bukan keputusan akhir. Sebagian besar interaksi yang "major" di database bisa dikelola dengan monitoring lebih ketat atau penyesuaian dosis. Jarang sekali interaksi yang benar-benar kontraindikasi mutlak.</p>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(2)">← Outcome CV</button>
+    <button class="nav-btn next" onclick="goTo(4)">Guideline Bertentangan →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 4 — GUIDELINE BERTENTANGAN -->
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s4">
+  <div class="section-header">
+    <div class="section-num">// 05</div>
+    <div class="section-title">Menyikapi Guideline yang Bertentangan</div>
+    <div class="section-lead">ESC bilang A, AHA bilang B. Guideline lama bilang satu hal, update terbaru bilang sebaliknya. Ini bukan tanda bahwa ilmu kedokteran tidak dapat dipercaya — ini tanda bahwa ilmu pengetahuan terus berkembang. Yang perlu kamu tahu adalah bagaimana menyikapinya.</div>
+  </div>
+
+  <h3 class="block-title">Mengapa Guideline Bisa Bertentangan</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🌍</div>
+      <div class="card-title">Perbedaan Populasi</div>
+      <div class="card-body">AHA/ACC berbasis data populasi Amerika Utara. ESC berbasis Eropa. Genetik, pola penyakit, prevalensi faktor risiko, dan akses layanan berbeda — menghasilkan rekomendasi berbeda meski dari data yang sama.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚖️</div>
+      <div class="card-title">Threshold Bukti Berbeda</div>
+      <div class="card-body">Komite guideline yang berbeda menilai kekuatan bukti yang sama secara berbeda. Satu guideline mungkin membutuhkan RCT sebelum memberi rekomendasi kuat; yang lain bisa memberi rekomendasi dari data observasional yang konsisten.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">⏰</div>
+      <div class="card-title">Waktu Update Berbeda</div>
+      <div class="card-body">Guideline diperbarui secara berkala — tapi tidak serentak. Ada jeda antara publikasi RCT besar dengan masuknya ke guideline, dan antara satu guideline dengan yang lain.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">💰</div>
+      <div class="card-title">Pertimbangan Sumber Daya</div>
+      <div class="card-body">Guideline dari negara berpenghasilan tinggi kadang merekomendasikan obat mahal yang tidak realistis di setting LMIC. Guideline lokal (seperti PERKI, PERKENI) mempertimbangkan konteks nasional dan ketersediaan obat.</div>
+    </div>
+  </div>
+
+  <h3 class="block-title">Cara Menavigasi Pertentangan Guideline</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">Kembali ke Data Primer</div>
+        <div class="step-body">Rekomendasi guideline adalah interpretasi komite terhadap bukti yang ada. Jika ada pertentangan, kembali ke studi klinisnya — bukan hanya membandingkan rekomendasi dua guideline.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">Lihat Level of Evidence</div>
+        <div class="step-body">Rekomendasi kelas I Level A (berdasarkan RCT multipel yang konsisten) jauh lebih kuat dari kelas IIb Level C (berdasarkan konsensus ahli). Pertentangan sering terjadi di area bukti yang lemah.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">Pertimbangkan Konteks Lokal</div>
+        <div class="step-body">Untuk praktik di Indonesia: guideline PERKI, PERKENI, dan Kemenkes RI harus menjadi referensi primer — sudah mempertimbangkan konteks lokal, ketersediaan obat BPJS, dan pola penyakit nasional.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-title">Dokumentasikan Alasan Keputusan</div>
+        <div class="step-body">Ketika kamu memilih rekomendasi dari satu guideline atas yang lain — dokumentasikan alasannya. Ini penting untuk akuntabilitas klinis dan untuk belajar dari keputusan tersebut.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout gold">
+    <div class="callout-label">📌 Contoh Nyata</div>
+    <p><strong>Target tekanan darah:</strong> AHA/ACC 2017 mendefinisikan hipertensi ≥130/80 mmHg (lebih rendah dari sebelumnya). ESC/ESH 2018 tetap ≥140/90 mmHg. PERHI Indonesia mengikuti cut-off ≥140/90 mmHg. Perbedaan ini bukan karena salah satu guideline keliru — tapi karena penilaian yang berbeda terhadap evidence yang sama dan pertimbangan konteks populasi yang berbeda.</p>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(3)">← Interaksi Obat</button>
+    <button class="nav-btn next" onclick="goTo(5)">Studi ICU/Kritis →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 5 — ICU/KRITIS -->
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s5">
+  <div class="section-header">
+    <div class="section-num">// 06</div>
+    <div class="section-title">Membaca Studi di Setting ICU dan Kondisi Kritis</div>
+    <div class="section-lead">Studi di ICU punya tantangan metodologis unik yang tidak ada di populasi umum. Memahami tantangan ini penting agar kamu tidak menerapkan temuan yang tidak applicable ke pasien kritismu.</div>
+  </div>
+
+  <div class="callout rust">
+    <div class="callout-label">⚠️ Tantangan Utama</div>
+    <p>Pasien kritis <strong>sangat heterogen</strong> — syok septik berbeda dari gagal jantung akut berbeda dari ARDS. Studi yang menggabungkan semua "pasien ICU" sering memberikan hasil yang tidak bermakna karena mencampur populasi yang fisiologinya sangat berbeda.</p>
+  </div>
+
+  <h3 class="block-title">Masalah Spesifik di Studi ICU</h3>
+  <div class="accordion">
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>⏱️ Masalah Temporal — Kapan Intervensi Dimulai?</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Dalam kondisi kritis, <strong>waktu sangat penting</strong>. Studi yang memulai intervensi terlambat mungkin melewatkan window of opportunity. Contoh: antibiotik pada sepsis — setiap jam keterlambatan meningkatkan mortalitas.</p>
+        <p style="margin-top:10px;">Cek: <strong>kapan persis intervensi dimulai?</strong> Time from diagnosis to treatment adalah informasi kritis yang sering tidak dilaporkan dengan jelas.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>📉 Survival Bias dan Immortal Time di ICU</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Di ICU, pasien yang paling berat sering meninggal dalam 24–48 jam pertama sebelum sempat menerima intervensi yang diteliti. Jika analisis hanya mencakup pasien yang "survive cukup lama" untuk menerima intervensi — hasilnya bias ke arah pasien yang relatif lebih ringan.</p>
+        <p style="margin-top:10px;"><strong>Immortal time bias</strong> sangat umum di studi retrospektif ICU: periode dari masuk ICU sampai mulai terapi sering salah diklasifikasikan sebagai "waktu terpapar" padahal pasien belum menerima intervensi.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>🎯 Clinician Gestalt dan Severity of Illness</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Di ICU, pemilihan terapi sangat dipengaruhi oleh penilaian klinis real-time yang tidak bisa sepenuhnya dikuantifikasi. Pasien yang terlihat "lebih sakit" mungkin mendapat intervensi berbeda — dan confounding by indication menjadi sangat sulit dikontrol.</p>
+        <p style="margin-top:10px;">Cek apakah studi menggunakan <strong>severity scoring</strong> (APACHE II, SOFA, SAPS) sebagai covariat. Skor yang hanya diambil saat masuk ICU tidak mencerminkan trajektori penyakit yang dinamis.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>💊 Pharmacokinetic Chaos di ICU</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Di ICU, PK obat sangat tidak stabil dan sulit diprediksi:</p>
+        <ul class="dot">
+          <li><strong>ARC (Augmented Renal Clearance):</strong> Klirens ginjal meningkat di pasien muda-berat dengan SIRS — dosis standar tidak cukup untuk banyak obat (antibiotik, antiepilepsi)</li>
+          <li><strong>Hipoalbuminemia:</strong> Fraksi bebas obat terikat protein meningkat drastis</li>
+          <li><strong>Edema massif:</strong> Vd meningkat → konsentrasi serum turun padahal dosis sama</li>
+          <li><strong>Renal replacement therapy (CRRT):</strong> Klirens obat melalui membran dialisis sangat bervariasi</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="block-title">Vasopresor dan Inotropik — Cara Membaca Studinya</h3>
+  <div class="prose">Studi vasopresor dan inotropik di kardiogenik syok punya tantangan unik karena kondisinya sangat dinamis dan heterogen.</div>
+
+  <div class="callout teal">
+    <div class="callout-label">🔑 Poin Penting untuk Studi Vasopresor/Inotropik</div>
+    <p>
+      <strong>1. Definisi kardiogenik syok harus konsisten</strong> — banyak studi menggunakan definisi berbeda (MAP, CI, SVR, laktat). Perubahan definisi bisa mengubah populasi yang direkrut secara fundamental.<br><br>
+      <strong>2. Hemodynamic endpoint vs clinical outcome</strong> — banyak studi inotropik hanya mengukur parameter hemodinamik (CI, MAP) sebagai endpoint, bukan mortalitas. Perbaikan hemodinamik tidak selalu berkorelasi dengan survival.<br><br>
+      <strong>3. Crossover yang tinggi</strong> — pasien syok sering butuh eskalasi terapi, membuat analisis intention-to-treat sulit diinterpretasikan.<br><br>
+      <strong>4. Confounding by indication sangat kuat</strong> — pasien yang menerima inotropik biasanya lebih berat dari yang tidak, membuat studi observasional sangat sulit diarahkan.
+    </p>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(4)">← Guideline</button>
+    <button class="nav-btn next" onclick="goTo(6)">Checklist Final →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 6 — CHECKLIST FINAL -->
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s6">
+  <div class="section-header">
+    <div class="section-num">// 07</div>
+    <div class="section-title">Checklist Critical Appraisal — Farmasi Klinis</div>
+    <div class="section-lead">Checklist interaktif ini dirancang khusus untuk apoteker klinis. Gunakan bersama dengan checklist umum dari Bagian 1.</div>
+  </div>
+
+  <h3 class="block-title">Untuk Studi PK/PD dan TDM</h3>
+  <ul class="checklist">
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Populasi studi relevan dengan pasien saya (bukan hanya sukarelawan sehat)</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Parameter PK yang dilaporkan mencakup yang relevan (AUC, Cmax, atau Cmin sesuai obat)</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Target PK/PD didukung oleh outcome klinis, bukan hanya surrogate laboratorium</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Kondisi khusus ICU dipertimbangkan (ARC, hipoalbuminemia, CRRT) jika relevan</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Model PK dikembangkan dari populasi yang sesuai dengan pasien saya</span></li>
+  </ul>
+
+  <h3 class="block-title">Untuk Studi Farmakoepidemiologi</h3>
+  <ul class="checklist">
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Confounding by indication dikenali dan metode untuk mengatasinya dijelaskan</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Immortal time bias tidak ada (atau dikoreksi)</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Competing risk dipertimbangkan jika mortalitas tinggi di populasi studi</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Sensitivity analysis dilakukan untuk menilai robustness temuan</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Kesimpulan tidak mengklaim kausalitas dari data observasional</span></li>
+  </ul>
+
+  <h3 class="block-title">Untuk Studi Outcome Kardiovaskular</h3>
+  <ul class="checklist">
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Composite endpoint — komponen individual dilaporkan dan dianalisis</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>ARR dan NNT dihitung (tidak hanya RRR atau HR)</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Durasi follow-up cukup untuk melihat outcome yang relevan</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Subgroup analysis pre-specified (bukan post-hoc fishing)</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Efek pada mortalitas all-cause dilaporkan (tidak hanya mortalitas CV)</span></li>
+  </ul>
+
+  <h3 class="block-title">Untuk Studi Interaksi Obat</h3>
+  <ul class="checklist">
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Mekanisme interaksi jelas (CYP, transporter, PD)</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Besaran perubahan PK dilaporkan secara kuantitatif (AUC ratio)</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Relevansi klinis dinilai berdasarkan therapeutic index obat yang terlibat</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Manajemen yang direkomendasikan proporsional dengan risiko aktual</span></li>
+  </ul>
+
+  <div class="highlight">
+    <div class="hl-label">📘 Penutup</div>
+    <p>Critical appraisal bukan tentang menemukan alasan untuk menolak setiap studi. Tujuannya adalah <strong>menerima bukti secara proporsional dengan kualitasnya</strong> — dan menerapkannya dengan judgment klinis yang mempertimbangkan konteks pasien individualmu. Semakin sering kamu berlatih, semakin intuitif prosesnya.</p>
+  </div>
+
+  <div class="callout teal" style="margin-top:24px;">
+    <div class="callout-label">📚 Bagian Sebelumnya</div>
+    <p>Panduan ini adalah <strong>Bagian 2</strong> — lanjutan dari <em>Cara Membaca Jurnal Ilmiah (Bagian 1)</em> yang membahas struktur artikel IMRAD, desain studi, statistik dasar (ARR/RRR/NNT), dan cara menyimpulkan. Baca keduanya secara berurutan untuk pemahaman yang lengkap.</p>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(5)">← Studi ICU</button>
+    <button class="nav-btn next" disabled>Selesai ✓</button>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<footer class="page-footer">
+  <p><span>ApotekerRy</span> · Farmasi Klinis · Critical Appraisal Bagian 2 · © 2025</p>
+</footer>
+
+<script>
+let current = 0;
+function goTo(idx){
+  document.querySelectorAll('.section').forEach((s,i)=>s.classList.toggle('active',i===idx));
+  document.querySelectorAll('.prog-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+  current=idx;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleAcc(head){
+  const body=head.nextElementSibling;
+  const isOpen=head.classList.contains('open');
+  head.closest('.section').querySelectorAll('.acc-head').forEach(h=>{
+    h.classList.remove('open');
+    h.nextElementSibling.classList.remove('open');
+  });
+  if(!isOpen){head.classList.add('open');body.classList.add('open');}
+}
+function toggleChk(box){box.classList.toggle('checked');}
+</script>
+</body>
+</html>

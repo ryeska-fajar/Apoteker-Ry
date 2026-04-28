@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cara Membaca Jurnal — ApotekerRy</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap');
+
+:root {
+  --ink:    #1C1612;
+  --cream:  #F7F2EA;
+  --rust:   #B5451B;
+  --rust-l: #F5E8E3;
+  --sage:   #3B6357;
+  --sage-l: #E4EDEA;
+  --gold:   #C8922A;
+  --gold-l: #FBF3E2;
+  --blue:   #2C4A7A;
+  --blue-l: #E4EBF5;
+  --dust:   #7A6E62;
+  --border: #DDD5C8;
+  --white:  #FFFFFF;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  background:var(--cream);
+  color:var(--ink);
+  font-family:'Libre Baskerville',Georgia,serif;
+  line-height:1.75;
+}
+
+/* ── NAV ── */
+.nav{
+  background:var(--ink);
+  padding:14px 40px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky; top:0; z-index:100;
+}
+.nav-logo{
+  font-family:'Syne',sans-serif;
+  font-size:13px; font-weight:800;
+  color:var(--cream); letter-spacing:0.08em;
+}
+.nav-logo span{color:var(--rust);}
+.nav-part{
+  font-family:'DM Mono',monospace;
+  font-size:11px; color:rgba(255,255,255,0.4);
+  letter-spacing:0.15em;
+}
+
+/* ── HERO ── */
+.hero{
+  background:var(--ink);
+  padding:72px 40px 64px;
+  position:relative; overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute; top:-80px; right:-80px;
+  width:420px; height:420px; border-radius:50%;
+  background:radial-gradient(circle,rgba(181,69,27,0.18) 0%,transparent 65%);
+}
+.hero::after{
+  content:'';
+  position:absolute; bottom:-100px; left:20%;
+  width:380px; height:380px; border-radius:50%;
+  background:radial-gradient(circle,rgba(200,146,42,0.1) 0%,transparent 65%);
+}
+.hero-inner{max-width:800px; margin:0 auto; position:relative; z-index:2;}
+.hero-tag{
+  display:inline-block;
+  font-family:'DM Mono',monospace;
+  font-size:11px; font-weight:500;
+  color:var(--gold); letter-spacing:0.2em;
+  text-transform:uppercase; margin-bottom:20px;
+  border:1px solid rgba(200,146,42,0.35);
+  padding:4px 14px; border-radius:20px;
+}
+.hero h1{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(2.2rem,5vw,3.4rem);
+  font-weight:800; color:var(--white);
+  line-height:1.08; margin-bottom:16px;
+}
+.hero h1 em{
+  font-style:italic;
+  font-family:'Libre Baskerville',serif;
+  color:#AABFD4; font-weight:400;
+}
+.hero-sub{
+  font-size:1rem; color:rgba(255,255,255,0.55);
+  max-width:580px; line-height:1.7; margin-bottom:36px;
+}
+.hero-pills{display:flex; gap:10px; flex-wrap:wrap;}
+.hero-pill{
+  font-family:'DM Mono',monospace;
+  font-size:11px; font-weight:400;
+  color:rgba(255,255,255,0.6);
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.12);
+  padding:5px 14px; border-radius:4px;
+}
+
+/* ── PROGRESS NAV ── */
+.prog-nav{
+  background:var(--white);
+  border-bottom:1px solid var(--border);
+  padding:0 40px;
+  display:flex; gap:0;
+  overflow-x:auto; -webkit-overflow-scrolling:touch;
+  position:sticky; top:49px; z-index:99;
+}
+.prog-nav::-webkit-scrollbar{height:3px;}
+.prog-nav::-webkit-scrollbar-thumb{background:var(--border);}
+.prog-btn{
+  font-family:'DM Mono',monospace;
+  font-size:11px; font-weight:500;
+  color:var(--dust); padding:14px 18px;
+  border:none; background:none;
+  border-bottom:2px solid transparent;
+  cursor:pointer; white-space:nowrap;
+  letter-spacing:0.05em; transition:all 0.2s;
+}
+.prog-btn:hover{color:var(--ink);}
+.prog-btn.active{color:var(--rust); border-bottom-color:var(--rust);}
+
+/* ── MAIN ── */
+.main{max-width:860px; margin:0 auto; padding:56px 40px 100px;}
+
+/* ── SECTION ── */
+.section{display:none;}
+.section.active{display:block;}
+
+.section-header{margin-bottom:40px;}
+.section-num{
+  font-family:'DM Mono',monospace;
+  font-size:11px; color:var(--dust);
+  letter-spacing:0.2em; text-transform:uppercase;
+  margin-bottom:10px;
+}
+.section-title{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(1.5rem,3vw,2.2rem);
+  font-weight:700; color:var(--ink);
+  line-height:1.15; margin-bottom:12px;
+}
+.section-lead{
+  font-size:1.05rem; color:var(--dust);
+  line-height:1.75; max-width:680px;
+  border-left:3px solid var(--rust);
+  padding-left:18px;
+}
+
+/* ── CONTENT BLOCKS ── */
+.prose{font-size:0.975rem; line-height:1.8; color:#3A3028; margin-bottom:24px;}
+.prose strong{color:var(--ink); font-weight:700;}
+
+h3.block-title{
+  font-family:'Syne',sans-serif;
+  font-size:1.1rem; font-weight:700;
+  color:var(--ink); margin:36px 0 14px;
+  display:flex; align-items:center; gap:10px;
+}
+h3.block-title::before{
+  content:''; display:inline-block;
+  width:18px; height:3px; background:var(--rust);
+  flex-shrink:0;
+}
+
+/* CALLOUT */
+.callout{
+  border-radius:8px; padding:20px 22px;
+  margin:24px 0; border-left:4px solid;
+}
+.callout.info{background:var(--blue-l); border-color:var(--blue);}
+.callout.tip{background:var(--sage-l); border-color:var(--sage);}
+.callout.warn{background:var(--rust-l); border-color:var(--rust);}
+.callout.gold{background:var(--gold-l); border-color:var(--gold);}
+.callout-label{
+  font-family:'DM Mono',monospace;
+  font-size:10px; font-weight:500;
+  letter-spacing:0.2em; text-transform:uppercase;
+  margin-bottom:6px;
+}
+.callout.info .callout-label{color:var(--blue);}
+.callout.tip .callout-label{color:var(--sage);}
+.callout.warn .callout-label{color:var(--rust);}
+.callout.gold .callout-label{color:var(--gold);}
+.callout p{font-size:0.93rem; line-height:1.7;}
+
+/* CARD GRID */
+.card-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:20px 0;}
+.card{
+  background:var(--white); border-radius:10px;
+  padding:20px 22px; border:1px solid var(--border);
+  box-shadow:0 2px 12px rgba(28,22,18,0.05);
+}
+.card-icon{font-size:22px; margin-bottom:10px;}
+.card-title{
+  font-family:'Syne',sans-serif;
+  font-size:0.95rem; font-weight:700;
+  color:var(--ink); margin-bottom:6px;
+}
+.card-body{font-size:0.88rem; color:var(--dust); line-height:1.6;}
+
+/* STAT BOX */
+.stat-row{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:20px 0;}
+.stat-box{
+  background:var(--white); border-radius:10px;
+  padding:18px 20px; text-align:center;
+  border:1px solid var(--border);
+}
+.stat-num{
+  font-family:'Syne',sans-serif;
+  font-size:1.8rem; font-weight:800;
+  color:var(--rust); line-height:1; margin-bottom:6px;
+}
+.stat-label{font-size:0.82rem; color:var(--dust); line-height:1.5;}
+
+/* FORMULA BOX */
+.formula{
+  background:var(--ink); border-radius:8px;
+  padding:20px 24px; margin:20px 0;
+  font-family:'DM Mono',monospace;
+  color:var(--cream); font-size:0.92rem;
+  line-height:1.8;
+}
+.formula .f-label{
+  color:var(--gold); font-size:0.8rem;
+  letter-spacing:0.15em; text-transform:uppercase;
+  display:block; margin-bottom:8px;
+}
+.formula .f-main{color:var(--white); font-size:1.05rem;}
+.formula .f-note{color:rgba(247,242,234,0.45); font-size:0.82rem; margin-top:8px;}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto; margin:20px 0;}
+table{
+  width:100%; border-collapse:collapse;
+  font-size:0.88rem; background:var(--white);
+  border-radius:8px; overflow:hidden;
+  box-shadow:0 2px 12px rgba(28,22,18,0.05);
+}
+thead th{
+  background:var(--ink); color:var(--cream);
+  padding:12px 16px; text-align:left;
+  font-family:'DM Mono',monospace;
+  font-size:10px; letter-spacing:0.12em;
+  text-transform:uppercase; font-weight:500;
+}
+tbody td{
+  padding:11px 16px; border-bottom:1px solid var(--border);
+  vertical-align:top; line-height:1.5;
+}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:nth-child(even){background:#FAFAF8;}
+.td-good{color:var(--sage); font-weight:700;}
+.td-bad{color:var(--rust); font-weight:700;}
+.td-warn{color:var(--gold); font-weight:700;}
+
+/* CHECKLIST */
+.checklist{list-style:none; margin:16px 0;}
+.checklist li{
+  display:flex; align-items:flex-start; gap:12px;
+  padding:10px 0; border-bottom:1px solid #F0EBE4;
+  font-size:0.93rem; line-height:1.6;
+}
+.checklist li:last-child{border-bottom:none;}
+.chk-box{
+  width:20px; height:20px; border-radius:4px;
+  border:2px solid var(--border); flex-shrink:0;
+  margin-top:2px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.2s;
+}
+.chk-box.checked{background:var(--sage); border-color:var(--sage);}
+.chk-box.checked::after{content:'✓'; color:white; font-size:11px;}
+
+/* ACCORDION */
+.accordion{margin:16px 0;}
+.acc-item{
+  background:var(--white); border:1px solid var(--border);
+  border-radius:8px; margin-bottom:8px; overflow:hidden;
+}
+.acc-head{
+  padding:14px 18px; cursor:pointer;
+  display:flex; justify-content:space-between; align-items:center;
+  font-family:'Syne',sans-serif; font-size:0.95rem; font-weight:700;
+  user-select:none; transition:background 0.2s;
+}
+.acc-head:hover{background:#FAF7F2;}
+.acc-head.open{background:#FAF7F2; color:var(--rust);}
+.acc-arrow{
+  font-size:18px; transition:transform 0.25s;
+  color:var(--dust); font-family:'DM Mono',monospace;
+}
+.acc-head.open .acc-arrow{transform:rotate(180deg); color:var(--rust);}
+.acc-body{
+  display:none; padding:16px 18px 20px;
+  font-size:0.9rem; line-height:1.75;
+  color:#3A3028; border-top:1px solid var(--border);
+}
+.acc-body.open{display:block;}
+
+/* STEP FLOW */
+.steps{margin:20px 0;}
+.step{
+  display:flex; gap:18px; margin-bottom:20px;
+  position:relative;
+}
+.step:not(:last-child)::after{
+  content:'';
+  position:absolute; left:18px; top:42px;
+  width:2px; height:calc(100% + 8px);
+  background:var(--border);
+}
+.step-num{
+  width:38px; height:38px; border-radius:50%;
+  background:var(--rust); color:var(--white);
+  font-family:'Syne',sans-serif; font-size:0.95rem; font-weight:800;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; position:relative; z-index:1;
+}
+.step-content{}
+.step-title{
+  font-family:'Syne',sans-serif;
+  font-size:1rem; font-weight:700;
+  color:var(--ink); margin-bottom:5px;
+}
+.step-body{font-size:0.9rem; color:var(--dust); line-height:1.7;}
+
+/* NAV BUTTONS */
+.nav-btns{
+  display:flex; justify-content:space-between;
+  margin-top:56px; padding-top:28px;
+  border-top:1px solid var(--border);
+}
+.nav-btn{
+  font-family:'Syne',sans-serif;
+  font-size:0.9rem; font-weight:700;
+  padding:10px 24px; border-radius:6px;
+  border:none; cursor:pointer; transition:all 0.2s;
+}
+.nav-btn.prev{background:var(--white); color:var(--ink); border:1px solid var(--border);}
+.nav-btn.prev:hover{background:#F0EBE4;}
+.nav-btn.next{background:var(--rust); color:var(--white);}
+.nav-btn.next:hover{background:#9E3A16;}
+.nav-btn:disabled{opacity:0.3; cursor:not-allowed;}
+
+/* TAG */
+.tag{
+  display:inline-block; font-family:'DM Mono',monospace;
+  font-size:10px; font-weight:500; letter-spacing:0.1em;
+  padding:2px 10px; border-radius:20px; margin:2px;
+  text-transform:uppercase;
+}
+.tag.rct{background:#E4EBF5; color:var(--blue);}
+.tag.obs{background:var(--gold-l); color:var(--gold);}
+.tag.sr{background:var(--sage-l); color:var(--sage);}
+.tag.all{background:var(--rust-l); color:var(--rust);}
+
+ul.dot{
+  list-style:none; padding:0; margin:12px 0;
+}
+ul.dot li{
+  padding:5px 0 5px 20px; position:relative;
+  font-size:0.93rem; color:#3A3028; line-height:1.65;
+}
+ul.dot li::before{
+  content:'—'; position:absolute; left:0;
+  color:var(--rust); font-weight:700;
+}
+
+@media(max-width:600px){
+  .card-grid{grid-template-columns:1fr;}
+  .stat-row{grid-template-columns:1fr 1fr;}
+  .main{padding:40px 20px 80px;}
+  .hero{padding:48px 20px 40px;}
+  .prog-nav{padding:0 20px;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">Apoteker<span>Ry</span></div>
+  <div class="nav-part">Panduan Baca Jurnal · Bagian 1</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Panduan · Bagian 1 dari 2</div>
+    <h1>Cara Membaca<br><em>Jurnal Ilmiah</em></h1>
+    <p class="hero-sub">Dari abstrak sampai diskusi — panduan praktis memahami struktur artikel, menilai metodologi, dan membaca angka-angka statistik yang sebenarnya cukup logis bila kamu tahu caranya.</p>
+    <div class="hero-pills">
+      <span class="hero-pill">Semua desain studi</span>
+      <span class="hero-pill">Statistik dasar</span>
+      <span class="hero-pill">Checklists interaktif</span>
+      <span class="hero-pill">Contoh nyata</span>
+    </div>
+  </div>
+</div>
+
+<div class="prog-nav" id="progNav">
+  <button class="prog-btn active" onclick="goTo(0)">01 · Mengapa Perlu?</button>
+  <button class="prog-btn" onclick="goTo(1)">02 · Anatomi Artikel</button>
+  <button class="prog-btn" onclick="goTo(2)">03 · Desain Studi</button>
+  <button class="prog-btn" onclick="goTo(3)">04 · Statistik Dasar</button>
+  <button class="prog-btn" onclick="goTo(4)">05 · Angka-Angka Kunci</button>
+  <button class="prog-btn" onclick="goTo(5)">06 · Menyimpulkan</button>
+  <button class="prog-btn" onclick="goTo(6)">07 · Checklist</button>
+</div>
+
+<div class="main">
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 0 — MENGAPA PERLU -->
+<!-- ══════════════════════════════════════════ -->
+<div class="section active" id="s0">
+  <div class="section-header">
+    <div class="section-num">// 01</div>
+    <div class="section-title">Mengapa Harus Bisa Baca Jurnal?</div>
+    <div class="section-lead">Karena keputusan klinis yang baik harus berbasis bukti — dan bukti itu tertulis di jurnal. Tapi tidak semua yang tertulis di jurnal itu benar.</div>
+  </div>
+
+  <div class="prose">Setiap hari ada puluhan ribu artikel ilmiah baru yang terbit. Sebagian besar tidak relevan untuk praktikmu. Sebagian kecil yang relevan pun tidak semuanya berkualitas baik. Kemampuan membaca jurnal bukan soal hafal statistik — tapi soal tahu <strong>pertanyaan apa yang harus kamu tanyakan</strong> saat membaca.</div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🩺</div>
+      <div class="card-title">Untuk Klinisi</div>
+      <div class="card-body">Memilih terapi terbaik untuk pasienmu berdasarkan bukti terkuat, bukan berdasarkan kebiasaan atau rekomendasi yang sudah usang.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">💊</div>
+      <div class="card-title">Untuk Apoteker</div>
+      <div class="card-body">Menjawab pertanyaan DRP dan MTM dengan data — bukan hanya mengandalkan isi brosur obat atau pengalaman pribadi.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎓</div>
+      <div class="card-title">Untuk Mahasiswa</div>
+      <div class="card-body">Menyusun tinjauan pustaka yang kuat, menilai referensi yang layak dikutip, dan akhirnya bisa menulis penelitian sendiri.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔬</div>
+      <div class="card-title">Untuk Peneliti</div>
+      <div class="card-body">Menemukan gap penelitian, memahami metodologi yang tepat, dan mengkritisi karya sendiri sebelum reviewer melakukannya.</div>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-label">⚠️ Jebakan Umum</div>
+    <p><strong>Membaca abstrak saja tidak cukup.</strong> Abstrak ditulis oleh penulis yang ingin papernya dibaca — ada bias presentasi yang nyata. Kesimpulan di abstrak kadang lebih kuat dari yang data di dalam artikel sebenarnya dukung.</p>
+  </div>
+
+  <h3 class="block-title">Hierarki Bukti — Bukan Semua Studi Setara</h3>
+  <div class="prose">Sebelum membaca lebih jauh, kenali dulu bahwa ada hierarki kualitas bukti. Semakin tinggi tingkatnya, semakin kuat buktinya — tapi bukan berarti bukti di bawah tidak berguna.</div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">Systematic Review & Meta-Analysis</div>
+        <div class="step-body">Mengumpulkan dan mensintesis semua studi yang relevan secara sistematis. Bukti terkuat — tapi kualitasnya sangat bergantung pada kualitas studi yang disintesis.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">Randomized Controlled Trial (RCT)</div>
+        <div class="step-body">Pasien diacak ke kelompok intervensi atau kontrol. Desain terbaik untuk menjawab pertanyaan kausalitas — "apakah obat ini benar-benar bekerja?"</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">Studi Kohort & Kasus-Kontrol</div>
+        <div class="step-body">Studi observasional — mengamati tanpa intervensi. Penting untuk pertanyaan tentang prognosis, faktor risiko, atau kondisi yang tidak etis diacak.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-title">Cross-sectional & Case Report</div>
+        <div class="step-body">Snapshot satu waktu atau laporan kasus individual. Berguna untuk hipotesis awal dan deskripsi, tapi tidak bisa menjawab kausalitas.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <div class="step-title">Expert Opinion & Editorial</div>
+        <div class="step-body">Pendapat ahli tanpa data primer. Berguna sebagai konteks — tapi bukan bukti. "Menurut ahli X" bukan cukup tanpa data.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-label">💡 Tips Praktis</div>
+    <p>Sebelum membaca artikel apapun, tanyakan dulu: <strong>desain studi apa ini?</strong> Jawabannya akan menentukan pertanyaan apa yang relevan kamu tanyakan saat membaca.</p>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" disabled>← Sebelumnya</button>
+    <button class="nav-btn next" onclick="goTo(1)">Anatomi Artikel →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 1 — ANATOMI ARTIKEL -->
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s1">
+  <div class="section-header">
+    <div class="section-num">// 02</div>
+    <div class="section-title">Anatomi Artikel Ilmiah</div>
+    <div class="section-lead">Hampir semua artikel ilmiah mengikuti struktur IMRAD — Introduction, Methods, Results, and Discussion. Kenali fungsi setiap bagiannya.</div>
+  </div>
+
+  <div class="prose">Banyak orang membaca dari awal ke akhir seperti membaca buku. Padahal cara yang lebih efisien adalah membaca dengan <strong>tujuan yang berbeda di setiap bagian</strong>. Tidak setiap bagian harus dibaca dengan kedalaman yang sama.</div>
+
+  <div class="accordion">
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>📌 Judul & Abstrak — Baca Pertama, Tapi Jangan Percaya Sepenuhnya</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p><strong>Judul:</strong> Perhatikan kata kunci desain studi — "randomized", "prospective cohort", "systematic review". Kata "association" berbeda dari "effect". Kata "pilot study" artinya sampel kecil.</p><br>
+        <p><strong>Abstrak terstruktur</strong> (Background / Methods / Results / Conclusion) lebih mudah dinilai dari abstrak narasi. Baca bagian <strong>Methods</strong> di abstrak untuk tahu desain studi dan outcomes utama.</p><br>
+        <p><strong>Jebakan:</strong> Penulis sering menuliskan kesimpulan yang lebih kuat dari yang data dukung. Setelah baca abstrak, catat: "apakah klaim ini didukung oleh desain studinya?"</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>🔍 Introduction — Temukan Pertanyaan Penelitian</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Baca introduksi untuk memahami: <strong>gap apa yang coba diisi studi ini?</strong> Peneliti yang jujur akan menyebutkan keterbatasan studi sebelumnya dan menjelaskan bagaimana studi mereka mencoba mengatasinya.</p><br>
+        <p>Perhatikan <strong>kalimat terakhir introduksi</strong> — biasanya berisi pertanyaan penelitian atau hipotesis. Ini yang akan kamu verifikasi di bagian Results.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>⚙️ Methods — Bagian Paling Kritis, Paling Sering Dilewati</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Methods adalah jantung artikel. Di sinilah kamu menilai apakah temuan bisa dipercaya. Yang harus kamu cari:</p><br>
+        <ul class="dot">
+          <li><strong>Populasi studi:</strong> Siapa yang diikutsertakan dan siapa yang dieksklusi? Apakah mirip dengan pasienmu?</li>
+          <li><strong>Definisi outcome:</strong> "Kematian" mudah diukur. "Kualitas hidup" atau "perbaikan klinis" — bagaimana mereka mendefinisikannya?</li>
+          <li><strong>Confounding:</strong> Apakah ada faktor perancu yang dikontrol? (Lihat bagian analisis statistik)</li>
+          <li><strong>Lama follow-up:</strong> Cukup lama untuk melihat outcome yang relevan?</li>
+          <li><strong>Blinding:</strong> Apakah pasien, dokter, dan penilai outcome tahu siapa di kelompok mana?</li>
+        </ul>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>📊 Results — Baca Tabel dan Gambar Dulu, Teks Kemudian</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Tabel dan gambar berisi data mentah — teks di bagian Results adalah interpretasi penulis. Baca <strong>Tabel 1 terlebih dahulu</strong> — ini adalah karakteristik baseline. Apakah kedua kelompok sebanding di awal?</p><br>
+        <p>Perhatikan: <strong>apakah penulis melaporkan semua outcome yang disebutkan di Methods?</strong> Jika ada outcome yang "hilang" di Results, itu tanda bahaya — mungkin hasilnya tidak sesuai harapan dan tidak dilaporkan (<em>selective reporting</em>).</p><br>
+        <p>Lihat angka <strong>absolut</strong>, bukan hanya relatif. "Risiko turun 50%!" terdengar dramatis — tapi dari 2% menjadi 1% sangat berbeda maknanya dari 40% menjadi 20%.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>💬 Discussion — Filter Klaim Penulis dengan Skeptisisme Sehat</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Discussion adalah tempat penulis memberikan konteks dan menarik kesimpulan. Ini juga tempat mereka paling sering <em>oversell</em> hasil studi mereka.</p><br>
+        <p>Yang harus kamu cari:<br>
+        1. <strong>Apakah penulis mengakui limitasi yang berarti?</strong> — Studi yang bagus mengakui keterbatasannya dengan jujur.<br>
+        2. <strong>Apakah kesimpulan sesuai dengan kekuatan desain studi?</strong> — Studi observasional tidak boleh menyimpulkan kausalitas.<br>
+        3. <strong>Apakah mereka menyebutkan studi lain yang bertentangan?</strong></p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>📚 References — Periksa Akar Pohon</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Referensi memberitahumu dua hal: <strong>apakah penulis aware dengan literatur terkini?</strong> dan <strong>apakah klaim mereka benar-benar didukung sumber yang mereka kutip?</strong></p><br>
+        <p>Trik: pilih 2–3 klaim penting di artikel, lacak referensinya, dan baca abstrak referensi tersebut. Kadang klaim yang dikutip tidak seakurat yang tampak.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout gold">
+    <div class="callout-label">🗺️ Urutan Baca yang Efisien</div>
+    <p><strong>1. Judul</strong> → tahu desain &amp; topik &nbsp;|&nbsp; <strong>2. Abstrak</strong> → tangkap gambaran besar &nbsp;|&nbsp; <strong>3. Methods</strong> → nilai kualitas &nbsp;|&nbsp; <strong>4. Tabel/Gambar</strong> → lihat data langsung &nbsp;|&nbsp; <strong>5. Results</strong> → konfirmasi angka &nbsp;|&nbsp; <strong>6. Discussion</strong> → konteks &amp; limitasi</p>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(0)">← Mengapa Perlu?</button>
+    <button class="nav-btn next" onclick="goTo(2)">Desain Studi →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 2 — DESAIN STUDI -->
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s2">
+  <div class="section-header">
+    <div class="section-num">// 03</div>
+    <div class="section-title">Mengenal Desain Studi</div>
+    <div class="section-lead">Desain studi menentukan pertanyaan apa yang bisa dijawab — dan pertanyaan apa yang tidak bisa dijawab. Ini adalah konteks paling penting saat membaca artikel apapun.</div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Desain Studi</th>
+          <th>Bisa Menjawab</th>
+          <th>Tidak Bisa Menjawab</th>
+          <th>Kata Kunci di Artikel</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>RCT</strong><br><span class="tag rct">Intervensi</span></td>
+          <td class="td-good">Apakah intervensi ini bekerja? (kausalitas)</td>
+          <td class="td-bad">Outcome jangka panjang (jika follow-up singkat)</td>
+          <td>"randomized", "placebo-controlled", "allocation"</td>
+        </tr>
+        <tr>
+          <td><strong>Kohort Prospektif</strong><br><span class="tag obs">Observasional</span></td>
+          <td class="td-good">Faktor risiko, prognosis, insiden penyakit</td>
+          <td class="td-bad">Kausalitas langsung (confounding)</td>
+          <td>"prospective", "followed for X years", "cohort"</td>
+        </tr>
+        <tr>
+          <td><strong>Kohort Retrospektif</strong><br><span class="tag obs">Observasional</span></td>
+          <td class="td-good">Data real-world, kondisi langka, kejadian masa lalu</td>
+          <td class="td-bad">Kausalitas, data yang tidak tercatat saat kejadian</td>
+          <td>"retrospective", "medical records", "chart review"</td>
+        </tr>
+        <tr>
+          <td><strong>Kasus-Kontrol</strong><br><span class="tag obs">Observasional</span></td>
+          <td class="td-good">Penyakit langka, faktor risiko historis</td>
+          <td class="td-bad">Insidensi, temporal sequence kadang tidak jelas</td>
+          <td>"cases", "controls", "odds ratio", "matched"</td>
+        </tr>
+        <tr>
+          <td><strong>Cross-sectional</strong><br><span class="tag obs">Observasional</span></td>
+          <td class="td-good">Prevalensi, asosiasi pada satu titik waktu</td>
+          <td class="td-bad">Sebab-akibat (tidak ada temporal sequence)</td>
+          <td>"prevalence", "at a single time point", "survey"</td>
+        </tr>
+        <tr>
+          <td><strong>Systematic Review</strong><br><span class="tag sr">Sintesis</span></td>
+          <td class="td-good">Merangkum bukti dari banyak studi</td>
+          <td class="td-bad">Kualitas tidak lebih baik dari studi yang disintesis</td>
+          <td>"systematic search", "inclusion criteria", "PRISMA"</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="block-title">Pertanyaan Kunci untuk Setiap Desain</h3>
+
+  <div class="accordion">
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>🎲 Ketika Membaca RCT</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <ul class="dot">
+          <li><strong>Randomisasi:</strong> Bagaimana caranya? Apakah allocation concealment terjaga? (Peneliti tidak tahu ke kelompok mana pasien berikutnya akan masuk)</li>
+          <li><strong>Blinding:</strong> Double-blind (pasien &amp; pemberi terapi tidak tahu) lebih kuat dari single-blind. Tapi tidak semua studi bisa di-blind secara etis.</li>
+          <li><strong>ITT vs PP:</strong> Intention-to-treat (analisis semua yang diacak) vs Per-protocol (hanya yang patuh). ITT lebih konservatif tapi lebih valid untuk praktik nyata.</li>
+          <li><strong>Populasi generalisasi:</strong> Apakah pasien dalam studi mirip dengan pasienmu? RCT sering mengeksklusi pasien komorbiditas berat.</li>
+          <li><strong>CONSORT diagram:</strong> Berapa yang direkrut, berapa yang diacak, berapa yang lost to follow-up? Loss &gt;20% mengurangi kepercayaan hasil.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>👁️ Ketika Membaca Studi Observasional</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <ul class="dot">
+          <li><strong>Confounding by indication:</strong> Pasien yang diberikan obat A mungkin memang lebih sakit dari yang diberikan obat B. Perbedaan outcome mungkin bukan karena obatnya, tapi karena keparahan awalnya berbeda.</li>
+          <li><strong>Selection bias:</strong> Siapa yang masuk dalam database/kohort ini? Apakah ada yang sistematis tidak masuk?</li>
+          <li><strong>Information bias:</strong> Data retrospektif dari rekam medis sering tidak lengkap. Siapa yang mencatat apa?</li>
+          <li><strong>Metode koreksi:</strong> Apakah mereka menggunakan propensity score, multivariat, atau metode lain untuk mengontrol confounding?</li>
+        </ul>
+        <div class="callout warn" style="margin-top:14px;">
+          <div class="callout-label">⚠️ Ingat Selalu</div>
+          <p>Studi observasional hanya bisa membuktikan <strong>asosiasi</strong>, bukan <strong>kausalitas</strong>. "A berhubungan dengan B" ≠ "A menyebabkan B". Jangan biarkan penulis (atau dirimu sendiri) melompat ke kesimpulan kausal dari data observasional.</p>
+        </div>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>📋 Ketika Membaca Systematic Review</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <ul class="dot">
+          <li><strong>Apakah pencarian komprehensif?</strong> Lebih dari satu database? Termasuk studi yang tidak dipublikasi (untuk mengurangi publication bias)?</li>
+          <li><strong>Heterogenitas:</strong> Apakah studi yang disintesis cukup homogen untuk digabungkan? I² &gt;75% artinya heterogenitas tinggi — hasil meta-analysis perlu dilihat dengan hati-hati.</li>
+          <li><strong>Kualitas studi individual:</strong> Apakah ada penilaian risiko bias (RoB, NOS, GRADE)?</li>
+          <li><strong>Publication bias:</strong> Apakah funnel plot simetris? Studi negatif yang tidak dipublikasi bisa membuat meta-analysis terlalu optimis.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(1)">← Anatomi Artikel</button>
+    <button class="nav-btn next" onclick="goTo(3)">Statistik Dasar →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 3 — STATISTIK DASAR -->
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s3">
+  <div class="section-header">
+    <div class="section-num">// 04</div>
+    <div class="section-title">Statistik Dasar yang Harus Kamu Kenali</div>
+    <div class="section-lead">Tidak perlu jadi ahli statistik. Tapi ada beberapa konsep yang muncul di hampir setiap artikel — dan kalau kamu tidak mengerti artinya, kamu bisa salah menginterpretasi hasil studi.</div>
+  </div>
+
+  <h3 class="block-title">P-Value — Yang Paling Sering Disalahpahami</h3>
+  <div class="prose">P-value adalah <strong>probabilitas mendapatkan hasil setidaknya seekstrem ini, jika hipotesis null benar</strong>. Bukan probabilitas bahwa teorimu benar. Bukan ukuran seberapa penting hasilnya.</div>
+
+  <div class="callout warn">
+    <div class="callout-label">⚠️ Kesalahpahaman Paling Umum</div>
+    <p><strong>p &lt; 0,05 tidak berarti "bermakna secara klinis"</strong> — hanya bermakna secara statistik (tidak mungkin terjadi hanya karena kebetulan). Dengan sampel yang sangat besar, perbedaan yang sangat kecil pun bisa mencapai p &lt; 0,05 meski tidak bermakna klinis sama sekali.</p>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-box">
+      <div class="stat-num">p &lt; 0,05</div>
+      <div class="stat-label">Threshold umum "bermakna statistik" — tapi ini konvensi, bukan hukum alam</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">95% CI</div>
+      <div class="stat-label">Interval kepercayaan — rentang nilai yang kemungkinan besar mencakup nilai populasi sebenarnya</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">Power</div>
+      <div class="stat-label">Kemampuan studi mendeteksi perbedaan yang ada. Studi underpowered: bisa miss efek nyata</div>
+    </div>
+  </div>
+
+  <h3 class="block-title">Confidence Interval — Lebih Informatif dari P-Value</h3>
+  <div class="prose">95% CI memberimu rentang nilai yang kompatibel dengan data. Jika CI tidak melewati nilai null (1 untuk rasio, 0 untuk perbedaan) → bermakna statistik. <strong>Tapi lebih penting: seberapa lebar CI-nya?</strong></div>
+
+  <div class="callout tip">
+    <div class="callout-label">💡 Cara Baca CI</div>
+    <p>HR 0,72 (95% CI 0,58–0,89): "Kami 95% yakin bahwa hazard ratio sebenarnya di populasi ada di antara 0,58 dan 0,89." CI sempit = estimasi presisi. CI sangat lebar (misalnya 0,3–2,1) = studi kecil, estimasi tidak presisi, jangan terlalu percaya angka titiknya.</p>
+  </div>
+
+  <h3 class="block-title">Ukuran Efek — Seberapa Besar Perbedaannya?</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Ukuran</th><th>Artinya</th><th>Ditemukan di</th><th>Cara Baca</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Mean Difference (MD)</strong></td>
+          <td>Perbedaan rata-rata antara dua kelompok</td>
+          <td>Variabel kontinu (tekanan darah, HbA1c)</td>
+          <td>MD -8,5 mmHg: kelompok intervensi rata-rata tekanan darahnya 8,5 mmHg lebih rendah</td>
+        </tr>
+        <tr>
+          <td><strong>Risk Difference (RD) / ARR</strong></td>
+          <td>Perbedaan risiko absolut antar kelompok</td>
+          <td>Outcome biner (meninggal/tidak)</td>
+          <td>RD -0,05: risiko outcome berkurang 5 persen poin secara absolut</td>
+        </tr>
+        <tr>
+          <td><strong>Relative Risk (RR)</strong></td>
+          <td>Rasio risiko kelompok intervensi dibagi kontrol</td>
+          <td>RCT dan kohort prospektif</td>
+          <td>RR 0,72: risiko 28% lebih rendah di kelompok intervensi</td>
+        </tr>
+        <tr>
+          <td><strong>Odds Ratio (OR)</strong></td>
+          <td>Rasio odds outcome</td>
+          <td>Kasus-kontrol, regresi logistik</td>
+          <td>Seperti RR jika outcome jarang (&lt;10%), tapi berbeda jika outcome umum</td>
+        </tr>
+        <tr>
+          <td><strong>Hazard Ratio (HR)</strong></td>
+          <td>Rasio hazard (laju kejadian) sepanjang waktu</td>
+          <td>Analisis survival (time-to-event)</td>
+          <td>HR 0,72: laju kejadian outcome 28% lebih rendah di kelompok intervensi</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(2)">← Desain Studi</button>
+    <button class="nav-btn next" onclick="goTo(4)">Angka-Angka Kunci →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 4 — ANGKA KUNCI -->
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s4">
+  <div class="section-header">
+    <div class="section-num">// 05</div>
+    <div class="section-title">Membaca Angka-Angka Kunci</div>
+    <div class="section-lead">ARR, RRR, NNT, NNH — ini bukan singkatan yang menakutkan. Semuanya bisa diturunkan dari data dasar dan semuanya punya makna klinis yang konkret.</div>
+  </div>
+
+  <h3 class="block-title">Dari Data Mentah ke Angka yang Bermakna</h3>
+  <div class="prose">Bayangkan studi dengan data berikut:<br>— Kelompok Intervensi: 100 pasien, 12 mengalami outcome buruk → risiko 12%<br>— Kelompok Kontrol: 100 pasien, 20 mengalami outcome buruk → risiko 20%</div>
+
+  <div class="formula">
+    <span class="f-label">Absolute Risk Reduction (ARR) = Risk Difference</span>
+    <div class="f-main">ARR = Risiko Kontrol − Risiko Intervensi = 20% − 12% = <strong style="color:#E8C050;">8%</strong></div>
+    <div class="f-note">Perbedaan risiko absolut. Ini yang paling bermakna secara klinis.</div>
+  </div>
+
+  <div class="formula">
+    <span class="f-label">Relative Risk Reduction (RRR)</span>
+    <div class="f-main">RRR = ARR ÷ Risiko Kontrol = 8% ÷ 20% = <strong style="color:#E8C050;">40%</strong></div>
+    <div class="f-note">Terdengar lebih dramatis dari ARR — tapi bisa menyesatkan tanpa konteks baseline risk.</div>
+  </div>
+
+  <div class="formula">
+    <span class="f-label">Number Needed to Treat (NNT)</span>
+    <div class="f-main">NNT = 1 ÷ ARR = 1 ÷ 0,08 = <strong style="color:#E8C050;">12,5 → NNT = 13</strong></div>
+    <div class="f-note">Perlu mengobati 13 pasien agar 1 pasien tambahan terhindar dari outcome buruk. Semakin kecil NNT, semakin efektif intervensi.</div>
+  </div>
+
+  <div class="formula">
+    <span class="f-label">Number Needed to Harm (NNH)</span>
+    <div class="f-main">NNH = 1 ÷ ARI (Absolute Risk Increase untuk efek samping)</div>
+    <div class="f-note">Berapa pasien perlu diberikan intervensi sampai 1 pasien mengalami efek samping. Bandingkan NNT vs NNH untuk menilai keseimbangan manfaat-risiko.</div>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-label">📌 Contoh Real</div>
+    <p>Statin untuk pencegahan primer: NNT ~100 selama 5 tahun untuk mencegah 1 kejadian kardiovaskular. Ini berarti dari 100 pasien yang minum statin 5 tahun, rata-rata hanya 1 yang terhindar dari serangan jantung. Berguna? Ya — tapi harus diseimbangkan dengan risiko efek samping dan beban pengobatan.</p>
+  </div>
+
+  <h3 class="block-title">Angka yang Sama, Makna yang Berbeda</h3>
+  <div class="prose">Perhatikan dua skenario berikut — keduanya punya RRR 50%, tapi maknanya sangat berbeda:</div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Skenario</th><th>Risiko Kontrol</th><th>Risiko Intervensi</th><th>ARR</th><th>RRR</th><th>NNT</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Penyakit umum</td>
+          <td>40%</td>
+          <td>20%</td>
+          <td class="td-good">20%</td>
+          <td>50%</td>
+          <td class="td-good">5</td>
+        </tr>
+        <tr>
+          <td>Penyakit langka</td>
+          <td>0,4%</td>
+          <td>0,2%</td>
+          <td class="td-bad">0,2%</td>
+          <td>50%</td>
+          <td class="td-bad">500</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-label">⚠️ Waspada RRR Tanpa ARR</div>
+    <p>RRR 50% selalu terdengar impresif. Tapi jika baseline risknya sangat rendah, ARR-nya kecil dan NNT-nya besar — artinya kamu perlu mengobati ratusan pasien untuk mencegah 1 kejadian. Selalu minta (atau hitung sendiri) ARR dan NNT ketika menilai manfaat klinik suatu intervensi.</p>
+  </div>
+
+  <h3 class="block-title">Sensitivity, Specificity, dan Nilai Prediktif</h3>
+  <div class="prose">Untuk studi diagnostik, kamu akan menemukan angka-angka ini:</div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>Ukuran</th><th>Artinya</th><th>Pertanyaan yang Dijawab</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Sensitivitas</strong></td>
+          <td>% yang benar-benar sakit yang terdeteksi positif</td>
+          <td>Seberapa baik tes mendeteksi yang benar-benar sakit? (SnNout: sensitif tinggi, negatif = singkirkan)</td>
+        </tr>
+        <tr>
+          <td><strong>Spesifisitas</strong></td>
+          <td>% yang benar-benar sehat yang terdeteksi negatif</td>
+          <td>Seberapa baik tes mengidentifikasi yang benar-benar sehat? (SpPin: spesifik tinggi, positif = konfirmasi)</td>
+        </tr>
+        <tr>
+          <td><strong>PPV</strong></td>
+          <td>Jika tes positif, berapa probabilitas benar-benar sakit?</td>
+          <td>Bergantung pada prevalensi penyakit di populasimu</td>
+        </tr>
+        <tr>
+          <td><strong>NPV</strong></td>
+          <td>Jika tes negatif, berapa probabilitas benar-benar sehat?</td>
+          <td>Bergantung pada prevalensi penyakit di populasimu</td>
+        </tr>
+        <tr>
+          <td><strong>LR+</strong></td>
+          <td>Likelihood Ratio Positif — seberapa banyak tes positif meningkatkan probabilitas penyakit</td>
+          <td>LR+ &gt;10: perubahan probabilitas bermakna. LR− &lt;0,1: sangat bagus untuk menyingkirkan diagnosis</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(3)">← Statistik Dasar</button>
+    <button class="nav-btn next" onclick="goTo(5)">Menyimpulkan →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 5 — MENYIMPULKAN -->
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s5">
+  <div class="section-header">
+    <div class="section-num">// 06</div>
+    <div class="section-title">Cara Menyimpulkan dengan Tepat</div>
+    <div class="section-lead">Menarik kesimpulan dari artikel ilmiah adalah seni tersendiri. Banyak yang terlalu cepat percaya — atau terlalu skeptis. Yang kita tuju adalah di tengah: kritis tapi konstruktif.</div>
+  </div>
+
+  <h3 class="block-title">Tiga Pertanyaan Sebelum Menerima Kesimpulan</h3>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">Apakah hasilnya valid? (Internal Validity)</div>
+        <div class="step-body">Apakah metodologi cukup kuat untuk menghasilkan kesimpulan yang dipercaya? Desain yang tepat, eksekusi yang baik, analisis yang sesuai?</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">Seberapa besar efeknya? (Clinical Significance)</div>
+        <div class="step-body">ARR berapa? NNT berapa? Apakah perbedaan ini cukup besar untuk mengubah praktik? Bermakna statistik ≠ bermakna klinis.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">Apakah berlaku untuk pasienku? (External Validity)</div>
+        <div class="step-body">Apakah karakteristik populasi studi mirip dengan pasienmu? Setting yang sama? Komorbiditas yang serupa? Jika populasinya sangat selektif, generalisasi perlu hati-hati.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="block-title">Bias yang Paling Sering Mempengaruhi Kesimpulan</h3>
+
+  <div class="accordion">
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>📰 Publication Bias — Yang Negatif Sering Tidak Terbit</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Studi dengan hasil positif jauh lebih mudah dipublikasikan daripada studi negatif. Artinya: literatur yang kamu baca mungkin tidak mewakili keseluruhan bukti. Meta-analysis yang tidak mencakup studi tak terpublikasi cenderung overestimate efek.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>🎯 Outcome Switching — Ganti Outcome Kalau Hasilnya Tidak Bagus</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Peneliti mendaftarkan studi dengan outcome primer A, tapi hasilnya tidak signifikan. Lalu mereka melaporkan outcome B (yang hasilnya signifikan) sebagai "temuan utama". Cek: apakah studi terdaftar di ClinicalTrials.gov? Apakah outcome yang dilaporkan konsisten dengan yang didaftarkan?</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>💰 Conflict of Interest — Bukan Berarti Salah, Tapi Harus Kritis</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Studi yang disponsori industri secara rata-rata lebih sering menghasilkan temuan yang menguntungkan sponsor dibanding studi independen. Periksa bagian "Funding" dan "Conflict of Interest". Bukan berarti studi tidak valid — tapi tambahkan level skeptisisme.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>🔢 Multiple Testing — Semakin Banyak Tes, Semakin Besar Kemungkinan Positif Palsu</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Jika kamu tes 20 outcome dengan p &lt; 0,05 sebagai threshold, secara statistik 1 dari 20 akan positif hanya karena kebetulan. Studi dengan banyak subgroup analysis dan banyak outcome harus dilihat dengan sangat hati-hati — terutama jika tidak ada pre-specified primary outcome yang jelas.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="block-title">Framework PICO — Untuk Menilai Relevansi ke Praktikmu</h3>
+  <div class="callout tip">
+    <div class="callout-label">📋 PICO</div>
+    <p><strong>P</strong>opulation — Apakah populasi studi mirip dengan pasienku?<br>
+    <strong>I</strong>ntervention — Apakah intervensinya sama persis dengan yang bisa aku lakukan?<br>
+    <strong>C</strong>omparison — Apa pembandingnya? Apakah ini pembanding yang relevan di settingku?<br>
+    <strong>O</strong>utcome — Apakah outcome yang diukur adalah yang paling penting untuk pasienku?</p>
+  </div>
+
+  <div class="prose">Jika salah satu dari P-I-C-O berbeda signifikan dari situasimu, kesimpulan dari studi tidak bisa langsung diaplikasikan begitu saja. Perlu adaptasi dan judgment klinis.</div>
+
+  <div class="callout gold">
+    <div class="callout-label">🎯 Prinsip Akhir</div>
+    <p>Tidak ada satu studi yang menjawab segalanya. Satu studi membuat hipotesis lebih kuat atau lebih lemah — bukan membuktikan atau membantah secara definitif. Keputusan klinis yang baik menggabungkan <strong>bukti terbaik yang tersedia + expertise klinis + nilai dan konteks pasien</strong>.</p>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(4)">← Angka-Angka Kunci</button>
+    <button class="nav-btn next" onclick="goTo(6)">Checklist →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SECTION 6 — CHECKLIST -->
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s6">
+  <div class="section-header">
+    <div class="section-num">// 07</div>
+    <div class="section-title">Checklist Baca Artikel — Interaktif</div>
+    <div class="section-lead">Centang setiap poin saat kamu membaca artikel. Bisa diulang untuk setiap artikel baru. Semakin banyak yang bisa kamu centang, semakin kuat artikelnya.</div>
+  </div>
+
+  <h3 class="block-title">Checklist Umum (Semua Desain Studi)</h3>
+  <ul class="checklist" id="chk1">
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span><strong>Pertanyaan penelitian jelas</strong> — bisa diidentifikasi dari introduksi atau abstrak</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span><strong>Desain studi sesuai</strong> dengan pertanyaan penelitian yang diajukan</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span><strong>Populasi studi terdefinisi</strong> dengan jelas (kriteria inklusi dan eksklusi)</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span><strong>Outcome primer jelas</strong> dan didefinisikan sebelum pengumpulan data</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span><strong>Semua outcome yang didaftarkan dilaporkan</strong> — tidak ada yang hilang tanpa keterangan</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span><strong>Ukuran sampel memadai</strong> — ada perhitungan sample size atau justifikasi</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span><strong>Analisis statistik sesuai</strong> dengan distribusi data dan desain studi</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span><strong>Limitasi diakui</strong> dengan jujur di bagian Discussion</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span><strong>Conflict of interest</strong> didisklosur</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span><strong>Kesimpulan proporsional</strong> dengan kekuatan desain studi</span></li>
+  </ul>
+
+  <h3 class="block-title">Tambahan untuk RCT</h3>
+  <ul class="checklist" id="chk2">
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span><strong>Randomisasi yang benar</strong> dengan allocation concealment terjaga</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span><strong>Blinding sesuai</strong> (minimal outcome assessor)</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span><strong>ITT analysis</strong> dilakukan sebagai analisis utama</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span><strong>CONSORT diagram</strong> tersedia — menunjukkan alur dan angka di setiap tahap</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span><strong>Lost to follow-up &lt; 20%</strong> dan distribusinya dijelaskan</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span><strong>Baseline comparable</strong> — Tabel 1 menunjukkan kedua kelompok sebanding</span></li>
+  </ul>
+
+  <h3 class="block-title">Tambahan untuk Studi Observasional</h3>
+  <ul class="checklist" id="chk3">
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span><strong>Confounding dikenali dan dikontrol</strong> dengan metode yang tepat (multivariat, propensity score)</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span><strong>Temporal sequence jelas</strong> — paparan terjadi sebelum outcome</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span><strong>Kesimpulan tidak mengklaim kausalitas</strong> dari data observasional</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span><strong>Selection bias</strong> dibahas dan diminimalkan</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span><strong>Missing data</strong> ditangani dan dilaporkan</span></li>
+  </ul>
+
+  <div class="callout tip">
+    <div class="callout-label">💡 Cara Pakai</div>
+    <p>Centang checklist ini setiap kali kamu membaca artikel baru. Poin yang tidak bisa kamu centang bukan berarti artikel otomatis buruk — tapi artinya kamu perlu lebih kritis menerima kesimpulannya, dan sertakan kaveats itu saat kamu menggunakannya sebagai referensi.</p>
+  </div>
+
+  <div class="callout gold" style="margin-top:32px;">
+    <div class="callout-label">📘 Selanjutnya</div>
+    <p>Panduan ini adalah <strong>Bagian 1 — Umum</strong>. Bagian 2 akan membahas critical appraisal spesifik untuk studi farmasi klinis dan kardiologi: menilai studi PK/PD, interpretasi data farmakoepidemiologi, membaca studi outcome kardiovaskular, dan menyikapi guideline yang bertentangan.</p>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(5)">← Menyimpulkan</button>
+    <button class="nav-btn next" disabled>Selesai ✓</button>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+let current = 0;
+const total = 7;
+
+function goTo(idx){
+  document.querySelectorAll('.section').forEach((s,i)=>{
+    s.classList.toggle('active', i===idx);
+  });
+  document.querySelectorAll('.prog-btn').forEach((b,i)=>{
+    b.classList.toggle('active', i===idx);
+  });
+  current = idx;
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function toggleAcc(head){
+  const body = head.nextElementSibling;
+  const isOpen = head.classList.contains('open');
+  // close all in same section
+  head.closest('.section').querySelectorAll('.acc-head').forEach(h=>{
+    h.classList.remove('open');
+    h.nextElementSibling.classList.remove('open');
+  });
+  if(!isOpen){
+    head.classList.add('open');
+    body.classList.add('open');
+  }
+}
+
+function toggleChk(box){
+  box.classList.toggle('checked');
+}
+</script>
+
+</body>
+</html>

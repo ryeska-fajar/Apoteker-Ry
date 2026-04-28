@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Referensi Obat Vasoaktif ICU</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg2: #161b22;
+    --bg3: #21262d;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #e6edf3;
+    --text2: #8b949e;
+    --text3: #6e7681;
+    --blue: #58a6ff;
+    --blue-bg: rgba(88,166,255,0.08);
+    --amber: #e3b341;
+    --amber-bg: rgba(227,179,65,0.08);
+    --red: #f85149;
+    --red-bg: rgba(248,81,73,0.08);
+    --green: #3fb950;
+    --green-bg: rgba(63,185,80,0.08);
+    --purple: #a78bfa;
+    --purple-bg: rgba(167,139,250,0.08);
+    --teal: #39d353;
+    --pink: #f778ba;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  .header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 1.25rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-left { display: flex; align-items: center; gap: 12px; }
+
+  .logo-dot {
+    width: 10px; height: 10px;
+    background: var(--red);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .header h1 {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+
+  .header-badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 3px 8px;
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    color: var(--text2);
+  }
+
+  .layout { display: flex; height: calc(100vh - 57px); }
+
+  .sidebar {
+    width: 210px;
+    flex-shrink: 0;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    padding: 1.5rem 0;
+    overflow-y: auto;
+  }
+
+  .sidebar-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0 1.25rem;
+    margin-bottom: 8px;
+    margin-top: 1.5rem;
+  }
+
+  .sidebar-label:first-child { margin-top: 0; }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 1.25rem;
+    font-size: 13px;
+    color: var(--text2);
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+  }
+
+  .nav-item:hover { color: var(--text); background: var(--bg3); }
+
+  .nav-item.active {
+    color: var(--blue);
+    border-left-color: var(--blue);
+    background: var(--blue-bg);
+  }
+
+  .nav-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+  .main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+    max-width: 900px;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .section-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-header h2 {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .section-header p { font-size: 13px; color: var(--text2); }
+
+  .filter-bar { display: flex; gap: 6px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+
+  .filter-pill {
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border2);
+    background: transparent;
+    font-size: 12px;
+    font-family: var(--sans);
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .filter-pill:hover { color: var(--text); border-color: rgba(255,255,255,0.25); }
+
+  .filter-pill.active {
+    background: var(--bg3);
+    color: var(--text);
+    border-color: rgba(255,255,255,0.3);
+  }
+
+  .drug-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s;
+  }
+
+  .drug-card:hover { border-color: var(--border2); }
+
+  .drug-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1rem; }
+
+  .drug-name {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 5px;
+  }
+
+  .drug-indication {
+    font-size: 12px;
+    color: var(--text2);
+    font-style: italic;
+  }
+
+  .class-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .badge-inotrope { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(88,166,255,0.2); }
+  .badge-vasopressor { background: var(--amber-bg); color: var(--amber); border: 1px solid rgba(227,179,65,0.2); }
+  .badge-both { background: var(--purple-bg); color: var(--purple); border: 1px solid rgba(167,139,250,0.2); }
+
+  .receptor-row { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 1rem; }
+
+  .rec-chip {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    border: 1px solid;
+  }
+
+  .rc-alpha { color: #ff7b72; background: rgba(255,123,114,0.08); border-color: rgba(255,123,114,0.2); }
+  .rc-beta1 { color: var(--blue); background: var(--blue-bg); border-color: rgba(88,166,255,0.2); }
+  .rc-beta2 { color: var(--green); background: var(--green-bg); border-color: rgba(63,185,80,0.2); }
+  .rc-dopa { color: var(--purple); background: var(--purple-bg); border-color: rgba(167,139,250,0.2); }
+  .rc-v1 { color: var(--pink); background: rgba(247,120,186,0.08); border-color: rgba(247,120,186,0.2); }
+  .rc-neutral { color: var(--text2); background: var(--bg3); border-color: var(--border2); }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .stat-box {
+    background: var(--bg3);
+    border-radius: 6px;
+    padding: 8px 10px;
+  }
+
+  .stat-label { font-size: 10px; color: var(--text3); margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .stat-value { font-size: 12px; font-family: var(--mono); color: var(--text); font-weight: 500; }
+
+  .effects { margin-bottom: 1rem; }
+
+  .effect-row { margin-bottom: 6px; }
+
+  .effect-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text2);
+    margin-bottom: 3px;
+  }
+
+  .effect-pct { font-family: var(--mono); font-weight: 500; }
+
+  .bar-track {
+    height: 4px;
+    background: var(--bg3);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .bar-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
+
+  .se-section { margin-bottom: 1rem; }
+  .se-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 5px; }
+  .se-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .se-tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    background: var(--red-bg);
+    color: #ff7b72;
+    border-radius: 3px;
+    border: 1px solid rgba(248,81,73,0.15);
+  }
+
+  .drug-note {
+    font-size: 12.5px;
+    color: var(--text2);
+    line-height: 1.7;
+    padding: 10px 14px;
+    background: var(--bg3);
+    border-radius: 6px;
+    border-left: 2px solid var(--border2);
+  }
+
+  .rec-group {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .rec-group-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 6px; }
+
+  .rec-group-name {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+
+  .rec-effect { font-size: 12px; color: var(--text2); }
+
+  .rec-drugs-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+
+  .rec-drug-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+
+  .rec-drug-chip {
+    font-size: 12px;
+    padding: 3px 10px;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    color: var(--text2);
+  }
+
+  .scenario-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .scenario-card:hover { border-color: var(--border2); }
+  .scenario-card.open { border-color: var(--border2); }
+
+  .scenario-top { display: flex; justify-content: space-between; align-items: flex-start; }
+
+  .scenario-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .scenario-sub { font-size: 12px; color: var(--text2); }
+  .toggle-arrow { font-family: var(--mono); color: var(--text3); font-size: 12px; padding-top: 2px; }
+
+  .scenario-detail { display: none; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .scenario-card.open .scenario-detail { display: block; }
+
+  .detail-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+
+  .first-line-text { font-size: 13px; font-weight: 500; color: var(--blue); margin-bottom: 1rem; font-family: var(--mono); }
+
+  .seq-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
+
+  .seq-pill {
+    font-size: 12px;
+    padding: 4px 10px;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: var(--mono);
+  }
+
+  .seq-arrow { color: var(--text3); font-size: 12px; }
+
+  .rationale-box {
+    font-size: 12.5px;
+    color: var(--text2);
+    line-height: 1.7;
+    padding: 10px 14px;
+    background: var(--bg3);
+    border-radius: 6px;
+    border-left: 2px solid var(--border2);
+    margin-bottom: 8px;
+  }
+
+  .avoid-line { font-size: 12px; color: var(--text2); }
+  .avoid-label { color: var(--red); font-weight: 500; }
+
+  .monitor-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .monitor-card-title {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .monitor-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .monitor-row:last-child { border-bottom: none; }
+
+  .monitor-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+
+  .monitor-param { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 2px; font-family: var(--mono); }
+  .monitor-target { font-size: 12px; color: var(--text2); line-height: 1.5; }
+
+  .titration-item { margin-bottom: 10px; font-size: 13px; color: var(--text2); line-height: 1.6; }
+  .titration-item strong { color: var(--text); font-weight: 500; }
+
+  .interaction-item { margin-bottom: 10px; font-size: 13px; color: var(--text2); line-height: 1.6; }
+  .interaction-item strong { color: var(--amber); font-weight: 500; }
+
+  .footer-note {
+    font-size: 11px;
+    color: var(--text3);
+    font-style: italic;
+    margin-top: 2rem;
+    padding: 10px 14px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+
+  @media (max-width: 700px) {
+    .sidebar { width: 170px; }
+    .main { padding: 1.25rem; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .header h1 { font-size: 12px; }
+  }
+
+  @media (max-width: 500px) {
+    .layout { flex-direction: column; height: auto; }
+    .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); padding: 0.75rem 0; display: flex; flex-direction: row; overflow-x: auto; }
+    .sidebar-label { display: none; }
+    .nav-item { white-space: nowrap; border-left: none; border-bottom: 2px solid transparent; padding: 8px 14px; }
+    .nav-item.active { border-left-color: transparent; border-bottom-color: var(--blue); }
+    .main { height: auto; overflow-y: visible; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo-dot"></div>
+    <h1>ICU // Referensi Obat Vasoaktif</h1>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
+    <span style="font-family:var(--mono);font-size:13px;font-weight:500;color:var(--text)">Apoteker Ry</span>
+    <span style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:0.05em">Farmasi Klinis</span>
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-label">Ikhtisar</div>
+    <div class="nav-item active" onclick="showSection('drugs', this)">
+      <div class="nav-dot" style="background:#58a6ff"></div>
+      Profil Obat
+    </div>
+    <div class="nav-item" onclick="showSection('receptors', this)">
+      <div class="nav-dot" style="background:#a78bfa"></div>
+      Peta Reseptor
+    </div>
+    <div class="sidebar-label">Klinis</div>
+    <div class="nav-item" onclick="showSection('scenarios', this)">
+      <div class="nav-dot" style="background:#e3b341"></div>
+      Skenario Syok
+    </div>
+    <div class="nav-item" onclick="showSection('monitoring', this)">
+      <div class="nav-dot" style="background:#3fb950"></div>
+      Pemantauan & Titrasi
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <!-- PROFIL OBAT -->
+    <div id="drugs" class="section active">
+      <div class="section-header">
+        <h2>Profil Obat</h2>
+        <p>Farmakologi reseptor, dosis, efek hemodinamik, dan catatan klinis untuk agen vasoaktif utama.</p>
+      </div>
+      <div class="filter-bar">
+        <button class="filter-pill active" onclick="filterDrugs('all',this)">Semua Agen</button>
+        <button class="filter-pill" onclick="filterDrugs('inotrope',this)">Inotropik</button>
+        <button class="filter-pill" onclick="filterDrugs('vasopressor',this)">Vasopressor</button>
+        <button class="filter-pill" onclick="filterDrugs('both',this)">Keduanya</button>
+      </div>
+      <div id="drug-list"></div>
+    </div>
+
+    <!-- PETA RESEPTOR -->
+    <div id="receptors" class="section">
+      <div class="section-header">
+        <h2>Peta Reseptor</h2>
+        <p>Dikelompokkan berdasarkan jenis reseptor — obat mana yang berikatan di mana, dan efek fisiologis yang ditimbulkan.</p>
+      </div>
+      <div id="receptor-map"></div>
+    </div>
+
+    <!-- SKENARIO SYOK -->
+    <div id="scenarios" class="section">
+      <div class="section-header">
+        <h2>Skenario Syok</h2>
+        <p>Ketuk skenario untuk melihat rasional pemilihan obat dan urutan eskalasi terapi.</p>
+      </div>
+      <div id="scenario-list"></div>
+    </div>
+
+    <!-- PEMANTAUAN -->
+    <div id="monitoring" class="section">
+      <div class="section-header">
+        <h2>Pemantauan & Titrasi</h2>
+        <p>Target hemodinamik, prinsip penyapihan, dan interaksi obat penting bagi apoteker klinis.</p>
+      </div>
+      <div id="monitoring-content"></div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const drugs = [
+  {
+    name: "Norepinefrin",
+    altName: "Noradrenalin",
+    class: "vasopressor",
+    classLabel: "Vasopressor",
+    receptors: [{ label: "α1 (dominan)", cls: "rc-alpha" }, { label: "β1 (sedang)", cls: "rc-beta1" }],
+    dose: "0,01–3 mcg/kg/menit",
+    onset: "1–2 menit",
+    halflife: "2–3 menit",
+    route: "IV Sentral",
+    effects: [
+      { label: "Inotropik", val: 30, color: "#58a6ff" },
+      { label: "Kronotropik", val: 10, color: "#e3b341" },
+      { label: "SVR ↑", val: 90, color: "#f85149" },
+    ],
+    sideEffects: ["Iskemia perifer", "Bradikardia refleks", "Hipertensi", "Nekrosis ekstravasasi"],
+    notes: "Vasopressor lini pertama pada syok septik (panduan SSC). Meningkatkan SVR lebih besar daripada CO. Bradikardia refleks dapat bermanfaat pada pasien dengan takikardia. Wajib jalur sentral — ekstravasasi menyebabkan nekrosis jaringan.",
+    indication: "Syok septik, syok vasodilatatif"
+  },
+  {
+    name: "Vasopresin",
+    altName: "ADH / AVP",
+    class: "vasopressor",
+    classLabel: "Vasopressor",
+    receptors: [{ label: "V1 (vaskular)", cls: "rc-v1" }, { label: "V2 (renal)", cls: "rc-neutral" }],
+    dose: "Tetap 0,03–0,04 U/menit",
+    onset: "1–2 menit",
+    halflife: "10–20 menit",
+    route: "IV Sentral",
+    effects: [
+      { label: "Inotropik", val: 5, color: "#58a6ff" },
+      { label: "Kronotropik", val: 0, color: "#e3b341" },
+      { label: "SVR ↑", val: 75, color: "#f85149" },
+    ],
+    sideEffects: ["Iskemia mesenterika", "Hiponatremia", "Vasokonstriksi koroner", "Nekrosis kulit"],
+    notes: "Non-katekolamin — mempertahankan reseptor adrenergik yang sudah tersensitisasi akibat syok berkepanjangan. TIDAK dititrasi — selalu dosis tetap (0,03 U/menit sesuai SSC). Ditambahkan sebagai lini ke-2 pada NE >0,25 mcg/kg/menit. Sangat efektif pada vasoplegia pasca-bypass.",
+    indication: "Adjuvan syok septik, vasoplegia pasca-bedah jantung"
+  },
+  {
+    name: "Epinefrin",
+    altName: "Adrenalin",
+    class: "both",
+    classLabel: "Inotropik + Vasopressor",
+    receptors: [{ label: "α1", cls: "rc-alpha" }, { label: "β1", cls: "rc-beta1" }, { label: "β2 (bergantung dosis)", cls: "rc-beta2" }],
+    dose: "0,01–1 mcg/kg/menit IV; 0,3–0,5 mg IM (anafilaksis)",
+    onset: "1–2 menit",
+    halflife: "2–3 menit",
+    route: "IV Sentral (infus); IM paha (anafilaksis)",
+    effects: [
+      { label: "Inotropik", val: 90, color: "#58a6ff" },
+      { label: "Kronotropik", val: 85, color: "#e3b341" },
+      { label: "SVR ↑", val: 70, color: "#f85149" },
+    ],
+    sideEffects: ["Takiaritmia", "Asidosis laktat tipe B", "Iskemia miokard", "Hiperglikemia", "Hipokalemia"],
+    notes: "Dosis rendah → β2 dominan (vasodilatasi + bronkodilatasi). Dosis tinggi → α1 dominan (vasokonstriksi). Menyebabkan asidosis laktat non-hipoksik melalui stimulasi β2 — JANGAN gunakan klirens laktat sebagai target resusitasi pada pasien yang mendapat epinefrin. Lini pertama IM pada anafilaksis.",
+    indication: "Anafilaksis (lini pertama), henti jantung, syok kardiogenik refrakter"
+  },
+  {
+    name: "Dopamin",
+    altName: "",
+    class: "both",
+    classLabel: "Inotropik + Vasopressor",
+    receptors: [{ label: "D1/D2 (dosis rendah)", cls: "rc-dopa" }, { label: "β1 (dosis sedang)", cls: "rc-beta1" }, { label: "α1 (dosis tinggi)", cls: "rc-alpha" }],
+    dose: "1–20 mcg/kg/menit",
+    onset: "2–4 menit",
+    halflife: "2 menit",
+    route: "IV Sentral (diutamakan)",
+    effects: [
+      { label: "Inotropik", val: 70, color: "#58a6ff" },
+      { label: "Kronotropik", val: 75, color: "#e3b341" },
+      { label: "SVR ↑", val: 60, color: "#f85149" },
+    ],
+    sideEffects: ["Takiaritmia (lebih sering dari NE)", "Mual/muntah", "Prolaktin↑ (imunosupresi)", "Ekstravasasi"],
+    notes: "Aktivitas reseptor bergantung dosis: 1–3 mcg/kg/menit (dopaminergik → vasodilatasi renal/mesenterika) → 3–10 (β1 dominan) → >10 (α1 dominan). Dopamin dosis ginjal adalah mitos — tidak ada bukti perlindungan ginjal. Lebih banyak aritmia dibanding NE dalam studi SOAP-II. Sudah tidak digunakan sebagai vasopressor lini pertama.",
+    indication: "Syok kardiogenik (alternatif), bradikardia simtomatik"
+  },
+  {
+    name: "Dobutamin",
+    altName: "",
+    class: "inotrope",
+    classLabel: "Inotropik",
+    receptors: [{ label: "β1 (dominan)", cls: "rc-beta1" }, { label: "β2 (sedang)", cls: "rc-beta2" }, { label: "α1 (lemah)", cls: "rc-alpha" }],
+    dose: "2–20 mcg/kg/menit",
+    onset: "1–2 menit",
+    halflife: "2 menit",
+    route: "IV Perifer atau Sentral",
+    effects: [
+      { label: "Inotropik", val: 85, color: "#58a6ff" },
+      { label: "Kronotropik", val: 60, color: "#e3b341" },
+      { label: "SVR ↓", val: -30, color: "#3fb950" },
+    ],
+    sideEffects: ["Takiaritmia", "Hipotensi (↓SVR)", "Iskemia miokard", "Takifilaksis (>72 jam)"],
+    notes: "Inotropik positif + vasodilatasi ringan — efek netto: ↑CO, ↓SVR. Membutuhkan tekanan pengisian yang adekuat. Sering menyebabkan hipotensi — vasopressor bersamaan sering diperlukan pada pasien syok. BUKAN untuk hipotensi terisolasi tanpa konfirmasi CO rendah. Takifilaksis terjadi setelah 72 jam infus kontinu.",
+    indication: "Syok kardiogenik, gagal jantung akut dekompensasi dengan CO rendah"
+  },
+  {
+    name: "Milrinon",
+    altName: "Inhibitor PDE-3",
+    class: "inotrope",
+    classLabel: "Inotropik",
+    receptors: [{ label: "Inhibitor PDE-3 (↑cAMP)", cls: "rc-neutral" }, { label: "Independen-reseptor", cls: "rc-neutral" }],
+    dose: "0,125–0,75 mcg/kg/menit (dosis muatan sering dihilangkan pada pasien hipotensi)",
+    onset: "5–15 menit",
+    halflife: "2–3 jam (dieliminasi ginjal)",
+    route: "IV Sentral (diutamakan)",
+    effects: [
+      { label: "Inotropik", val: 80, color: "#58a6ff" },
+      { label: "Kronotropik", val: 30, color: "#e3b341" },
+      { label: "SVR ↓", val: -60, color: "#3fb950" },
+    ],
+    sideEffects: ["Hipotensi (sering)", "Takiaritmia", "Akumulasi obat pada AKI", "Trombositopenia"],
+    notes: "Inodilator yang melewati reseptor β — diutamakan pada pasien pengguna beta-bloker kronik (mekanisme independen-reseptor). Waktu paruh panjang menyulitkan titrasi; efek hemodinamik bertahan berjam-jam setelah dihentikan. Dieliminasi ginjal — kurangi dosis ~50% jika GFR <50 mL/menit. Milrinon + furosemid IV: risiko presipitasi — bilas selang IV sebelum pemberian. Hilangkan dosis muatan pada pasien tidak stabil secara hemodinamik.",
+    indication: "CO rendah pasca-bedah jantung, gagal jantung akut pada pengguna beta-bloker kronik"
+  },
+  {
+    name: "Fenilefrin",
+    altName: "Agonis α1 murni",
+    class: "vasopressor",
+    classLabel: "Vasopressor",
+    receptors: [{ label: "α1 (agonis murni)", cls: "rc-alpha" }],
+    dose: "0,5–6 mcg/kg/menit",
+    onset: "1–2 menit",
+    halflife: "5 menit",
+    route: "IV Perifer atau Sentral",
+    effects: [
+      { label: "Inotropik", val: 0, color: "#58a6ff" },
+      { label: "Kronotropik", val: -10, color: "#e3b341" },
+      { label: "SVR ↑", val: 85, color: "#f85149" },
+    ],
+    sideEffects: ["Bradikardia refleks", "Penurunan CO (tanpa inotropik)", "Iskemia perifer"],
+    notes: "α1 murni — meningkatkan MAP melalui SVR saja TANPA efek inotropik langsung. Bradikardia refleks menurunkan CO. Berguna khususnya ketika takikardia tidak diinginkan (mis. AF dengan laju ventrikel cepat, HOCM). Dapat diberikan perifer jangka pendek. Hindari pada syok kardiogenik — peningkatan afterload memperburuk CO.",
+    indication: "Hipotensi vasodilatatif saat takikardia tidak diinginkan, hipotensi intraoperatif"
+  },
+  {
+    name: "Levosimendan",
+    altName: "Sensitizer Ca²⁺",
+    class: "inotrope",
+    classLabel: "Inotropik",
+    receptors: [{ label: "Sensitizer troponin C", cls: "rc-neutral" }, { label: "Pembuka kanal K-ATP", cls: "rc-neutral" }],
+    dose: "Muatan 6–12 mcg/kg selama 10 menit → 0,05–0,2 mcg/kg/menit × 24 jam",
+    onset: "~30 menit",
+    halflife: "1 jam (metabolit aktif OR-1896: 70–80 jam)",
+    route: "IV Sentral",
+    effects: [
+      { label: "Inotropik", val: 75, color: "#58a6ff" },
+      { label: "Kronotropik", val: 25, color: "#e3b341" },
+      { label: "SVR ↓", val: -55, color: "#3fb950" },
+    ],
+    sideEffects: ["Hipotensi", "Takikardia", "Hipokalemia", "Sakit kepala"],
+    notes: "Sensitizer kalsium — meningkatkan kontraktilitas TANPA meningkatkan kebutuhan oksigen miokard (berbeda dengan katekolamin). Metabolit aktif OR-1896 (t½ 70–80 jam) memperpanjang efek hemodinamik 7–10 hari setelah infus selesai — antisipasi hipotensi tertunda. Tidak memperburuk iskemia miokard. Belum tersedia di beberapa negara. Hilangkan dosis muatan jika MAP <90 mmHg.",
+    indication: "Gagal jantung akut dekompensasi, CO rendah pasca-bedah jantung (jika tersedia)"
+  }
+];
+
+const scenarios = [
+  {
+    title: "Syok Septik",
+    sub: "Vasodilatatif, CO biasanya tinggi, SVR rendah, distributif",
+    dotColor: "#e3b341",
+    firstLine: "Norepinefrin — lini pertama sesuai panduan Surviving Sepsis Campaign",
+    sequence: ["Norepinefrin", "→", "Tambah Vasopresin (NE >0,25 mcg/kg/menit)", "→", "Tambah Epinefrin (refrakter)"],
+    rationale: "NE meningkatkan SVR secara selektif tanpa kronotropi berlebihan. Vasopresin mempertahankan reseptor katekolamin (yang sudah menurun regulasinya pada syok berkepanjangan) dan memiliki efek hemat-kortikosteroid / hemat-katekolamin. Dopamin lebih banyak menyebabkan aritmia tanpa manfaat outcome (SOAP-II). Dobutamin ditambahkan hanya jika ada komponen disfungsi jantung bersamaan (ScvO₂ <70% meski preload adekuat). Hidrokortison untuk syok refrakter vasopressor atau insufisiensi adrenal.",
+    avoid: "Dopamin sebagai lini pertama; dobutamin pada syok vasodilatatif murni tanpa disfungsi jantung"
+  },
+  {
+    title: "Syok Kardiogenik",
+    sub: "CO rendah, SVR biasanya meningkat, ± kongesti pulmonal",
+    dotColor: "#58a6ff",
+    firstLine: "Norepinefrin (mempertahankan MAP) + Dobutamin (↑CO) — atau Epinefrin tunggal jika deteriorasi cepat",
+    sequence: ["NE (pertahankan MAP ≥65)", "→", "Dobutamin (↑CO)", "→", "Milrinon (pasien pengguna β-bloker)", "→", "MCS jika refrakter"],
+    rationale: "Target MAP ≥65 mmHg dengan NE untuk mempertahankan perfusi koroner sebelum menambahkan inotropik. Milrinon lebih dipilih daripada dobutamin jika pasien menggunakan beta-bloker kronik (mekanisme independen-reseptor). Levosimendan merupakan pilihan di tempat yang tersedia — tidak memperburuk iskemia. Epinefrin tunggal bersifat pragmatis namun perhatikan asidosis laktat yang mengaburkan endpoint resusitasi. Pertimbangkan dukungan sirkulasi mekanis (IABP, Impella) jika farmakoterapi tidak cukup.",
+    avoid: "Fenilefrin (meningkatkan afterload → memperburuk CO); dobutamin tunggal tanpa MAP yang adekuat"
+  },
+  {
+    title: "Vasoplegia Pasca-Bedah Jantung",
+    sub: "CO tinggi, SVR sangat rendah refrakter pasca-bypass kardiopulmonal",
+    dotColor: "#3fb950",
+    firstLine: "Vasopresin (tetap 0,03–0,04 U/menit) + Norepinefrin",
+    sequence: ["Vasopresin 0,03–0,04 U/menit", "+", "Norepinefrin", "→", "Metilen biru (penyelamatan)"],
+    rationale: "Bypass menyebabkan pelepasan nitrat oksida masif → vasodilatasi berat refrakter terhadap katekolamin. Vasopresin sangat efektif di sini — reseptor V1 tetap utuh dan jalur non-katekolamin melewati desensitisasi reseptor adrenergik. Metilen biru (inhibitor NO sintase, 1,5–2 mg/kg IV) adalah terapi penyelamatan. Hidrokortison untuk insufisiensi adrenal relatif. Pertimbangkan hidroksokobaltamin sebagai alternatif yang sedang berkembang.",
+    avoid: "Epinefrin dosis tinggi (risiko takiaritmia pada miokard pasca-bypass)"
+  },
+  {
+    title: "Syok Anafilaktik",
+    sub: "Vasodilatasi masif akibat histamin + bronkokonstriksi",
+    dotColor: "#f778ba",
+    firstLine: "Epinefrin IM segera (0,3–0,5 mg IM anterolateral paha) — jangan ditunda",
+    sequence: ["Epinefrin IM (selalu dahulu)", "→", "Infus Epinefrin IV (jika refrakter)", "→", "Vasopresin (refrakter katekolamin)"],
+    rationale: "Epinefrin adalah satu-satunya obat yang mengatasi semua komponen: α1 (vasokonstriksi), β1 (↑CO), β2 (bronkodilatasi + inhibisi degranulasi sel mast). Injeksi IM paha memberikan absorpsi tercepat dan paling andal — BUKAN IM deltoid. IV hanya di ICU dengan pemantauan. Antihistamin (H1+H2) dan steroid hanya bersifat adjuvan — jangan tunda epinefrin untuk menunggu obat tersebut. Pasien pengguna beta-bloker mungkin refrakter → dosis lebih tinggi + glukagon.",
+    avoid: "Mengandalkan antihistamin saja; menunda epinefrin; injeksi IM deltoid"
+  },
+  {
+    title: "Syok Neurogenik",
+    sub: "Cedera medula spinalis → hilangnya tonus simpatis → bradikardia + vasodilatasi",
+    dotColor: "#a78bfa",
+    firstLine: "Norepinefrin atau Fenilefrin (pulihkan SVR); Atropin/pacu jantung jika bradikardia dominan",
+    sequence: ["NE atau Fenilefrin", "→", "Atropin (bradikardia)", "→", "Pacu jantung (bradikardia refrakter)"],
+    rationale: "Hilangnya aliran simpatis di bawah level cedera → tonus vagal tidak terlawan (bradikardia) + vasodilatasi perifer. Fenilefrin dipilih jika takikardia harus dihindari (α1 murni, tanpa kronotropi). NE dipilih jika dukungan HR dan TD keduanya diperlukan. Target MAP 85–90 mmHg untuk perfusi medula spinalis pada cedera medula akut (bukan target umum ≥65 mmHg). Hindari cairan IV agresif — dapat memperburuk edema kord.",
+    avoid: "Dopamin (risiko aritmia lebih tinggi); inotropik murni tanpa cakupan vasopressor; pemberian cairan agresif"
+  },
+  {
+    title: "Gagal Ventrikel Kanan",
+    sub: "Pasca-IMA, emboli paru masif, kor pulmonal terkait ARDS, pasca-LVAD",
+    dotColor: "#39d353",
+    firstLine: "Norepinefrin (MAP sistemik) + vasodilator pulmonal inhalasi (↓afterload VK)",
+    sequence: ["NE (MAP > RVSP)", "+/−", "Vasopresin", "→", "NO inhalasi / prostasiklin", "→", "Dobutamin / Milrinon (inotropik VK)"],
+    rationale: "VK berdinding tipis, sangat bergantung preload dan sensitif terhadap afterload. MAP sistemik harus melebihi RVSP untuk mempertahankan perfusi VK dan mencegah pergeseran septum interventrikular. Kurangi afterload VK dengan vasodilator INHALASI (bukan sistemik — akan menurunkan TD sistemik). Inotropik meningkatkan output VK namun hindari takikardia. Hindari PEEP tinggi (meningkatkan PVR). Dukungan mekanis (RVAD, VA-ECMO) untuk gagal VK refrakter.",
+    avoid: "Pemberian cairan agresif (memperburuk dilatasi VK); vasodilator sistemik; PEEP tinggi"
+  }
+];
+
+const monitoring = [
+  { param: "MAP", target: "≥65 mmHg umum; ≥85–90 mmHg pada syok neurogenik / cedera medula spinalis akut", dot: "#58a6ff" },
+  { param: "Laju jantung", target: "60–100 bpm; hindari takikardia >120 pada syok kardiogenik — meningkatkan kebutuhan O₂", dot: "#e3b341" },
+  { param: "Laktat", target: "Target klirens >10% per 2 jam. TIDAK andal sebagai endpoint dengan epinefrin (asidosis laktat tipe B)", dot: "#f85149" },
+  { param: "ScvO₂ / SvO₂", target: ">70% saturasi O₂ vena sentral menunjukkan pengiriman O₂ global yang adekuat", dot: "#3fb950" },
+  { param: "Produksi urin", target: ">0,5 mL/kg/jam sebagai surrogate perfusi ginjal; evaluasi ulang jika oliguria meski MAP adekuat", dot: "#58a6ff" },
+  { param: "Curah jantung / indeks", target: "Melalui kateter PA, PiCCO, atau ECHO. CI <2,2 L/menit/m² memandu inisiasi inotropik", dot: "#e3b341" },
+  { param: "SVR", target: "800–1200 dyn·s/cm⁵. SVR tinggi → vasodilator; SVR rendah → vasopressor", dot: "#3fb950" },
+  { param: "Troponin / EKG 12 sadapan", target: "Skrining iskemia pada dosis katekolamin tinggi. Iskemia demand sering terjadi dengan takikardia", dot: "#f85149" },
+];
+
+const titration = [
+  { title: "Optimalkan sebelum menambahkan", text: "Optimalkan agen yang sedang digunakan sepenuhnya sebelum menambahkan obat baru. Beberapa obat dosis rendah sering lebih baik dari satu obat dosis tinggi (desensitisasi reseptor)." },
+  { title: "Urutan penyapihan vasopressor", text: "Kurangi 25–50% setiap 30–60 menit saat MAP stabil. Vasopresin secara konvensional disapih paling akhir (mekanisme non-adrenergik paling lama dipertahankan)." },
+  { title: "Penghentian inotropik", text: "Tapering bertahap selama berjam-jam — penghentian mendadak dapat memicu deteriorasi hemodinamik. Takifilaksis dobutamin berkembang setelah 72 jam infus kontinu." },
+  { title: "Milrinon pada AKI", text: "Dieliminasi ginjal — akumulasi signifikan jika GFR <50 mL/menit. Pertimbangkan pengurangan dosis 50%. Pantau hipotensi berkepanjangan berjam-jam setelah dihentikan." },
+  { title: "Offset levosimendan", text: "Metabolit aktif OR-1896 (t½ 70–80 jam) memperpanjang efek 7–10 hari pasca-infus. Titrasi hemodinamik tidak dapat dilakukan secara real-time — antisipasi vasodilatasi dan hipotensi tertunda." },
+  { title: "Dosis muatan (loading dose)", text: "Hilangkan dosis muatan milrinon pada pasien tidak stabil — menyebabkan hipotensi transien yang signifikan. Demikian pula dosis muatan levosimendan jika MAP <90 mmHg." },
+];
+
+const interactions = [
+  { title: "Beta-bloker + Dobutamin / Dopamin", text: "Respons β-adrenergik sangat terlemahkan. Pertimbangkan beralih ke milrinon atau levosimendan (mekanisme independen-reseptor)." },
+  { title: "MAOI + katekolamin apapun", text: "Risiko krisis hipertensi berat dan aritmia. Kurangi dosis katekolamin awal secara drastis; titrasi dengan sangat hati-hati." },
+  { title: "Anestesi halogen + Epinefrin", text: "Mensensitisasi miokard terhadap aritmia yang diinduksi katekolamin. Kurangi dosis epinefrin di ruang operasi." },
+  { title: "Vasopresin + Karbamazepin / NSAID", text: "Mempotensikan efek antidiuretik → hiponatremia dilutional. Pantau natrium secara ketat." },
+  { title: "Milrinon + Furosemid IV", text: "Presipitasi saat kontak — selalu bilas selang IV secara menyeluruh di antara kedua infus ini." },
+  { title: "Levosimendan + Nitrat / ACE inhibitor", text: "Vasodilatasi aditif — risiko hipotensi. Kurangi dosis vasodilator yang diberikan bersamaan." },
+];
+
+function showSection(id, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+
+function filterDrugs(type, btn) {
+  document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.drug-card').forEach(card => {
+    card.style.display = (type === 'all' || card.dataset.class === type) ? '' : 'none';
+  });
+}
+
+function renderDrugs() {
+  document.getElementById('drug-list').innerHTML = drugs.map(d => `
+    <div class="drug-card" data-class="${d.class}">
+      <div class="drug-top">
+        <div>
+          <div class="drug-name">${d.name} ${d.altName ? `<span style="font-size:12px;font-weight:400;color:var(--text3);font-family:var(--mono)">(${d.altName})</span>` : ''}</div>
+          <div class="drug-indication">${d.indication}</div>
+        </div>
+        <span class="class-badge ${d.class === 'inotrope' ? 'badge-inotrope' : d.class === 'vasopressor' ? 'badge-vasopressor' : 'badge-both'}">${d.classLabel}</span>
+      </div>
+      <div class="receptor-row">${d.receptors.map(r => `<span class="rec-chip ${r.cls}">${r.label}</span>`).join('')}</div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="stat-label">Dosis</div><div class="stat-value" style="font-size:11px">${d.dose}</div></div>
+        <div class="stat-box"><div class="stat-label">Onset</div><div class="stat-value">${d.onset}</div></div>
+        <div class="stat-box"><div class="stat-label">Waktu paruh</div><div class="stat-value">${d.halflife}</div></div>
+        <div class="stat-box"><div class="stat-label">Rute</div><div class="stat-value">${d.route}</div></div>
+      </div>
+      <div class="effects">
+        ${d.effects.map(e => `
+          <div class="effect-row">
+            <div class="effect-meta"><span>${e.label}</span><span class="effect-pct" style="color:${e.color}">${e.val < 0 ? '↓' : e.val === 0 ? '—' : '↑'}${Math.abs(e.val)}%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:${Math.abs(e.val)}%;background:${e.color}"></div></div>
+          </div>`).join('')}
+      </div>
+      <div class="se-section">
+        <div class="se-label">Efek samping</div>
+        <div class="se-tags">${d.sideEffects.map(se => `<span class="se-tag">${se}</span>`).join('')}</div>
+      </div>
+      <div class="drug-note">${d.notes}</div>
+    </div>
+  `).join('');
+}
+
+function renderReceptorMap() {
+  const groups = [
+    { name: "α1 adrenergik", color: "#ff7b72", bgColor: "rgba(255,123,114,0.08)", effect: "Vasokonstriksi → ↑SVR, ↑MAP", drugs: ["Norepinefrin (dominan)", "Epinefrin (dosis tinggi)", "Dopamin (>10 mcg/kg/menit)", "Fenilefrin (murni)", "Dobutamin (lemah)"] },
+    { name: "β1 adrenergik", color: "#58a6ff", bgColor: "rgba(88,166,255,0.08)", effect: "↑Laju jantung, ↑Kontraktilitas, ↑Otomatisitas", drugs: ["Norepinefrin (sedang)", "Epinefrin", "Dopamin (3–10 mcg/kg/menit)", "Dobutamin (dominan)", "Milrinon (tidak langsung via cAMP)"] },
+    { name: "β2 adrenergik", color: "#3fb950", bgColor: "rgba(63,185,80,0.08)", effect: "Vasodilatasi, Bronkodilatasi, ↓Degranulasi sel mast", drugs: ["Epinefrin (dosis rendah)", "Dobutamin (sedang)"] },
+    { name: "Dopaminergik D1/D2", color: "#a78bfa", bgColor: "rgba(167,139,250,0.08)", effect: "Vasodilatasi renal + mesenterika (manfaat teoritis)", drugs: ["Dopamin (hanya 1–3 mcg/kg/menit)"] },
+    { name: "V1 vasopresin", color: "#f778ba", bgColor: "rgba(247,120,186,0.08)", effect: "Vasokonstriksi non-katekolamin via IP3/DAG", drugs: ["Vasopresin (mekanisme tunggal)"] },
+    { name: "PDE-3 / Independen-reseptor", color: "#8b949e", bgColor: "rgba(139,148,158,0.08)", effect: "↑cAMP → inotropik + vasodilatasi (melewati reseptor adrenergik)", drugs: ["Milrinon (inhibitor PDE-3)", "Levosimendan (sensitizer Ca²⁺ + K-ATP)"] },
+  ];
+  document.getElementById('receptor-map').innerHTML = groups.map(g => `
+    <div class="rec-group" style="border-left: 2px solid ${g.color}">
+      <div class="rec-group-header">
+        <span class="rec-group-name" style="color:${g.color};background:${g.bgColor}">${g.name}</span>
+        <span class="rec-effect">${g.effect}</span>
+      </div>
+      <div class="rec-drugs-label">Obat yang bekerja di sini</div>
+      <div class="rec-drug-chips">${g.drugs.map(d => `<span class="rec-drug-chip">${d}</span>`).join('')}</div>
+    </div>
+  `).join('');
+}
+
+function renderScenarios() {
+  document.getElementById('scenario-list').innerHTML = scenarios.map(s => `
+    <div class="scenario-card" onclick="this.classList.toggle('open'); this.querySelector('.toggle-arrow').textContent = this.classList.contains('open') ? '▾' : '▸'">
+      <div class="scenario-top">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+            <div style="width:8px;height:8px;border-radius:50%;background:${s.dotColor};flex-shrink:0"></div>
+            <div class="scenario-title">${s.title}</div>
+          </div>
+          <div class="scenario-sub">${s.sub}</div>
+        </div>
+        <span class="toggle-arrow">▸</span>
+      </div>
+      <div class="scenario-detail">
+        <div class="detail-label">Agen lini pertama</div>
+        <div class="first-line-text">${s.firstLine}</div>
+        <div class="detail-label">Urutan eskalasi</div>
+        <div class="seq-row">
+          ${s.sequence.map(item => item === '→' || item === '+' || item === '+/−' ? `<span class="seq-arrow">${item}</span>` : `<span class="seq-pill">${item}</span>`).join('')}
+        </div>
+        <div class="detail-label">Rasional klinis</div>
+        <div class="rationale-box">${s.rationale}</div>
+        <div class="avoid-line"><span class="avoid-label">Hindari: </span>${s.avoid}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderMonitoring() {
+  document.getElementById('monitoring-content').innerHTML = `
+    <div class="monitor-card">
+      <div class="monitor-card-title">Target hemodinamik</div>
+      ${monitoring.map(m => `
+        <div class="monitor-row">
+          <div class="monitor-dot" style="background:${m.dot}"></div>
+          <div>
+            <div class="monitor-param">${m.param}</div>
+            <div class="monitor-target">${m.target}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="monitor-card">
+      <div class="monitor-card-title">Prinsip titrasi</div>
+      ${titration.map(t => `<div class="titration-item"><strong>${t.title}:</strong> ${t.text}</div>`).join('')}
+    </div>
+    <div class="monitor-card">
+      <div class="monitor-card-title">Interaksi obat penting</div>
+      ${interactions.map(i => `<div class="interaction-item"><strong>${i.title}:</strong> ${i.text}</div>`).join('')}
+    </div>
+    <div class="footer-note">
+      Referensi ini hanya untuk tujuan pendidikan. Keputusan klinis harus dipandu oleh protokol lokal, penilaian hemodinamik secara real-time, dan faktor individual pasien. Selalu verifikasi panduan terkini.
+    </div>
+  `;
+}
+
+renderDrugs();
+renderReceptorMap();
+renderScenarios();
+renderMonitoring();
+</script>
+</body>
+</html>

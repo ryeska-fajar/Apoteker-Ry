@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Referensi DRP PCNE v9.1 – Apoteker Ry</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f4f8;
+    --bg2: #ffffff;
+    --bg3: #f4f7fa;
+    --bg4: #e8edf3;
+    --border: rgba(30,60,100,0.09);
+    --border2: rgba(30,60,100,0.17);
+    --text: #1a2636;
+    --text2: #4a6080;
+    --text3: #8399b0;
+    --blue: #1a6fbf;
+    --blue-bg: rgba(26,111,191,0.08);
+    --amber: #9a6200;
+    --amber-bg: rgba(154,98,0,0.08);
+    --red: #b83232;
+    --red-bg: rgba(184,50,50,0.07);
+    --green: #1a7a45;
+    --green-bg: rgba(26,122,69,0.08);
+    --purple: #5b3fa6;
+    --purple-bg: rgba(91,63,166,0.08);
+    --pink: #a03070;
+    --pink-bg: rgba(160,48,112,0.08);
+    --teal: #1a8a6a;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
+
+  .header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-left { display: flex; align-items: center; gap: 12px; }
+  .logo-dot { width: 9px; height: 9px; background: var(--purple); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .header h1 { font-family: var(--mono); font-size: 14px; font-weight: 500; letter-spacing: 0.02em; }
+  .header-right { text-align: right; }
+  .header-name { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--text); }
+  .header-sub { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.05em; margin-top: 2px; }
+
+  .layout { display: flex; height: calc(100vh - 53px); }
+
+  .sidebar {
+    width: 210px; flex-shrink: 0;
+    background: var(--bg2); border-right: 1px solid var(--border);
+    padding: 1.25rem 0; overflow-y: auto;
+  }
+  .sidebar-label {
+    font-family: var(--mono); font-size: 10px; color: var(--text3);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    padding: 0 1.25rem; margin-bottom: 6px; margin-top: 1.25rem;
+  }
+  .sidebar-label:first-child { margin-top: 0; }
+  .nav-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 1.25rem; font-size: 13px; color: var(--text2);
+    cursor: pointer; border-left: 2px solid transparent; transition: all 0.15s;
+    user-select: none;
+  }
+  .nav-item:hover { color: var(--text); background: var(--bg3); }
+  .nav-item.active { color: var(--purple); border-left-color: var(--purple); background: var(--purple-bg); }
+  .nav-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+  .main { flex: 1; overflow-y: auto; padding: 2rem; max-width: 920px; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .section-header { margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+  .section-header h2 { font-family: var(--mono); font-size: 18px; font-weight: 500; margin-bottom: 4px; }
+  .section-header p { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  /* Cards */
+  .card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1.25rem; margin-bottom: 1rem;
+    transition: border-color 0.15s;
+  }
+  .card:hover { border-color: var(--border2); }
+
+  /* Code badges */
+  .code-badge {
+    font-family: var(--mono); font-size: 11px; font-weight: 500;
+    padding: 3px 9px; border-radius: 5px; border: 1px solid;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .cb-blue { background: var(--blue-bg); color: var(--blue); border-color: rgba(26,111,191,0.25); }
+  .cb-amber { background: var(--amber-bg); color: var(--amber); border-color: rgba(154,98,0,0.25); }
+  .cb-red { background: var(--red-bg); color: var(--red); border-color: rgba(184,50,50,0.22); }
+  .cb-green { background: var(--green-bg); color: var(--green); border-color: rgba(26,122,69,0.25); }
+  .cb-purple { background: var(--purple-bg); color: var(--purple); border-color: rgba(91,63,166,0.22); }
+  .cb-pink { background: var(--pink-bg); color: var(--pink); border-color: rgba(160,48,112,0.22); }
+  .cb-gray { background: var(--bg3); color: var(--text2); border-color: var(--border2); }
+
+  /* Domain header */
+  .domain-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
+  .domain-label { font-size: 16px; font-weight: 500; color: var(--text); }
+  .domain-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
+
+  /* Sub-items */
+  .sub-item {
+    background: var(--bg3); border-radius: 8px; padding: 10px 12px;
+    margin-bottom: 6px; border-left: 2px solid;
+  }
+  .sub-row { display: flex; align-items: flex-start; gap: 10px; }
+  .sub-code { font-family: var(--mono); font-size: 12px; font-weight: 500; flex-shrink: 0; padding-top: 1px; }
+  .sub-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+  .sub-desc { font-size: 12px; color: var(--text2); line-height: 1.6; }
+  .sub-examples { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 4px; }
+  .example-tag {
+    font-size: 11px; padding: 2px 7px;
+    background: var(--bg4); border: 1px solid var(--border2);
+    border-radius: 4px; color: var(--text2);
+  }
+
+  /* Alur tab */
+  .flow-container { margin-bottom: 1rem; }
+  .flow-step {
+    display: flex; gap: 12px; margin-bottom: 8px; align-items: flex-start;
+  }
+  .flow-num {
+    width: 28px; height: 28px; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 12px; font-weight: 500;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .flow-content { flex: 1; }
+  .flow-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+  .flow-detail { font-size: 12px; color: var(--text2); line-height: 1.6; }
+  .flow-arrow { color: var(--text3); font-family: var(--mono); font-size: 18px; margin-left: 10px; padding: 4px 0; }
+
+  /* Contoh kasus */
+  .case-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1.25rem; margin-bottom: 0.75rem;
+    cursor: pointer; transition: border-color 0.15s;
+  }
+  .case-card:hover { border-color: var(--border2); }
+  .case-card.open { border-color: var(--border2); }
+  .case-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .case-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+  .case-sub { font-size: 12px; color: var(--text2); }
+  .toggle-btn { font-family: var(--mono); color: var(--text3); font-size: 12px; }
+  .case-detail { display: none; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .case-card.open .case-detail { display: block; }
+  .detail-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 5px; margin-top: 10px; }
+  .detail-label:first-child { margin-top: 0; }
+  .detail-val { font-size: 13px; color: var(--text2); line-height: 1.6; }
+  .code-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; }
+
+  /* Tabel perbandingan */
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare-table th {
+    font-family: var(--mono); font-size: 11px; font-weight: 500;
+    color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em;
+    padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border2);
+  }
+  .compare-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: var(--bg3); }
+  .td-code { font-family: var(--mono); font-weight: 500; font-size: 12px; white-space: nowrap; }
+
+  /* Info box */
+  .info-box {
+    font-size: 12.5px; color: var(--text2); line-height: 1.7;
+    padding: 10px 14px; background: var(--bg3); border-radius: 6px;
+    border-left: 2px solid var(--border2); margin-top: 8px;
+  }
+  .note-footer {
+    font-size: 11px; color: var(--text3); font-style: italic;
+    margin-top: 2rem; padding: 10px 14px;
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 6px;
+  }
+
+  @media (max-width: 700px) {
+    .sidebar { width: 170px; }
+    .main { padding: 1.25rem; }
+  }
+  @media (max-width: 500px) {
+    .layout { flex-direction: column; height: auto; }
+    .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); padding: 0.5rem 0; display: flex; flex-direction: row; overflow-x: auto; }
+    .sidebar-label { display: none; }
+    .nav-item { white-space: nowrap; border-left: none; border-bottom: 2px solid transparent; padding: 8px 14px; }
+    .nav-item.active { border-bottom-color: var(--purple); border-left-color: transparent; background: transparent; }
+    .main { height: auto; overflow-y: visible; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo-dot"></div>
+    <h1>DRP PCNE v9.1 // Referensi Lengkap</h1>
+  </div>
+  <div class="header-right">
+    <div class="header-name">Apoteker Ry</div>
+    <div class="header-sub">Farmasi Klinis</div>
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-label">Klasifikasi</div>
+    <div class="nav-item active" onclick="showSection('overview',this)">
+      <div class="nav-dot" style="background:var(--purple)"></div>
+      Gambaran Umum
+    </div>
+    <div class="nav-item" onclick="showSection('problems',this)">
+      <div class="nav-dot" style="background:var(--red)"></div>
+      P — Masalah
+    </div>
+    <div class="nav-item" onclick="showSection('causes',this)">
+      <div class="nav-dot" style="background:var(--amber)"></div>
+      C — Penyebab
+    </div>
+    <div class="nav-item" onclick="showSection('interventions',this)">
+      <div class="nav-dot" style="background:var(--blue)"></div>
+      I — Intervensi
+    </div>
+    <div class="nav-item" onclick="showSection('outcomes',this)">
+      <div class="nav-dot" style="background:var(--green)"></div>
+      O — Hasil
+    </div>
+    <div class="sidebar-label">Praktis</div>
+    <div class="nav-item" onclick="showSection('alur',this)">
+      <div class="nav-dot" style="background:var(--pink)"></div>
+      Alur Identifikasi
+    </div>
+    <div class="nav-item" onclick="showSection('contoh',this)">
+      <div class="nav-dot" style="background:var(--teal)"></div>
+      Contoh Kasus
+    </div>
+    <div class="nav-item" onclick="showSection('tips',this)">
+      <div class="nav-dot" style="background:var(--text2)"></div>
+      Tips & Catatan
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <!-- GAMBARAN UMUM -->
+    <div id="overview" class="section active">
+      <div class="section-header">
+        <h2>Gambaran Umum PCNE v9.1</h2>
+        <p>Pharmaceutical Care Network Europe (PCNE) Classification v9.1 adalah sistem klasifikasi Drug-Related Problems (DRP) yang digunakan secara internasional untuk mendokumentasikan, menganalisis, dan menyelesaikan masalah terkait obat dalam praktik farmasi klinis.</p>
+      </div>
+
+      <div class="card" style="border-left: 3px solid var(--purple);">
+        <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:12px;">Struktur 4 Domain Utama</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;">
+          <div style="background:var(--red-bg);border:1px solid rgba(248,81,73,0.2);border-radius:8px;padding:12px;">
+            <div style="font-family:var(--mono);font-size:22px;font-weight:500;color:var(--red);">P</div>
+            <div style="font-size:13px;font-weight:500;color:var(--text);margin:4px 0 2px;">Problems</div>
+            <div style="font-size:12px;color:var(--text2);">Masalah yang dialami pasien akibat terapi obat</div>
+            <div style="font-family:var(--mono);font-size:11px;color:var(--red);margin-top:6px;">P1, P2, P3</div>
+          </div>
+          <div style="background:var(--amber-bg);border:1px solid rgba(227,179,65,0.2);border-radius:8px;padding:12px;">
+            <div style="font-family:var(--mono);font-size:22px;font-weight:500;color:var(--amber);">C</div>
+            <div style="font-size:13px;font-weight:500;color:var(--text);margin:4px 0 2px;">Causes</div>
+            <div style="font-size:12px;color:var(--text2);">Penyebab terjadinya DRP</div>
+            <div style="font-family:var(--mono);font-size:11px;color:var(--amber);margin-top:6px;">C1–C9</div>
+          </div>
+          <div style="background:var(--blue-bg);border:1px solid rgba(88,166,255,0.2);border-radius:8px;padding:12px;">
+            <div style="font-family:var(--mono);font-size:22px;font-weight:500;color:var(--blue);">I</div>
+            <div style="font-size:13px;font-weight:500;color:var(--text);margin:4px 0 2px;">Interventions</div>
+            <div style="font-size:12px;color:var(--text2);">Tindakan yang direncanakan/dilakukan apoteker</div>
+            <div style="font-family:var(--mono);font-size:11px;color:var(--blue);margin-top:6px;">I0–I5</div>
+          </div>
+          <div style="background:var(--green-bg);border:1px solid rgba(63,185,80,0.2);border-radius:8px;padding:12px;">
+            <div style="font-family:var(--mono);font-size:22px;font-weight:500;color:var(--green);">O</div>
+            <div style="font-size:13px;font-weight:500;color:var(--text);margin:4px 0 2px;">Outcomes</div>
+            <div style="font-size:12px;color:var(--text2);">Status penyelesaian DRP setelah intervensi</div>
+            <div style="font-family:var(--mono);font-size:11px;color:var(--green);margin-top:6px;">O0–O3</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:10px;">Perbedaan Status DRP</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;">
+          <div style="background:var(--bg3);border-radius:6px;padding:10px;">
+            <div style="font-size:12px;font-weight:500;color:var(--amber);margin-bottom:4px;">DRP Manifes</div>
+            <div style="font-size:12px;color:var(--text2);">Masalah sudah terjadi / sedang berlangsung pada pasien</div>
+          </div>
+          <div style="background:var(--bg3);border-radius:6px;padding:10px;">
+            <div style="font-size:12px;font-weight:500;color:var(--blue);margin-bottom:4px;">DRP Potensial</div>
+            <div style="font-size:12px;color:var(--text2);">Masalah belum terjadi, namun berisiko terjadi jika tidak ditangani</div>
+          </div>
+          <div style="background:var(--bg3);border-radius:6px;padding:10px;">
+            <div style="font-size:12px;font-weight:500;color:var(--purple);margin-bottom:4px;">Suspected DRP</div>
+            <div style="font-size:12px;color:var(--text2);">Masih dalam tahap evaluasi, belum terkonfirmasi sebagai DRP</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:10px;">Perubahan Penting dari Versi Sebelumnya (v8 → v9.1)</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8;">
+          <div style="margin-bottom:8px;">• Domain <strong style="color:var(--text)">Acceptability</strong> (penerimaan intervensi oleh prescriber) ditambahkan secara eksplisit pada domain Intervensi</div>
+          <div style="margin-bottom:8px;">• Kode <strong style="color:var(--text)">C9</strong> (penyebab tidak diketahui / tidak terdokumentasi) ditambahkan</div>
+          <div style="margin-bottom:8px;">• Kode <strong style="color:var(--text)">I5</strong> (edukasi pasien/caregiver) dipisahkan lebih eksplisit dari I2</div>
+          <div>• Terminologi lebih konsisten dengan standar dokumentasi farmasi klinis internasional</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROBLEMS -->
+    <div id="problems" class="section">
+      <div class="section-header">
+        <h2>P — Domain Masalah (Problems)</h2>
+        <p>Menggambarkan masalah yang dialami atau berpotensi dialami pasien akibat terapi obat. Satu DRP dapat memiliki lebih dari satu kode masalah.</p>
+      </div>
+      <div id="problem-list"></div>
+    </div>
+
+    <!-- CAUSES -->
+    <div id="causes" class="section">
+      <div class="section-header">
+        <h2>C — Domain Penyebab (Causes)</h2>
+        <p>Mengidentifikasi akar penyebab mengapa DRP terjadi. Satu DRP dapat memiliki lebih dari satu kode penyebab.</p>
+      </div>
+      <div id="cause-list"></div>
+    </div>
+
+    <!-- INTERVENTIONS -->
+    <div id="interventions" class="section">
+      <div class="section-header">
+        <h2>I — Domain Intervensi (Interventions)</h2>
+        <p>Mendokumentasikan tindakan yang direncanakan atau dilaksanakan oleh apoteker untuk menyelesaikan DRP.</p>
+      </div>
+      <div id="intervention-list"></div>
+    </div>
+
+    <!-- OUTCOMES -->
+    <div id="outcomes" class="section">
+      <div class="section-header">
+        <h2>O — Domain Hasil (Outcomes)</h2>
+        <p>Menggambarkan status penyelesaian DRP setelah intervensi dilakukan.</p>
+      </div>
+      <div id="outcome-list"></div>
+    </div>
+
+    <!-- ALUR IDENTIFIKASI -->
+    <div id="alur" class="section">
+      <div class="section-header">
+        <h2>Alur Identifikasi & Dokumentasi DRP</h2>
+        <p>Langkah sistematis penggunaan PCNE v9.1 dalam praktik farmasi klinis sehari-hari.</p>
+      </div>
+      <div id="alur-content"></div>
+    </div>
+
+    <!-- CONTOH KASUS -->
+    <div id="contoh" class="section">
+      <div class="section-header">
+        <h2>Contoh Kasus DRP</h2>
+        <p>Klik kasus untuk melihat klasifikasi PCNE v9.1 secara lengkap beserta rasionalnya.</p>
+      </div>
+      <div id="contoh-list"></div>
+    </div>
+
+    <!-- TIPS -->
+    <div id="tips" class="section">
+      <div class="section-header">
+        <h2>Tips & Catatan Praktis</h2>
+        <p>Panduan penggunaan PCNE v9.1 untuk apoteker klinis di berbagai setting pelayanan.</p>
+      </div>
+      <div id="tips-content"></div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const problems = [
+  {
+    code: "P1", title: "Efektivitas Terapi", color: "cb-red", borderColor: "var(--red)",
+    desc: "Terapi obat tidak memberikan efek yang diinginkan atau tidak mencapai target terapi.",
+    subs: [
+      { code: "P1.1", title: "Efek terapi tidak optimal", desc: "Pasien tidak mencapai target terapi yang telah ditetapkan meskipun obat sudah diberikan dengan benar.", examples: ["HbA1c masih >7%", "TD tidak terkontrol", "Nyeri tidak reda"] },
+      { code: "P1.2", title: "Efek terapi tidak tercapai sama sekali", desc: "Terapi obat tidak menunjukkan respons sama sekali pada kondisi yang seharusnya diobati.", examples: ["Antibiotik tidak mengatasi infeksi", "Obat antihipertensi tidak menurunkan TD sama sekali"] },
+      { code: "P1.3", title: "Indikasi terapi tidak tertangani", desc: "Terdapat kondisi klinis yang memerlukan terapi obat namun tidak ada obat yang diberikan (undertreatment).", examples: ["Gagal jantung tanpa ACE inhibitor", "Osteoporosis tanpa kalsium/vit D", "Tidak ada antikoagulan pada AF"] },
+    ]
+  },
+  {
+    code: "P2", title: "Keamanan Terapi (Adverse Event)", color: "cb-amber", borderColor: "var(--amber)",
+    desc: "Pasien mengalami atau berpotensi mengalami efek yang tidak diinginkan akibat terapi obat.",
+    subs: [
+      { code: "P2.1", title: "Efek samping yang mungkin tidak berhubungan dengan dosis", desc: "Reaksi yang tidak bergantung pada jumlah dosis (tipe B / idiosinkrasi).", examples: ["Reaksi alergi penisilin", "Agranulositosis karbamazepin"] },
+      { code: "P2.2", title: "Efek samping yang mungkin berhubungan dengan dosis", desc: "Reaksi yang terjadi akibat dosis terlalu tinggi atau toksisitas (tipe A).", examples: ["Bradikardia karena metoprolol overdosis", "Hipoglikemia akibat insulin berlebih"] },
+      { code: "P2.3", title: "Interaksi obat yang tidak diinginkan", desc: "Efek yang tidak diinginkan akibat interaksi antar obat atau obat dengan makanan/kondisi.", examples: ["Perdarahan warfarin + aspirin", "Rhabdomiolisis simvastatin + amiodaron", "QTc memanjang karena kombinasi antiaritmia"] },
+    ]
+  },
+  {
+    code: "P3", title: "Masalah Lainnya", color: "cb-gray", borderColor: "var(--text3)",
+    desc: "Masalah terkait terapi yang tidak masuk kategori efektivitas atau keamanan secara langsung.",
+    subs: [
+      { code: "P3.1", title: "Masalah yang tidak perlu (unnecessary therapy)", desc: "Pasien mendapatkan obat tanpa indikasi yang jelas, atau kondisi yang ada tidak memerlukan terapi obat.", examples: ["Antibiotik untuk ISPA viral", "Antasida tanpa diagnosis GERD", "Duplikasi terapi"] },
+      { code: "P3.2", title: "Masalah yang tidak jelas", desc: "DRP teridentifikasi namun tidak cukup informasi untuk mengklasifikasikan ke P1 atau P2.", examples: ["Keluhan subjektif tanpa data objektif", "Masalah yang belum terkonfirmasi"] },
+    ]
+  }
+];
+
+const causes = [
+  { code: "C1", title: "Pemilihan Obat", color: "cb-red", borderColor: "var(--red)", desc: "Masalah yang timbul dari proses pemilihan obat yang kurang tepat.", subs: [
+    { code: "C1.1", title: "Obat tidak tepat (termasuk kontraindikasi)", desc: "Obat yang diberikan tidak sesuai untuk kondisi pasien.", examples: ["NSAID pada pasien GFR <30", "Beta-bloker non-selektif pada asma"] },
+    { code: "C1.2", title: "Tidak ada indikasi yang jelas untuk obat ini", desc: "Obat diberikan tanpa indikasi klinis yang terdokumentasi.", examples: ["PPI tanpa riwayat GERD/ulkus"] },
+    { code: "C1.3", title: "Kombinasi obat-obat atau obat-herbal tidak tepat", desc: "Kombinasi yang dipilih menimbulkan interaksi atau tidak sinergis.", examples: ["ACE inhibitor + ARB", "Statin dosis tinggi + gemfibrozil"] },
+    { code: "C1.4", title: "Indikasi ada, tetapi obat tidak diresepkan", desc: "Ada kebutuhan klinis yang jelas namun tidak ada obat yang diberikan.", examples: ["Tidak ada statin pada dislipidemia dengan risiko CV tinggi"] },
+    { code: "C1.5", title: "Terlalu banyak obat diresepkan untuk indikasi yang sama", desc: "Duplikasi terapi atau polifarmasi yang tidak perlu.", examples: ["Dua SSRI bersamaan", "Dua diuretik loop"] },
+    { code: "C1.6", title: "Obat yang lebih murah/efektif tersedia", desc: "Obat yang dipilih tidak optimal dari segi efektivitas-biaya.", examples: ["Obat originator saat generik bioekuivalen tersedia"] },
+  ]},
+  { code: "C2", title: "Bentuk Sediaan", color: "cb-amber", borderColor: "var(--amber)", desc: "Masalah yang berkaitan dengan formulasi atau bentuk sediaan obat.", subs: [
+    { code: "C2.1", title: "Bentuk sediaan tidak tepat", desc: "Sediaan yang diberikan tidak sesuai dengan kondisi atau kemampuan pasien.", examples: ["Tablet salut enteric digerus", "Pasien disfagia diberi tablet besar tanpa alternatif"] },
+    { code: "C2.2", title: "Sediaan tidak tersedia", desc: "Bentuk sediaan yang diperlukan tidak ada di fasilitas/apotek.", examples: ["Suspensi tidak tersedia, pasien tidak bisa menelan kapsul"] },
+  ]},
+  { code: "C3", title: "Dosis", color: "cb-purple", borderColor: "var(--purple)", desc: "Masalah yang berkaitan dengan jumlah dosis obat yang diberikan.", subs: [
+    { code: "C3.1", title: "Dosis terlalu rendah", desc: "Dosis yang diberikan tidak mencukupi untuk mencapai efek terapeutik.", examples: ["Amoxicillin 250mg untuk pneumonia komunitas dewasa", "Dosis insulin terlalu rendah"] },
+    { code: "C3.2", title: "Dosis terlalu tinggi", desc: "Dosis yang diberikan melebihi rentang terapi atau mengakibatkan toksisitas.", examples: ["Digoksin 0,25mg/hari pada lansia", "Metformin dosis penuh pada GFR <45"] },
+    { code: "C3.3", title: "Rejimen dosis tidak tepat (frekuensi/interval)", desc: "Jadwal pemberian tidak sesuai farmakokinetik atau panduan terapi.", examples: ["Amoksisilin 2x1 seharusnya 3x1", "Azitromisin diresepkan 3x1"] },
+    { code: "C3.4", title: "Instruksi dosis tidak jelas atau tidak ada", desc: "Petunjuk cara penggunaan tidak tertulis dengan jelas.", examples: ["Tidak ada petunjuk cara penggunaan inhaler", "Dosis tidak disesuaikan berat badan"] },
+    { code: "C3.5", title: "Penyesuaian dosis diperlukan (ginjal/hati/usia)", desc: "Dosis tidak disesuaikan dengan kondisi organ atau populasi khusus.", examples: ["Tidak ada reduksi dosis milrinon pada AKI", "Dosis normal pada pasien sirosis hepatik"] },
+  ]},
+  { code: "C4", title: "Durasi Terapi", color: "cb-green", borderColor: "var(--green)", desc: "Masalah yang berkaitan dengan lama pemberian terapi obat.", subs: [
+    { code: "C4.1", title: "Durasi terapi terlalu singkat", desc: "Lama pengobatan lebih pendek dari yang diperlukan.", examples: ["Antibiotik 3 hari untuk ISK komplikata", "OAT tidak diselesaikan"] },
+    { code: "C4.2", title: "Durasi terapi terlalu lama", desc: "Lama pengobatan melebihi yang diperlukan.", examples: ["PPI lebih dari 8 minggu tanpa evaluasi", "Antibiotik profilaksis melebihi panduan"] },
+  ]},
+  { code: "C5", title: "Dispensing", color: "cb-blue", borderColor: "var(--blue)", desc: "Masalah yang terjadi dalam proses penyiapan atau penyerahan obat.", subs: [
+    { code: "C5.1", title: "Obat yang salah diberikan / salah dispensing", desc: "Obat berbeda yang diberikan dari yang diresepkan.", examples: ["Metoprolol vs Metformin tertukar", "Dosis berbeda dari resep"] },
+    { code: "C5.2", title: "Informasi yang salah diberikan", desc: "Informasi yang diberikan kepada pasien tidak tepat.", examples: ["Informasi aturan pakai salah", "Interaksi makanan tidak disampaikan"] },
+    { code: "C5.3", title: "Obat yang diperlukan tidak tersedia", desc: "Obat tidak dapat diserahkan karena ketersediaan stok.", examples: ["Stok habis", "Obat tidak masuk formularium"] },
+  ]},
+  { code: "C6", title: "Penggunaan Obat (Pasien)", color: "cb-pink", borderColor: "var(--pink)", desc: "Masalah yang berkaitan dengan cara pasien menggunakan obatnya.", subs: [
+    { code: "C6.1", title: "Obat tidak digunakan sama sekali, padahal ada indikasi", desc: "Pasien tidak mengonsumsi obat yang sudah diresepkan.", examples: ["Obat dibeli tapi tidak diminum", "Pasien berhenti sendiri"] },
+    { code: "C6.2", title: "Obat digunakan secara tidak benar", desc: "Cara penggunaan obat tidak sesuai instruksi.", examples: ["Inhaler salah teknik", "Obat sublingual ditelan", "Tidak kocok suspensi"] },
+    { code: "C6.3", title: "Pasien menggunakan obat yang tidak perlu", desc: "Pasien secara mandiri menggunakan obat tanpa indikasi yang tepat.", examples: ["Self-medication antibiotik", "Suplemen dosis tinggi tanpa indikasi"] },
+    { code: "C6.4", title: "Obat digunakan dengan cara yang tidak tepat", desc: "Rute atau tempat pemberian salah.", examples: ["Obat topikal diminum", "Rute IV diberikan IM"] },
+  ]},
+  { code: "C7", title: "Monitoring Pasien", color: "cb-gray", borderColor: "var(--text3)", desc: "Masalah yang berkaitan dengan kurangnya pemantauan terapi.", subs: [
+    { code: "C7.1", title: "Tidak ada atau pemantauan tidak memadai", desc: "Parameter terapi tidak dipantau sebagaimana mestinya.", examples: ["Tidak ada cek fungsi ginjal pada metformin", "TDM vankomisn tidak dilakukan", "INR tidak dicek rutin"] },
+    { code: "C7.2", title: "Hasil monitoring tidak ditindaklanjuti", desc: "Data monitoring tersedia namun tidak digunakan untuk penyesuaian terapi.", examples: ["HbA1c buruk tapi dosis insulin tidak diubah", "Hasil kultur tidak digunakan de-eskalasi antibiotik"] },
+  ]},
+  { code: "C8", title: "Lainnya", color: "cb-gray", borderColor: "var(--text3)", desc: "Penyebab yang tidak termasuk dalam kategori C1–C7.", subs: [
+    { code: "C8.1", title: "Tidak ada atau penyebab tidak jelas", desc: "DRP teridentifikasi namun penyebabnya tidak dapat ditentukan atau tidak ada informasi yang cukup.", examples: ["Data tidak tersedia", "Penyebab multifaktor kompleks"] },
+  ]},
+  { code: "C9", title: "Penyebab Tidak Diketahui/Terdokumentasi", color: "cb-gray", borderColor: "var(--text3)", desc: "(Baru di v9.1) Digunakan ketika penyebab tidak dapat ditentukan setelah evaluasi menyeluruh.", subs: [
+    { code: "C9.1", title: "Penyebab tidak dapat ditentukan", desc: "Sudah dilakukan evaluasi menyeluruh namun penyebab DRP tetap tidak jelas.", examples: ["Variabilitas farmakogenetik tidak terdokumentasi", "Penyebab idiosinkrasi murni"] },
+  ]},
+];
+
+const interventions = [
+  { code: "I0", title: "Tidak Ada Intervensi", color: "cb-gray", borderColor: "var(--text3)", desc: "Tidak ada tindakan yang dilakukan oleh apoteker terkait DRP ini.", subs: [
+    { code: "I0.0", title: "Tidak ada intervensi", desc: "DRP diidentifikasi namun tidak dilakukan intervensi apapun.", examples: ["DRP tidak signifikan secara klinis", "Sudah ditangani oleh tenaga kesehatan lain"] },
+  ]},
+  { code: "I1", title: "Intervensi pada Prescriber", color: "cb-blue", borderColor: "var(--blue)", desc: "Tindakan yang ditujukan kepada dokter atau tenaga medis yang meresepkan.", subs: [
+    { code: "I1.1", title: "Hanya memberi informasi / diskusi", desc: "Apoteker memberikan informasi atau mendiskusikan DRP kepada prescriber.", examples: ["Informasi interaksi obat kepada dokter", "Diskusi tentang pilihan terapi"] },
+    { code: "I1.2", title: "Meminta perubahan terapi tertulis", desc: "Apoteker secara formal meminta modifikasi terapi.", examples: ["Rekomendasi tertulis perubahan dosis", "Konfirmasi resep melalui formulir"] },
+    { code: "I1.3", title: "Intervensi diterima prescriber", desc: "Prescriber menyetujui dan mengimplementasikan rekomendasi apoteker.", examples: ["Dosis diubah sesuai rekomendasi", "Obat diganti sesuai saran"] },
+    { code: "I1.4", title: "Intervensi tidak diterima prescriber", desc: "Prescriber menolak atau tidak mengimplementasikan rekomendasi.", examples: ["Dokter tetap dengan terapi semula dengan alasan klinis"] },
+    { code: "I1.5", title: "Intervensi diterima sebagian", desc: "Hanya sebagian rekomendasi yang diterima/diimplementasikan.", examples: ["Dosis diubah tapi obat tidak diganti"] },
+  ]},
+  { code: "I2", title: "Intervensi pada Pasien/Caregiver", color: "cb-purple", borderColor: "var(--purple)", desc: "Tindakan yang ditujukan langsung kepada pasien atau pendampingnya.", subs: [
+    { code: "I2.1", title: "Konseling/edukasi pasien", desc: "Memberikan informasi dan edukasi kepada pasien tentang terapinya.", examples: ["Edukasi cara pakai inhaler", "Konseling kepatuhan minum obat", "Penjelasan efek samping"] },
+    { code: "I2.2", title: "Rekomendasi kepatuhan tertulis", desc: "Memberikan materi tertulis untuk membantu kepatuhan.", examples: ["Jadwal minum obat tertulis", "Kartu pengingat obat", "Leaflet informasi obat"] },
+    { code: "I2.3", title: "Merujuk pasien ke tenaga kesehatan lain", desc: "Merujuk pasien untuk penanganan lebih lanjut.", examples: ["Rujuk ke dokter spesialis", "Rujuk ke ahli gizi", "Rujuk ke konseling psikologi"] },
+  ]},
+  { code: "I3", title: "Intervensi pada Obat", color: "cb-amber", borderColor: "var(--amber)", desc: "Tindakan yang berkaitan langsung dengan modifikasi terapi obat.", subs: [
+    { code: "I3.1", title: "Mengubah obat", desc: "Mengganti obat yang bermasalah dengan obat lain.", examples: ["Penggantian ke generik bioekuivalen", "Switch terapi karena alergi"] },
+    { code: "I3.2", title: "Mengubah dosis", desc: "Penyesuaian dosis obat.", examples: ["Reduksi dosis pada gangguan ginjal", "Titrasi dosis sesuai respons"] },
+    { code: "I3.3", title: "Mengubah formulasi", desc: "Mengganti bentuk sediaan.", examples: ["Tablet → sirup untuk anak", "IV → oral (deeskalasi)"] },
+    { code: "I3.4", title: "Mengubah jadwal/frekuensi pemberian", desc: "Modifikasi waktu atau interval pemberian.", examples: ["1x1 → 2x1", "Pindah ke malam hari"] },
+    { code: "I3.5", title: "Menghentikan obat", desc: "Penghentian obat yang tidak perlu atau berbahaya.", examples: ["Stop antibiotik setelah kultur negatif", "Deprescribing pada polifarmasi"] },
+    { code: "I3.6", title: "Memulai obat baru", desc: "Penambahan obat untuk kondisi yang belum tertangani.", examples: ["Mulai antikoagulan pada AF", "Tambah gastroprotektan"] },
+    { code: "I3.7", title: "Mengubah cara/rute pemberian", desc: "Modifikasi rute pemberian obat.", examples: ["Oral → sublingual", "IV → SC", "Ubah cara inhalasi"] },
+  ]},
+  { code: "I4", title: "Intervensi Lainnya", color: "cb-gray", borderColor: "var(--text3)", desc: "Tindakan yang tidak termasuk dalam I1–I3.", subs: [
+    { code: "I4.1", title: "Meminta pemeriksaan laboratorium/diagnostik", desc: "Rekomendasi pemeriksaan penunjang untuk evaluasi DRP.", examples: ["Minta cek fungsi ginjal", "Rekomendasi TDM", "Minta EKG untuk evaluasi QTc"] },
+    { code: "I4.2", title: "Dokumentasi saja", desc: "Mendokumentasikan DRP tanpa tindakan lebih lanjut.", examples: ["Mencatat DRP untuk monitoring", "Dokumentasi alergi baru"] },
+  ]},
+  { code: "I5", title: "Edukasi / Informasi Pasien", color: "cb-green", borderColor: "var(--green)", desc: "(Dipertegas di v9.1) Intervensi edukasi dan konseling yang berpusat pada pasien.", subs: [
+    { code: "I5.1", title: "Edukasi/informasi diberikan kepada pasien", desc: "Sesi edukasi formal atau informal yang diberikan kepada pasien/keluarga.", examples: ["Sesi KIE lengkap", "Edukasi manajemen penyakit", "Informasi diet dan gaya hidup"] },
+  ]},
+];
+
+const outcomes = [
+  { code: "O0", title: "Tidak Diketahui", color: "cb-gray", borderColor: "var(--text3)", desc: "Status penyelesaian DRP tidak dapat ditentukan, misalnya karena pasien tidak bisa difollow-up.", subs: [
+    { code: "O0.0", title: "Hasil tidak diketahui", desc: "Tidak ada informasi tentang apakah DRP terselesaikan atau tidak.", examples: ["Pasien pulang APS", "Tidak ada data follow-up"] },
+  ]},
+  { code: "O1", title: "Masalah Terselesaikan", color: "cb-green", borderColor: "var(--green)", desc: "DRP berhasil diselesaikan sepenuhnya setelah intervensi.", subs: [
+    { code: "O1.1", title: "Masalah terselesaikan sepenuhnya", desc: "DRP sudah tidak ada lagi setelah intervensi apoteker.", examples: ["Efek samping hilang setelah dosis diturunkan", "Target terapi tercapai"] },
+  ]},
+  { code: "O2", title: "Masalah Terselesaikan Sebagian", color: "cb-amber", borderColor: "var(--amber)", desc: "DRP membaik namun belum terselesaikan sepenuhnya.", subs: [
+    { code: "O2.1", title: "Masalah terselesaikan sebagian", desc: "Ada perbaikan pada DRP namun masalah masih ada atau belum mencapai target.", examples: ["TD membaik tapi belum target", "Efek samping berkurang tapi masih ada"] },
+    { code: "O2.2", title: "Masalah tidak terselesaikan, intervensi tidak diterima", desc: "DRP tetap ada karena rekomendasi apoteker tidak diterima.", examples: ["Dokter tidak setuju perubahan terapi", "Pasien menolak rekomendasi"] },
+    { code: "O2.3", title: "Masalah tidak terselesaikan, intervensi tidak mungkin dilakukan", desc: "Intervensi diinginkan namun tidak dapat dilaksanakan.", examples: ["Obat tidak tersedia", "Kondisi pasien tidak memungkinkan"] },
+    { code: "O2.4", title: "Masalah tidak terselesaikan, tidak ada informasi tindak lanjut", desc: "Tidak ada data yang menunjukkan apakah DRP membaik.", examples: ["Tidak ada hasil lab follow-up", "Pasien tidak kontrol ulang"] },
+  ]},
+  { code: "O3", title: "Masalah Tidak Terselesaikan", color: "cb-red", borderColor: "var(--red)", desc: "DRP tidak dapat diselesaikan meskipun sudah ada intervensi.", subs: [
+    { code: "O3.1", title: "Masalah tidak terselesaikan, penyebab tidak dapat diatasi", desc: "DRP tetap ada karena penyebab dasarnya tidak dapat dieliminasi.", examples: ["Kondisi genetik", "Penyakit progresif yang tidak bisa dimodifikasi"] },
+    { code: "O3.2", title: "Masalah baru muncul akibat intervensi", desc: "Intervensi yang dilakukan justru memunculkan masalah baru.", examples: ["Penggantian obat menyebabkan efek samping baru"] },
+  ]},
+];
+
+const alurSteps = [
+  { num: "1", color: "var(--purple)", title: "Pengumpulan Data Pasien (Patient Assessment)", detail: "Kumpulkan data rekam medis, riwayat obat (BPMH), hasil lab, tanda vital, keluhan subjektif/objektif. Pastikan data medication reconciliation sudah lengkap sebelum analisis.", icon: "📋" },
+  { num: "2", color: "var(--blue)", title: "Identifikasi DRP (P — Problems)", detail: "Evaluasi setiap obat terhadap efektivitas dan keamanan. Tanyakan: apakah terapi mencapai target? Apakah ada efek yang tidak diinginkan? Apakah ada indikasi yang tidak tertangani? Tentukan apakah DRP bersifat manifes atau potensial.", icon: "🔍" },
+  { num: "3", color: "var(--amber)", title: "Analisis Penyebab (C — Causes)", detail: "Identifikasi satu atau lebih akar penyebab DRP. Pertimbangkan: pemilihan obat, dosis, formulasi, durasi, cara penggunaan pasien, monitoring, atau proses dispensing. Satu DRP bisa memiliki lebih dari satu kode C.", icon: "🔬" },
+  { num: "4", color: "var(--green)", title: "Rencana Intervensi (I — Planned Intervention)", detail: "Tentukan tindakan yang paling tepat dan feasible: apakah akan berkomunikasi dengan dokter, mengedukasi pasien, atau memodifikasi obat secara langsung. Catat apakah intervensi diterima atau tidak.", icon: "💊" },
+  { num: "5", color: "var(--red)", title: "Follow-up & Evaluasi Hasil (O — Outcomes)", detail: "Evaluasi apakah DRP berhasil diselesaikan setelah intervensi. Dokumentasikan hasil dan jadwalkan follow-up berikutnya bila masalah belum terselesaikan sepenuhnya.", icon: "📊" },
+  { num: "6", color: "var(--text2)", title: "Dokumentasi & Pelaporan", detail: "Catat semua DRP, intervensi, dan outcome dalam sistem dokumentasi farmasi. Gunakan kode PCNE secara konsisten untuk memudahkan audit, penelitian, dan komunikasi antar profesi kesehatan.", icon: "📝" },
+];
+
+const cases = [
+  {
+    title: "Kasus 1 — Pasien Gagal Jantung",
+    sub: "DRP Potensial: Tidak ada gastroprotektan pada pasien dengan kombinasi risiko tinggi",
+    dot: "var(--blue)",
+    skenario: "Tn. A, 65 tahun, dirawat dengan diagnosis HF + CAD. Mendapat aspirin 100 mg, metoprolol 25 mg, ramipril 5 mg, furosemid 40 mg, clopidogrel 75 mg. Tidak ada PPI dalam resep. Pasien memiliki riwayat peptic ulcer 2 tahun lalu.",
+    p: ["P1.3 — Indikasi tidak tertangani (risiko perdarahan GI tidak diantisipasi)"],
+    c: ["C1.4 — Indikasi ada (gastroproteksi) tapi obat tidak diresepkan"],
+    i: ["I1.1 — Informasi / diskusi dengan dokter (rekomendasi tambahan PPI)", "I1.3 — Intervensi diterima, omeprazol 20 mg/hari ditambahkan"],
+    o: ["O1.1 — Masalah terselesaikan sepenuhnya"],
+    catatan: "Kombinasi antiplatelet ganda + riwayat ulkus = indikasi kuat gastroproteksi. Guidelines ESC merekomendasikan PPI rutin pada kombinasi aspirin + clopidogrel."
+  },
+  {
+    title: "Kasus 2 — Pasien ICU dengan AKI",
+    sub: "DRP Manifes: Akumulasi milrinon pada gangguan ginjal akut",
+    dot: "var(--red)",
+    skenario: "Ny. B, 58 tahun, syok kardiogenik pasca-operasi bypass. Mendapat milrinon 0.5 mcg/kg/menit. Hasil lab: SCr 3.2 mg/dL (baseline 1.0), GFR estimasi 18 mL/menit. Pasien mulai menunjukkan hipotensi refrakter.",
+    p: ["P2.2 — Efek samping berhubungan dosis (hipotensi akibat akumulasi milrinon pada AKI)"],
+    c: ["C3.5 — Penyesuaian dosis diperlukan pada gangguan ginjal, tidak dilakukan"],
+    i: ["I3.2 — Mengubah dosis: rekomendasi reduksi 50% → 0.25 mcg/kg/menit", "I4.1 — Rekomendasi monitoring urin output dan SCr serial"],
+    o: ["O1.1 — Masalah terselesaikan, hemodinamik stabil setelah penyesuaian dosis"],
+    catatan: "Milrinon dieliminasi 85% oleh ginjal. GFR <50 mL/menit → kurangi dosis minimal 50%. GFR <20 mL/menit → pertimbangkan penghentian dan ganti dengan agen alternatif."
+  },
+  {
+    title: "Kasus 3 — Pasien Rawat Jalan Hipertensi",
+    sub: "DRP Manifes: Interaksi obat — hiperkalemia pada kombinasi ACE inhibitor + spironolakton + suplemen kalium",
+    dot: "var(--amber)",
+    skenario: "Tn. C, 72 tahun, HT + HF. Resep: ramipril 10 mg, spironolakton 25 mg, bisoprolol 5 mg. Pasien secara mandiri mengonsumsi suplemen KCl 600 mg/hari yang dibeli bebas. Hasil K+ = 6.1 mEq/L.",
+    p: ["P2.2 — Efek samping berhubungan dosis (hiperkalemia)", "P2.3 — Interaksi obat-suplemen (ACEi + spironolakton + KCl)"],
+    c: ["C1.3 — Kombinasi tidak tepat (triple hyperkalemia risk)", "C6.3 — Pasien menggunakan obat/suplemen yang tidak perlu (KCl mandiri)"],
+    i: ["I2.1 — Konseling pasien: stop suplemen KCl, edukasi risiko hiperkalemia", "I1.1 — Informasi kepada dokter tentang kadar K+ dan interaksi", "I4.1 — Minta kontrol K+ ulang dalam 3 hari"],
+    o: ["O1.1 — K+ kembali 4.8 mEq/L setelah 5 hari, masalah terselesaikan"],
+    catatan: "ACE inhibitor + spironolakton sudah membawa risiko hiperkalemia. Penambahan suplemen K+ oral tanpa pengawasan pada pasien ini sangat berbahaya. Pertanyaan aktif tentang suplemen mandiri wajib dalam setiap sesi konseling."
+  },
+  {
+    title: "Kasus 4 — Pasien Lansia dengan Polifarmasi",
+    sub: "DRP Potensial: Obat tidak diperlukan lagi (deprescribing opportunity)",
+    dot: "var(--green)",
+    skenario: "Ny. D, 82 tahun, DM tipe 2 + osteoartritis. Resep mencakup 11 obat termasuk glibenklamid, diklofenak oral rutin, serta PPI yang sudah diberikan selama 4 tahun tanpa evaluasi ulang. GFR 42 mL/menit. Pasien sering mengeluh pusing.",
+    p: ["P2.2 — Risiko hipoglikemia (glibenklamid tidak tepat pada lansia/GFR rendah)", "P3.1 — Obat tidak diperlukan (diklofenak kontraindikasi relatif pada GFR <50, PPI jangka panjang tanpa indikasi aktif)"],
+    c: ["C1.1 — Obat tidak tepat / kontraindikasi (glibenklamid + diklofenak pada lansia dengan CKD)", "C4.2 — Durasi terapi terlalu lama (PPI 4 tahun tanpa evaluasi)"],
+    i: ["I3.1 — Ganti glibenklamid → linagliptin (aman di CKD)", "I3.1 — Ganti diklofenak → parasetamol atau topikal", "I3.5 — Deprescribing PPI: tapering off dengan monitoring", "I2.1 — Edukasi pasien tentang perubahan terapi"],
+    o: ["O1.1 — Setelah 4 minggu: tidak ada episode hipoglikemia, GFR stabil, PPI berhasil dihentikan"],
+    catatan: "Kriteria Beers dan STOPP/START sangat membantu identifikasi PIMs (Potentially Inappropriate Medications) pada lansia. Glibenklamid masuk daftar obat yang harus dihindari pada pasien ≥65 tahun."
+  },
+  {
+    title: "Kasus 5 — Pasien Septic Shock di ICU",
+    sub: "DRP Manifes: Monitoring tidak memadai — vankomisn tanpa TDM",
+    dot: "var(--purple)",
+    skenario: "Tn. E, 45 tahun, septic shock dengan suspek MRSA. Mendapat vankomisn 1g q12h. Terapi sudah berjalan 72 jam. Belum ada pemeriksaan kadar trough/AUC vankomisn, SCr mulai meningkat dari 0.9 → 1.8 mg/dL.",
+    p: ["P2.2 — Risiko nefrotoksisitas akibat dosis/pajanan tidak terpantau", "P1.1 — Kemungkinan efektivitas tidak optimal (target AUC tidak diverifikasi)"],
+    c: ["C7.1 — Tidak ada atau pemantauan tidak memadai (TDM vankomisn belum dilakukan)"],
+    i: ["I4.1 — Rekomendasi TDM vankomisn: cek AUC/MIC atau trough level segera", "I3.3 — Sesuaikan interval dosis berdasarkan hasil TDM dan GFR", "I1.1 — Diskusi dengan tim ICU tentang target AUC 400–600 mg·h/L"],
+    o: ["O1.1 — TDM dilakukan, dosis disesuaikan 1g q24h, AUC dalam target, SCr stabil"],
+    catatan: "ASHP/IDSA/SIDP 2020 guideline merekomendasikan monitoring vankomisn berbasis AUC/MIC (target 400–600) dibanding trough saja untuk meminimalkan nefrotoksisitas sambil mempertahankan efikasi."
+  }
+];
+
+const tipsContent = [
+  { title: "Satu DRP, Banyak Kode", body: "Satu kejadian DRP dapat memiliki lebih dari satu kode Problem (P), lebih dari satu kode Cause (C), dan lebih dari satu kode Intervention (I). Misalnya: hiperkalemia akibat kombinasi ACEi + spironolakton → P2.2 + P2.3, C1.3 + C6.3.", color: "var(--blue)" },
+  { title: "Urutan Prioritas DRP", body: "Tidak semua DRP perlu diselesaikan sekaligus. Prioritaskan berdasarkan: (1) mengancam jiwa, (2) mengurangi efektivitas terapi, (3) potensi efek samping serius, (4) masalah kepatuhan, (5) efisiensi biaya.", color: "var(--red)" },
+  { title: "DRP Potensial vs Manifes", body: "Bedakan dengan jelas: DRP potensial (risiko yang belum terjadi) dan DRP manifes (sudah terjadi). Keduanya sama pentingnya untuk didokumentasikan dan diintervensi. Apoteker ICU lebih banyak menangani DRP potensial karena monitoring intensif.", color: "var(--amber)" },
+  { title: "Dokumentasi yang Baik = Intervensi yang Diakui", body: "Gunakan kode PCNE secara konsisten dalam setiap dokumentasi. Catat: tanggal identifikasi, kode P/C/I/O, nama apoteker, dan respons prescriber. Dokumentasi yang baik mendukung pengakuan peran apoteker klinis dalam tim.", color: "var(--green)" },
+  { title: "Setting ICU: Fokus Utama DRP", body: "Di ICU, DRP yang paling sering ditemukan: C3.5 (penyesuaian dosis pada AKI/gangguan hati), C7.1 (monitoring tidak adekuat), C1.3 (interaksi obat-obat), dan C6.2 (cara penggunaan — terutama infus kompatibilitas). Selalu cek renal dan hepatic dose adjustment.", color: "var(--purple)" },
+  { title: "Komunikasi dengan Dokter", body: "Gunakan pendekatan SBAR (Situation-Background-Assessment-Recommendation) saat menyampaikan DRP kepada dokter. Siapkan bukti literatur atau guideline untuk mendukung rekomendasi. Catat apakah intervensi diterima (I1.3), tidak diterima (I1.4), atau diterima sebagian (I1.5).", color: "var(--pink)" },
+  { title: "Penyesuaian Dosis — Checklist Rutin", body: "Untuk setiap pasien baru: (1) cek GFR → sesuaikan dosis obat renal clearance, (2) cek fungsi hati (Child-Pugh) → sesuaikan dosis metabolisme hepatik, (3) cek berat badan aktual vs IBW untuk obat berbasis berat, (4) cek usia → pertimbangkan kriteria Beers/STOPP pada lansia.", color: "var(--amber)" },
+  { title: "Validasi Resep Sistematis", body: "Gunakan pendekatan 5 benar + 3 tepat: benar obat, dosis, rute, waktu, pasien; tepat indikasi, tepat durasi, tepat monitoring. Tambahkan pengecekan interaksi obat secara rutin untuk setiap pasien yang mendapat ≥5 obat.", color: "var(--text2)" },
+];
+
+function showSection(id, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+
+function renderDomain(data, containerId) {
+  document.getElementById(containerId).innerHTML = data.map(domain => `
+    <div class="card" style="border-left: 3px solid ${domain.borderColor}; margin-bottom: 1rem;">
+      <div class="domain-header">
+        <span class="code-badge ${domain.color}">${domain.code}</span>
+        <div>
+          <div class="domain-label">${domain.title}</div>
+          <div class="domain-sub">${domain.desc}</div>
+        </div>
+      </div>
+      ${domain.subs.map(sub => `
+        <div class="sub-item" style="border-left-color: ${domain.borderColor};">
+          <div class="sub-row">
+            <div class="sub-code" style="color: ${domain.borderColor};">${sub.code}</div>
+            <div style="flex:1">
+              <div class="sub-title">${sub.title}</div>
+              <div class="sub-desc">${sub.desc}</div>
+              ${sub.examples && sub.examples.length ? `
+              <div class="sub-examples">
+                ${sub.examples.map(e => `<span class="example-tag">${e}</span>`).join('')}
+              </div>` : ''}
+            </div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+function renderAlur() {
+  document.getElementById('alur-content').innerHTML = `
+    <div class="card" style="margin-bottom:1rem;">
+      <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:1rem;">Langkah Sistematis Identifikasi dan Penyelesaian DRP dengan PCNE v9.1</div>
+      ${alurSteps.map((s, i) => `
+        <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:${i < alurSteps.length-1 ? '0' : '0'};">
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
+            <div style="width:32px;height:32px;border-radius:50%;background:${s.color}20;border:1.5px solid ${s.color};display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:500;color:${s.color};">${s.num}</div>
+            ${i < alurSteps.length-1 ? `<div style="width:1px;height:24px;background:var(--border2);margin:4px 0;"></div>` : ''}
+          </div>
+          <div style="flex:1;padding-bottom:${i < alurSteps.length-1 ? '0' : '0'};">
+            <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px;">${s.title}</div>
+            <div style="font-size:12.5px;color:var(--text2);line-height:1.6;margin-bottom:${i < alurSteps.length-1 ? '20px' : '0'};">${s.detail}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="card">
+      <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:10px;">Format Dokumentasi DRP Standar</div>
+      <div style="font-family:var(--mono);font-size:12px;color:var(--text2);background:var(--bg3);border-radius:8px;padding:14px;line-height:2;">
+        <span style="color:var(--text3);">Tanggal:</span> ___________<br>
+        <span style="color:var(--text3);">Nama Pasien:</span> ___________ <span style="color:var(--text3);">No. RM:</span> ___________<br>
+        <span style="color:var(--red);">P (Problem):</span> ___________  <span style="color:var(--text3);">Status:</span> Manifes / Potensial<br>
+        <span style="color:var(--amber);">C (Cause):</span> ___________<br>
+        <span style="color:var(--blue);">I (Intervention):</span> ___________<br>
+        <span style="color:var(--text3);">  Diterima:</span> Ya / Tidak / Sebagian<br>
+        <span style="color:var(--green);">O (Outcome):</span> ___________<br>
+        <span style="color:var(--text3);">Apoteker:</span> ___________ <span style="color:var(--text3);">Tanda tangan:</span> ___________
+      </div>
+    </div>
+  `;
+}
+
+function renderCases() {
+  document.getElementById('contoh-list').innerHTML = cases.map(c => `
+    <div class="case-card" onclick="this.classList.toggle('open'); this.querySelector('.toggle-btn').textContent = this.classList.contains('open') ? '▾' : '▸'">
+      <div class="case-top">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;">
+            <div style="width:8px;height:8px;border-radius:50%;background:${c.dot};flex-shrink:0;"></div>
+            <div class="case-title">${c.title}</div>
+          </div>
+          <div class="case-sub">${c.sub}</div>
+        </div>
+        <span class="toggle-btn">▸</span>
+      </div>
+      <div class="case-detail">
+        <div class="detail-label">Skenario Klinis</div>
+        <div class="detail-val" style="margin-bottom:10px;">${c.skenario}</div>
+        <div class="detail-label">P — Masalah</div>
+        <div class="code-row">${c.p.map(p => `<span class="code-badge cb-red">${p}</span>`).join('')}</div>
+        <div class="detail-label" style="margin-top:10px;">C — Penyebab</div>
+        <div class="code-row">${c.c.map(x => `<span class="code-badge cb-amber">${x}</span>`).join('')}</div>
+        <div class="detail-label" style="margin-top:10px;">I — Intervensi</div>
+        ${c.i.map(x => `<div style="font-size:12.5px;color:var(--text2);padding:3px 0;">• ${x}</div>`).join('')}
+        <div class="detail-label" style="margin-top:10px;">O — Hasil</div>
+        <div class="code-row">${c.o.map(x => `<span class="code-badge cb-green">${x}</span>`).join('')}</div>
+        <div class="info-box" style="margin-top:10px;">${c.catatan}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderTips() {
+  document.getElementById('tips-content').innerHTML = `
+    <div style="display:grid;gap:0.75rem;">
+      ${tipsContent.map(t => `
+        <div class="card" style="border-left: 3px solid ${t.color};">
+          <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px;">${t.title}</div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.7;">${t.body}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="note-footer">
+      Referensi: PCNE Classification for Drug Related Problems V9.1, Pharmaceutical Care Network Europe Foundation. Referensi ini untuk tujuan pendidikan dan praktik farmasi klinis. Selalu verifikasi dengan panduan terbaru.
+    </div>
+  `;
+}
+
+renderDomain(problems, 'problem-list');
+renderDomain(causes, 'cause-list');
+renderDomain(interventions, 'intervention-list');
+renderDomain(outcomes, 'outcome-list');
+renderAlur();
+renderCases();
+renderTips();
+</script>
+</body>
+</html>
