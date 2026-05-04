@@ -258,7 +258,7 @@
       </div>
 
       <div class="card" style="border-left: 3px solid var(--purple);">
-        <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:12px;">Struktur 4 Domain Utama</div>
+        <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:12px;">Struktur 5 Domain Utama</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;">
           <div style="background:var(--red-bg);border:1px solid rgba(248,81,73,0.2);border-radius:8px;padding:12px;">
             <div style="font-family:var(--mono);font-size:22px;font-weight:500;color:var(--red);">P</div>
@@ -276,7 +276,13 @@
             <div style="font-family:var(--mono);font-size:22px;font-weight:500;color:var(--blue);">I</div>
             <div style="font-size:13px;font-weight:500;color:var(--text);margin:4px 0 2px;">Interventions</div>
             <div style="font-size:12px;color:var(--text2);">Tindakan yang direncanakan/dilakukan apoteker</div>
-            <div style="font-family:var(--mono);font-size:11px;color:var(--blue);margin-top:6px;">I0–I5</div>
+            <div style="font-family:var(--mono);font-size:11px;color:var(--blue);margin-top:6px;">I0–I4</div>
+          </div>
+          <div style="background:var(--purple-bg);border:1px solid rgba(167,139,250,0.2);border-radius:8px;padding:12px;">
+            <div style="font-family:var(--mono);font-size:22px;font-weight:500;color:var(--purple);">A</div>
+            <div style="font-size:13px;font-weight:500;color:var(--text);margin:4px 0 2px;">Acceptance</div>
+            <div style="font-size:12px;color:var(--text2);">Penerimaan intervensi oleh prescriber/pasien</div>
+            <div style="font-family:var(--mono);font-size:11px;color:var(--purple);margin-top:6px;">A1–A3</div>
           </div>
           <div style="background:var(--green-bg);border:1px solid rgba(63,185,80,0.2);border-radius:8px;padding:12px;">
             <div style="font-family:var(--mono);font-size:22px;font-weight:500;color:var(--green);">O</div>
@@ -308,10 +314,10 @@
       <div class="card">
         <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:10px;">Perubahan Penting dari Versi Sebelumnya (v8 → v9.1)</div>
         <div style="font-size:13px;color:var(--text2);line-height:1.8;">
-          <div style="margin-bottom:8px;">• Domain <strong style="color:var(--text)">Acceptability</strong> (penerimaan intervensi oleh prescriber) ditambahkan secara eksplisit pada domain Intervensi</div>
-          <div style="margin-bottom:8px;">• Kode <strong style="color:var(--text)">C9</strong> (penyebab tidak diketahui / tidak terdokumentasi) ditambahkan</div>
-          <div style="margin-bottom:8px;">• Kode <strong style="color:var(--text)">I5</strong> (edukasi pasien/caregiver) dipisahkan lebih eksplisit dari I2</div>
-          <div>• Terminologi lebih konsisten dengan standar dokumentasi farmasi klinis internasional</div>
+          <div style="margin-bottom:8px;">• Domain <strong style="color:var(--text)">Acceptance</strong> (penerimaan intervensi oleh prescriber dan pasien) ditambahkan sebagai domain terpisah dari Intervensi, dengan kode A1–A3</div>
+          <div style="margin-bottom:8px;">• Kode <strong style="color:var(--text)">C8</strong> baru ditambahkan untuk masalah terkait transfer pasien antar setting pelayanan (<em>Patient Transfer Related</em>). Domain lama "Lainnya" (C8) di-renumber menjadi <strong style="color:var(--text)">C9</strong></div>
+          <div style="margin-bottom:8px;">• Subdomain <strong style="color:var(--text)">C7</strong> diperkuat dengan penambahan kode C7.10 (pasien tidak mampu memahami instruksi dengan baik — sering karena hambatan bahasa)</div>
+          <div>• Terminologi lebih konsisten dengan standar dokumentasi farmasi klinis internasional; kode yang berakhiran x.0 diubah menjadi x.1</div>
         </div>
       </div>
     </div>
@@ -451,11 +457,12 @@ const causes = [
     { code: "C7.1", title: "Tidak ada atau pemantauan tidak memadai", desc: "Parameter terapi tidak dipantau sebagaimana mestinya.", examples: ["Tidak ada cek fungsi ginjal pada metformin", "TDM vankomisn tidak dilakukan", "INR tidak dicek rutin"] },
     { code: "C7.2", title: "Hasil monitoring tidak ditindaklanjuti", desc: "Data monitoring tersedia namun tidak digunakan untuk penyesuaian terapi.", examples: ["HbA1c buruk tapi dosis insulin tidak diubah", "Hasil kultur tidak digunakan de-eskalasi antibiotik"] },
   ]},
-  { code: "C8", title: "Lainnya", color: "cb-gray", borderColor: "var(--text3)", desc: "Penyebab yang tidak termasuk dalam kategori C1–C7.", subs: [
-    { code: "C8.1", title: "Tidak ada atau penyebab tidak jelas", desc: "DRP teridentifikasi namun penyebabnya tidak dapat ditentukan atau tidak ada informasi yang cukup.", examples: ["Data tidak tersedia", "Penyebab multifaktor kompleks"] },
+  { code: "C8", title: "Transfer Pasien Antar Setting", color: "cb-gray", borderColor: "var(--text3)", desc: "(Baru di v9.1) Masalah yang timbul saat pasien berpindah antar setting pelayanan kesehatan (rawat inap ↔ rawat jalan, rumah sakit ↔ puskesmas/apotek).", subs: [
+    { code: "C8.1", title: "Masalah terkait transfer/transisi pelayanan", desc: "DRP terjadi karena informasi obat tidak tersampaikan atau tidak akurat saat perpindahan pasien antar setting pelayanan.", examples: ["Obat tidak dilanjutkan saat pulang", "Dosis berubah tanpa dokumentasi saat rujukan", "Medication reconciliation tidak dilakukan saat transisi"] },
   ]},
-  { code: "C9", title: "Penyebab Tidak Diketahui/Terdokumentasi", color: "cb-gray", borderColor: "var(--text3)", desc: "(Baru di v9.1) Digunakan ketika penyebab tidak dapat ditentukan setelah evaluasi menyeluruh.", subs: [
-    { code: "C9.1", title: "Penyebab tidak dapat ditentukan", desc: "Sudah dilakukan evaluasi menyeluruh namun penyebab DRP tetap tidak jelas.", examples: ["Variabilitas farmakogenetik tidak terdokumentasi", "Penyebab idiosinkrasi murni"] },
+  { code: "C9", title: "Lainnya", color: "cb-gray", borderColor: "var(--text3)", desc: "(Renumber dari C8 lama) Penyebab yang tidak termasuk dalam kategori C1–C8.", subs: [
+    { code: "C9.1", title: "Tidak ada atau pemantauan outcome tidak tepat (termasuk TDM)", desc: "Outcome terapi tidak dipantau secara adekuat.", examples: ["TDM tidak dilakukan", "Tidak ada evaluasi efektivitas terapi"] },
+    { code: "C9.2", title: "Penyebab lain yang tidak terklasifikasi", desc: "Penyebab DRP yang tidak dapat dikategorikan ke domain C1–C8.", examples: ["Penyebab multifaktor kompleks", "Penyebab idiosinkrasi murni"] },
   ]},
 ];
 
@@ -487,9 +494,6 @@ const interventions = [
   { code: "I4", title: "Intervensi Lainnya", color: "cb-gray", borderColor: "var(--text3)", desc: "Tindakan yang tidak termasuk dalam I1–I3.", subs: [
     { code: "I4.1", title: "Meminta pemeriksaan laboratorium/diagnostik", desc: "Rekomendasi pemeriksaan penunjang untuk evaluasi DRP.", examples: ["Minta cek fungsi ginjal", "Rekomendasi TDM", "Minta EKG untuk evaluasi QTc"] },
     { code: "I4.2", title: "Dokumentasi saja", desc: "Mendokumentasikan DRP tanpa tindakan lebih lanjut.", examples: ["Mencatat DRP untuk monitoring", "Dokumentasi alergi baru"] },
-  ]},
-  { code: "I5", title: "Edukasi / Informasi Pasien", color: "cb-green", borderColor: "var(--green)", desc: "(Dipertegas di v9.1) Intervensi edukasi dan konseling yang berpusat pada pasien.", subs: [
-    { code: "I5.1", title: "Edukasi/informasi diberikan kepada pasien", desc: "Sesi edukasi formal atau informal yang diberikan kepada pasien/keluarga.", examples: ["Sesi KIE lengkap", "Edukasi manajemen penyakit", "Informasi diet dan gaya hidup"] },
   ]},
 ];
 
