@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antikoagulasi di ICU — ApotekerRy | Farmasi Klinis</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap');
+
+:root {
+  --ink:    #1C1612;
+  --cream:  #F7F2EA;
+  --rust:   #B5451B;
+  --rust-l: #F5E8E3;
+  --rust-d: #8C3412;
+  --sage:   #3B6357;
+  --sage-l: #E4EDEA;
+  --gold:   #C8922A;
+  --gold-l: #FBF3E2;
+  --blue:   #2C4A7A;
+  --blue-l: #E4EBF5;
+  --plum:   #5C2D6E;
+  --plum-l: #F0E8F5;
+  --dust:   #7A6E62;
+  --border: #DDD5C8;
+  --white:  #FFFFFF;
+  --lgray:  #F9F6F2;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--cream); color:var(--ink); font-family:'Libre Baskerville',Georgia,serif; line-height:1.75; }
+
+/* ── NAV ── */
+.nav { background:var(--ink); padding:14px 40px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
+.nav-left { display:flex; flex-direction:column; }
+.nav-logo { font-family:'Syne',sans-serif; font-size:14px; font-weight:800; color:var(--cream); letter-spacing:0.08em; text-decoration:none; }
+.nav-logo span { color:var(--rust); }
+.nav-sub { font-family:'DM Mono',monospace; font-size:10px; color:rgba(255,255,255,0.3); letter-spacing:0.14em; margin-top:1px; }
+.nav-back { font-family:'DM Mono',monospace; font-size:11px; color:rgba(255,255,255,0.35); text-decoration:none; letter-spacing:0.08em; transition:color 0.2s; }
+.nav-back:hover { color:rgba(255,255,255,0.75); }
+
+/* ── HERO ── */
+.hero { background:var(--ink); padding:72px 40px 64px; position:relative; overflow:hidden; }
+.hero::before { content:''; position:absolute; top:-100px; right:-60px; width:480px; height:480px; border-radius:50%; background:radial-gradient(circle,rgba(181,69,27,0.18) 0%,transparent 65%); }
+.hero::after { content:''; position:absolute; bottom:-100px; left:20%; width:380px; height:380px; border-radius:50%; background:radial-gradient(circle,rgba(200,146,42,0.1) 0%,transparent 65%); }
+.hero-inner { max-width:820px; margin:0 auto; position:relative; z-index:2; }
+.hero-tag { display:inline-flex; align-items:center; gap:8px; font-family:'DM Mono',monospace; font-size:11px; font-weight:500; color:var(--gold); letter-spacing:0.18em; text-transform:uppercase; margin-bottom:22px; border:1px solid rgba(200,146,42,0.35); background:rgba(200,146,42,0.08); padding:4px 14px; border-radius:20px; }
+.hero h1 { font-family:'Syne',sans-serif; font-size:clamp(2rem,4.5vw,3.2rem); font-weight:800; color:var(--white); line-height:1.06; margin-bottom:14px; }
+.hero h1 em { font-style:italic; font-family:'Libre Baskerville',serif; color:#AABFD4; font-weight:400; }
+.hero-sub { font-size:1rem; color:rgba(255,255,255,0.5); max-width:580px; line-height:1.72; margin-bottom:32px; }
+.hero-pills { display:flex; gap:10px; flex-wrap:wrap; }
+.hero-pill { font-family:'DM Mono',monospace; font-size:11px; color:rgba(255,255,255,0.55); background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12); padding:5px 14px; border-radius:4px; }
+
+/* ── PROG NAV ── */
+.prog-nav { background:var(--white); border-bottom:1px solid var(--border); padding:0 40px; display:flex; gap:0; overflow-x:auto; -webkit-overflow-scrolling:touch; position:sticky; top:49px; z-index:99; }
+.prog-nav::-webkit-scrollbar { height:3px; }
+.prog-nav::-webkit-scrollbar-thumb { background:var(--border); }
+.prog-btn { font-family:'DM Mono',monospace; font-size:11px; font-weight:500; color:var(--dust); padding:14px 16px; border:none; background:none; border-bottom:2px solid transparent; cursor:pointer; white-space:nowrap; letter-spacing:0.05em; transition:all 0.2s; }
+.prog-btn:hover { color:var(--ink); }
+.prog-btn.active { color:var(--rust); border-bottom-color:var(--rust); }
+
+/* ── MAIN ── */
+.main { max-width:860px; margin:0 auto; padding:52px 40px 100px; }
+.section { display:none; }
+.section.active { display:block; }
+
+/* ── SECTION HEADER ── */
+.section-header { margin-bottom:36px; }
+.section-num { font-family:'DM Mono',monospace; font-size:11px; color:var(--dust); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:8px; }
+.section-title { font-family:'Syne',sans-serif; font-size:clamp(1.5rem,3vw,2.1rem); font-weight:700; color:var(--ink); line-height:1.15; margin-bottom:10px; }
+.section-lead { font-size:1rem; color:var(--dust); line-height:1.75; max-width:680px; border-left:3px solid var(--rust); padding-left:16px; }
+
+/* PROSE */
+.prose { font-size:0.975rem; line-height:1.8; color:#3A3028; margin-bottom:20px; }
+.prose strong { font-weight:700; color:var(--ink); }
+
+h3.sh { font-family:'Syne',sans-serif; font-size:1.08rem; font-weight:700; color:var(--ink); margin:32px 0 12px; display:flex; align-items:center; gap:8px; }
+h3.sh::before { content:''; display:inline-block; width:14px; height:3px; background:var(--rust); flex-shrink:0; }
+
+/* CALLOUTS */
+.callout { border-radius:8px; padding:16px 20px; margin:18px 0; border-left:4px solid; }
+.callout.rust  { background:var(--rust-l); border-color:var(--rust); }
+.callout.sage  { background:var(--sage-l); border-color:var(--sage); }
+.callout.gold  { background:var(--gold-l); border-color:var(--gold); }
+.callout.blue  { background:var(--blue-l); border-color:var(--blue); }
+.callout.plum  { background:var(--plum-l); border-color:var(--plum); }
+.cl-label { font-family:'DM Mono',monospace; font-size:9.5px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:5px; }
+.callout.rust  .cl-label { color:var(--rust); }
+.callout.sage  .cl-label { color:var(--sage); }
+.callout.gold  .cl-label { color:var(--gold); }
+.callout.blue  .cl-label { color:var(--blue); }
+.callout.plum  .cl-label { color:var(--plum); }
+.callout p, .callout li { font-size:0.93rem; line-height:1.7; }
+.callout ul { padding-left:16px; }
+
+/* DRUG CARD */
+.drug-card { background:var(--white); border-radius:14px; border:1.5px solid var(--border); box-shadow:0 3px 18px rgba(28,22,18,0.06); margin-bottom:24px; overflow:hidden; }
+.drug-header { padding:20px 24px 16px; border-bottom:1px solid var(--border); display:flex; align-items:flex-start; justify-content:space-between; gap:16px; }
+.drug-header-left { flex:1; }
+.drug-name { font-family:'Syne',sans-serif; font-size:1.25rem; font-weight:800; color:var(--ink); margin-bottom:4px; }
+.drug-class { font-family:'DM Mono',monospace; font-size:10px; color:var(--dust); letter-spacing:0.15em; text-transform:uppercase; }
+.drug-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
+.dtag { font-family:'DM Mono',monospace; font-size:9.5px; padding:2px 10px; border-radius:20px; font-weight:500; }
+.dtag.rust  { background:var(--rust-l);  color:var(--rust);  border:1px solid rgba(181,69,27,0.2);  }
+.dtag.sage  { background:var(--sage-l);  color:var(--sage);  border:1px solid rgba(59,99,87,0.2);   }
+.dtag.gold  { background:var(--gold-l);  color:var(--gold);  border:1px solid rgba(200,146,42,0.2); }
+.dtag.blue  { background:var(--blue-l);  color:var(--blue);  border:1px solid rgba(44,74,122,0.2);  }
+.dtag.plum  { background:var(--plum-l);  color:var(--plum);  border:1px solid rgba(92,45,110,0.2);  }
+.drug-badge { flex-shrink:0; }
+.badge { font-family:'DM Mono',monospace; font-size:9px; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; padding:5px 14px; border-radius:4px; }
+.badge.iv   { background:var(--rust);  color:var(--white); }
+.badge.sc   { background:var(--blue);  color:var(--white); }
+.badge.oral { background:var(--sage);  color:var(--white); }
+
+.drug-body { padding:20px 24px; }
+.drug-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+.drug-section { }
+.ds-label { font-family:'DM Mono',monospace; font-size:9.5px; color:var(--dust); letter-spacing:0.18em; text-transform:uppercase; margin-bottom:6px; }
+.ds-content { font-size:0.9rem; line-height:1.65; color:#3A3028; }
+.ds-content strong { color:var(--ink); font-weight:700; }
+
+/* TABLE */
+.tbl-wrap { overflow-x:auto; margin:16px 0; }
+table { width:100%; border-collapse:collapse; font-size:0.875rem; background:var(--white); border-radius:8px; overflow:hidden; box-shadow:0 2px 10px rgba(28,22,18,0.05); }
+thead th { background:var(--ink); color:var(--cream); padding:10px 14px; text-align:left; font-family:'DM Mono',monospace; font-size:9.5px; letter-spacing:0.1em; text-transform:uppercase; font-weight:500; }
+tbody td { padding:9px 14px; border-bottom:1px solid var(--border); vertical-align:top; line-height:1.5; font-size:0.88rem; }
+tbody tr:last-child td { border-bottom:none; }
+tbody tr:nth-child(even) { background:var(--lgray); }
+.tg { color:var(--sage); font-weight:700; }
+.tr { color:var(--rust); font-weight:700; }
+.to { color:var(--gold); font-weight:700; }
+.tb { color:var(--blue); font-weight:700; }
+
+/* ACCORDION */
+.accordion { margin:14px 0; }
+.acc-item { background:var(--white); border:1px solid var(--border); border-radius:8px; margin-bottom:8px; overflow:hidden; }
+.acc-head { padding:13px 18px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; font-family:'Syne',sans-serif; font-size:0.92rem; font-weight:700; user-select:none; transition:background 0.2s; }
+.acc-head:hover { background:#FAF7F2; }
+.acc-head.open { background:#FAF7F2; color:var(--rust); }
+.acc-arrow { font-size:16px; transition:transform 0.25s; color:var(--dust); font-family:'DM Mono',monospace; }
+.acc-head.open .acc-arrow { transform:rotate(180deg); color:var(--rust); }
+.acc-body { display:none; padding:14px 18px 18px; font-size:0.9rem; line-height:1.75; color:#3A3028; border-top:1px solid var(--border); }
+.acc-body.open { display:block; }
+
+/* STEPS */
+.steps { margin:16px 0; }
+.step { display:flex; gap:14px; margin-bottom:16px; position:relative; }
+.step:not(:last-child)::after { content:''; position:absolute; left:16px; top:38px; width:2px; height:calc(100% + 4px); background:var(--border); }
+.step-n { width:34px; height:34px; border-radius:50%; background:var(--rust); color:white; font-family:'Syne',sans-serif; font-size:0.9rem; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; position:relative; z-index:1; }
+.step-t { font-family:'Syne',sans-serif; font-size:0.95rem; font-weight:700; color:var(--ink); margin-bottom:4px; }
+.step-b { font-size:0.88rem; color:var(--dust); line-height:1.65; }
+
+/* TWO COL */
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0; }
+.col-box { background:var(--white); border-radius:8px; padding:16px 18px; border:1px solid var(--border); }
+.col-box.rust-bg { background:var(--rust-l); border-color:rgba(181,69,27,0.2); }
+.col-box.sage-bg { background:var(--sage-l); border-color:rgba(59,99,87,0.2); }
+.col-box.gold-bg { background:var(--gold-l); border-color:rgba(200,146,42,0.2); }
+.col-box.blue-bg { background:var(--blue-l); border-color:rgba(44,74,122,0.2); }
+.col-title { font-family:'Syne',sans-serif; font-size:0.92rem; font-weight:700; color:var(--ink); margin-bottom:6px; }
+.col-body { font-size:0.87rem; color:var(--dust); line-height:1.6; }
+
+/* FORMULA */
+.formula { background:var(--ink); border-radius:8px; padding:16px 20px; margin:14px 0; font-family:'DM Mono',monospace; font-size:0.88rem; color:var(--cream); line-height:1.85; }
+.formula .fl { color:var(--gold); font-size:0.76rem; letter-spacing:0.15em; text-transform:uppercase; display:block; margin-bottom:6px; }
+.formula .fm { color:var(--white); font-size:0.96rem; }
+.formula .fn { color:rgba(247,242,234,0.4); font-size:0.8rem; margin-top:6px; display:block; }
+
+/* DOT LIST */
+ul.dot { list-style:none; padding:0; margin:10px 0; }
+ul.dot li { padding:4px 0 4px 18px; position:relative; font-size:0.92rem; color:#3A3028; line-height:1.65; }
+ul.dot li::before { content:'—'; position:absolute; left:0; color:var(--rust); font-weight:700; }
+
+/* HIGHLIGHT */
+.highlight { background:var(--rust); border-radius:8px; padding:18px 22px; margin:16px 0; }
+.hl-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.55); margin-bottom:6px; }
+.highlight p { font-size:0.93rem; line-height:1.7; color:rgba(255,255,255,0.9); }
+.highlight strong { color:white; }
+
+/* CHECKLIST */
+.checklist { list-style:none; padding:0; margin:14px 0; }
+.checklist li { display:flex; align-items:flex-start; gap:12px; padding:9px 0; border-bottom:1px solid #F0EBE4; font-size:0.92rem; line-height:1.6; }
+.checklist li:last-child { border-bottom:none; }
+.chk-box { width:20px; height:20px; border-radius:4px; border:2px solid var(--border); flex-shrink:0; margin-top:2px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+.chk-box.checked { background:var(--rust); border-color:var(--rust); }
+.chk-box.checked::after { content:'✓'; color:white; font-size:11px; }
+
+/* NAV BTNS */
+.nav-btns { display:flex; justify-content:space-between; margin-top:52px; padding-top:24px; border-top:1px solid var(--border); }
+.nav-btn { font-family:'Syne',sans-serif; font-size:0.88rem; font-weight:700; padding:10px 22px; border-radius:6px; border:none; cursor:pointer; transition:all 0.2s; }
+.nav-btn.prev { background:var(--white); color:var(--ink); border:1px solid var(--border); }
+.nav-btn.prev:hover { background:#F0EBE4; }
+.nav-btn.next { background:var(--rust); color:var(--white); }
+.nav-btn.next:hover { background:var(--rust-d); }
+.nav-btn:disabled { opacity:0.3; cursor:not-allowed; }
+
+/* FOOTER */
+.footer { background:var(--ink); padding:36px 40px; text-align:center; }
+.footer-logo { font-family:'Syne',sans-serif; font-size:15px; font-weight:800; color:var(--cream); margin-bottom:8px; }
+.footer-logo span { color:var(--rust); }
+.footer-text { font-family:'DM Mono',monospace; font-size:10px; color:rgba(255,255,255,0.3); letter-spacing:0.12em; }
+
+@media(max-width:600px) {
+  .drug-grid,.two-col { grid-template-columns:1fr; }
+  .main { padding:36px 20px 80px; }
+  .hero { padding:48px 20px 40px; }
+  .prog-nav { padding:0 16px; }
+  .nav { padding:14px 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-left">
+    <a class="nav-logo" href="index.html">Apoteker<span>Ry</span> <span style="color:rgba(255,255,255,0.3);font-weight:400;">|</span> <span style="color:rgba(255,255,255,0.7);font-size:13px;font-weight:600;">Farmasi Klinis</span></a>
+    <div class="nav-sub">Referensi Klinis · ICU</div>
+  </div>
+  <a class="nav-back" href="index.html">← Kembali</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Referensi Klinis · ICU</div>
+    <h1>Antikoagulasi<br><em>di ICU</em></h1>
+    <p class="hero-sub">Panduan praktis antikoagulasi di setting intensif — indikasi, dosis, monitoring, reversal, dan pertimbangan khusus. Untuk apoteker klinis dan tenaga kesehatan ICU.</p>
+    <div class="hero-pills">
+      <span class="hero-pill">UFH · LMWH</span>
+      <span class="hero-pill">Fondaparinux</span>
+      <span class="hero-pill">Argatroban</span>
+      <span class="hero-pill">Bivalirudin</span>
+      <span class="hero-pill">NOAC di ICU</span>
+      <span class="hero-pill">Reversal Agent</span>
+    </div>
+  </div>
+</div>
+
+<div class="prog-nav" id="progNav">
+  <button class="prog-btn active" onclick="goTo(0)">01 · Prinsip Dasar</button>
+  <button class="prog-btn" onclick="goTo(1)">02 · UFH</button>
+  <button class="prog-btn" onclick="goTo(2)">03 · LMWH</button>
+  <button class="prog-btn" onclick="goTo(3)">04 · Fondaparinux</button>
+  <button class="prog-btn" onclick="goTo(4)">05 · Argatroban & Bivalirudin</button>
+  <button class="prog-btn" onclick="goTo(5)">06 · NOAC di ICU</button>
+  <button class="prog-btn" onclick="goTo(6)">07 · Reversal Agent</button>
+  <button class="prog-btn" onclick="goTo(7)">08 · Situasi Khusus</button>
+  <button class="prog-btn" onclick="goTo(8)">09 · Checklist</button>
+</div>
+
+<div class="main">
+
+<!-- ══════════════════════ -->
+<!-- 0 — PRINSIP DASAR -->
+<!-- ══════════════════════ -->
+<div class="section active" id="s0">
+  <div class="section-header">
+    <div class="section-num">// 01</div>
+    <div class="section-title">Prinsip Dasar Antikoagulasi di ICU</div>
+    <div class="section-lead">Antikoagulasi di ICU adalah tindakan menyeimbangkan dua risiko yang berlawanan — trombosis yang bisa mematikan dan perdarahan yang bisa sama mematikannya.</div>
+  </div>
+
+  <div class="prose">Pasien kritis memiliki risiko tromboemboli yang sangat tinggi akibat imobilisasi, respons inflamasi sistemik, kerusakan endotel, dan hiperkoagulabilitas. Di saat yang sama, prosedur invasif, trombositopenia, dan disfungsi organ membuat risiko perdarahan juga meningkat dramatis. Pilihan agen, dosis, dan monitoring harus mempertimbangkan kedua sisi ini.</div>
+
+  <h3 class="sh">Indikasi Utama Antikoagulasi di ICU</h3>
+  <div class="two-col">
+    <div class="col-box rust-bg">
+      <div class="col-title">🩸 Terapeutik (Dosis Penuh)</div>
+      <div class="col-body">
+        <ul class="dot">
+          <li>DVT dan/atau PE yang terkonfirmasi</li>
+          <li>Fibrilasi atrium dengan risiko stroke (CHA₂DS₂-VASc ≥ 2)</li>
+          <li>Trombosis katup mekanik</li>
+          <li>Sindrom koroner akut (tertentu)</li>
+          <li>HIT (Heparin-Induced Thrombocytopenia) dengan trombosis</li>
+          <li>ECMO / CRRT / VAD</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-box sage-bg">
+      <div class="col-title">🛡️ Profilaksis (Dosis Rendah)</div>
+      <div class="col-body">
+        <ul class="dot">
+          <li>Semua pasien ICU imobilisasi tanpa kontraindikasi</li>
+          <li>Pasca operasi besar</li>
+          <li>Sepsis berat</li>
+          <li>Ventilasi mekanik</li>
+          <li>Kanker aktif</li>
+          <li>Gagal jantung dan gagal napas akut</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sh">Kontraindikasi Umum Antikoagulasi</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Kontraindikasi Absolut</th><th>Kontraindikasi Relatif — Pertimbangkan</th></tr></thead>
+      <tbody>
+        <tr><td>Perdarahan aktif yang tidak terkontrol</td><td>Trombositopenia &lt; 50.000/µL</td></tr>
+        <tr><td>Perdarahan intrakranial dalam 3 bulan terakhir</td><td>Koagulopati berat (INR &gt; 2,5 tanpa target antikoagulasi)</td></tr>
+        <tr><td>Operasi SSP/mata/tulang belakang &lt; 24 jam</td><td>Insufisiensi ginjal berat (khusus LMWH dan NOAC)</td></tr>
+        <tr><td>HIT aktif — kontraindikasi heparin (UFH dan LMWH)</td><td>Hipertensi berat tidak terkontrol</td></tr>
+        <tr><td>Alergi berat terhadap agen spesifik</td><td>Luka tusuk lumbal/epidural dalam 12–24 jam</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">Pilihan Agen — Gambaran Cepat</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Agen</th><th>Mekanisme</th><th>Rute</th><th>Monitoring</th><th>Reversal</th></tr></thead>
+      <tbody>
+        <tr><td><strong>UFH</strong></td><td>Inhibisi thrombin + Xa via AT III</td><td class="tr">IV / SC</td><td>aPTT / anti-Xa</td><td class="tg">Protamin ✓</td></tr>
+        <tr><td><strong>LMWH</strong></td><td>Inhibisi Xa &gt;&gt; IIa via AT III</td><td class="tb">SC</td><td>Anti-Xa (kondisi khusus)</td><td class="to">Protamin parsial</td></tr>
+        <tr><td><strong>Fondaparinux</strong></td><td>Inhibisi selektif Xa via AT III</td><td class="tb">SC</td><td>Anti-Xa (jarang)</td><td class="tr">Tidak ada spesifik</td></tr>
+        <tr><td><strong>Argatroban</strong></td><td>Inhibisi langsung thrombin</td><td class="tr">IV</td><td>aPTT / ACT</td><td class="tr">Tidak ada spesifik</td></tr>
+        <tr><td><strong>Bivalirudin</strong></td><td>Inhibisi langsung thrombin</td><td class="tr">IV</td><td>aPTT / ACT / ECT</td><td class="tr">Tidak ada spesifik</td></tr>
+        <tr><td><strong>NOAC</strong></td><td>Inhibisi langsung Xa atau IIa</td><td class="tg">Oral</td><td>Tidak rutin</td><td class="tg">Spesifik tersedia</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout gold">
+    <div class="cl-label">📌 Catatan ApotekerRy</div>
+    <p>Konten ini adalah <strong>panduan referensi ringkas</strong> untuk apoteker klinis. Untuk pembahasan mendalam tentang farmakokinetik, algoritma dosis berdasarkan berat badan, dan protokol institusi spesifik — lihat referensi lanjutan. Selalu sesuaikan dengan kondisi klinis pasien individual dan kebijakan RS setempat.</p>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" disabled>← Sebelumnya</button>
+    <button class="nav-btn next" onclick="goTo(1)">UFH →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════ -->
+<!-- 1 — UFH -->
+<!-- ══════════════════════ -->
+<div class="section" id="s1">
+  <div class="section-header">
+    <div class="section-num">// 02</div>
+    <div class="section-title">Unfractionated Heparin (UFH)</div>
+    <div class="section-lead">Agen antikoagulasi ICU yang paling lama digunakan dan paling fleksibel — onset cepat, dapat ditigrasi, reversibel dengan protamin, dan efektif pada kondisi kritis yang paling kompleks.</div>
+  </div>
+
+  <div class="drug-card">
+    <div class="drug-header">
+      <div class="drug-header-left">
+        <div class="drug-name">Heparin (UFH)</div>
+        <div class="drug-class">Antikoagulan · Indirect Thrombin Inhibitor</div>
+        <div class="drug-tags">
+          <span class="dtag rust">Terapeutik</span>
+          <span class="dtag sage">Profilaksis</span>
+          <span class="dtag blue">ECMO/CRRT</span>
+          <span class="dtag gold">Reversibel</span>
+        </div>
+      </div>
+      <div class="drug-badge"><span class="badge iv">IV / SC</span></div>
+    </div>
+    <div class="drug-body">
+      <div class="drug-grid">
+        <div class="drug-section">
+          <div class="ds-label">Mekanisme</div>
+          <div class="ds-content">Berikatan dengan Antithrombin III (AT III) → mempercepat inhibisi thrombin (IIa) dan faktor Xa (1:1). Aktivitas tergantung kadar AT III pasien — defisiensi AT III menyebabkan resistensi heparin.</div>
+        </div>
+        <div class="drug-section">
+          <div class="ds-label">Farmakokinetik</div>
+          <div class="ds-content">Onset IV: segera. Distribusi: tidak melewati plasenta (aman kehamilan). Eliminasi: oleh sel endotel dan makrofag (dosis rendah) + renal (dosis tinggi). t½: 60–90 menit (dosis terapeutik).</div>
+        </div>
+      </div>
+
+      <div class="ds-label" style="margin-bottom:8px;">Dosis</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Indikasi</th><th>Loading Dose</th><th>Maintenance</th><th>Target</th></tr></thead>
+          <tbody>
+            <tr><td><strong>DVT / PE terapeutik</strong></td><td>80 unit/kg IV bolus</td><td>18 unit/kg/jam, titrasi per protokol</td><td>aPTT 60–100 detik (atau anti-Xa 0,3–0,7 IU/mL)</td></tr>
+            <tr><td><strong>ACS / PCI</strong></td><td>60–100 unit/kg IV</td><td>12–15 unit/kg/jam</td><td>aPTT 50–70 detik / ACT 250–300 detik</td></tr>
+            <tr><td><strong>ECMO</strong></td><td>50–100 unit/kg IV</td><td>7,5–40 unit/kg/jam</td><td>ACT 180–220 detik atau anti-Xa 0,3–0,7</td></tr>
+            <tr><td><strong>CRRT</strong></td><td>2.000–5.000 unit IV</td><td>500–2.000 unit/jam</td><td>aPTT 45–60 detik (pre-filter) atau anti-Xa 0,25–0,35</td></tr>
+            <tr><td><strong>Profilaksis</strong></td><td>Tidak ada</td><td>5.000 unit SC 2–3×/hari</td><td>Tidak dimonitor rutin</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="drug-grid" style="margin-top:16px;">
+        <div class="drug-section">
+          <div class="ds-label">Monitoring</div>
+          <div class="ds-content">
+            <ul class="dot">
+              <li><strong>aPTT</strong> 6 jam setelah mulai/titrasi → setiap 6 jam sampai stabil → setiap 24 jam</li>
+              <li><strong>Anti-Xa</strong> lebih akurat pada pasien kritis (tidak dipengaruhi faktor inflamasi)</li>
+              <li><strong>Platelet</strong> baseline dan hari 4–14 (screening HIT)</li>
+              <li><strong>Hb/Ht</strong> berkala untuk deteksi perdarahan</li>
+            </ul>
+          </div>
+        </div>
+        <div class="drug-section">
+          <div class="ds-label">Efek Samping Utama</div>
+          <div class="ds-content">
+            <ul class="dot">
+              <li><strong>Perdarahan</strong> — risiko meningkat pada aPTT > 100 detik</li>
+              <li><strong>HIT Tipe I</strong> — trombositopenia ringan, hari 1–4, non-imun, tidak berbahaya</li>
+              <li><strong>HIT Tipe II</strong> — imun-mediated, hari 5–14, BERBAHAYA (lihat bab HIT)</li>
+              <li><strong>Hiperkalemia</strong> — akibat inhibisi aldosteron (penggunaan lama)</li>
+              <li><strong>Osteoporosis</strong> — penggunaan &gt; 1 bulan</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sh">Resistensi Heparin</h3>
+  <div class="prose">Didefinisikan sebagai kebutuhan UFH &gt; 35.000 unit/24 jam untuk mencapai target aPTT. Penyebab utama:</div>
+  <ul class="dot">
+    <li><strong>Defisiensi AT III</strong> (paling umum) — pada DIC, sirosis, sindrom nefrotik, atau penggunaan heparin jangka panjang</li>
+    <li>Peningkatan protein pengikat heparin (fase akut)</li>
+    <li>Peningkatan faktor VIII dan fibrinogen (respons inflamasi)</li>
+  </ul>
+  <div class="callout sage">
+    <div class="cl-label">💡 Manajemen</div>
+    <p>Monitor anti-Xa heparin (bukan aPTT) karena lebih akurat. Jika resistensi dikonfirmasi → pertimbangkan substitusi AT III atau ganti ke Direct Thrombin Inhibitor (argatroban/bivalirudin).</p>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(0)">← Prinsip Dasar</button>
+    <button class="nav-btn next" onclick="goTo(2)">LMWH →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════ -->
+<!-- 2 — LMWH -->
+<!-- ══════════════════════ -->
+<div class="section" id="s2">
+  <div class="section-header">
+    <div class="section-num">// 03</div>
+    <div class="section-title">Low Molecular Weight Heparin (LMWH)</div>
+    <div class="section-lead">Lebih prediktabel dari UFH, tidak perlu monitoring rutin pada pasien dengan fungsi ginjal normal — tapi hati-hati pada kondisi ICU yang sering mengubah farmakokinetiknya secara dramatis.</div>
+  </div>
+
+  <div class="drug-card">
+    <div class="drug-header">
+      <div class="drug-header-left">
+        <div class="drug-name">Enoksaparin · Dalteparin · Tinzaparin</div>
+        <div class="drug-class">LMWH · Anti-Xa Predominan</div>
+        <div class="drug-tags">
+          <span class="dtag rust">Terapeutik</span>
+          <span class="dtag sage">Profilaksis</span>
+          <span class="dtag blue">Kehamilan</span>
+        </div>
+      </div>
+      <div class="drug-badge"><span class="badge sc">SC</span></div>
+    </div>
+    <div class="drug-body">
+      <div class="drug-grid">
+        <div class="drug-section">
+          <div class="ds-label">Mekanisme</div>
+          <div class="ds-content">Sama dengan UFH — via AT III, tapi rasio inhibisi Xa:IIa = 4:1 (enoksaparin) vs 1:1 (UFH). Lebih selektif menghambat Xa. Bioavailabilitas SC lebih tinggi (90% vs 30% UFH).</div>
+        </div>
+        <div class="drug-section">
+          <div class="ds-label">Keunggulan vs UFH</div>
+          <div class="ds-content">Tidak perlu monitoring rutin (pasien normal). Respons dosis lebih prediktabel. Risiko HIT lebih rendah. Bisa diberikan SC once/twice daily. Aman pada kehamilan.</div>
+        </div>
+      </div>
+
+      <div class="ds-label" style="margin-bottom:8px;">Dosis Enoksaparin</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Indikasi</th><th>Dosis</th><th>Frekuensi</th><th>Catatan</th></tr></thead>
+          <tbody>
+            <tr><td><strong>DVT/PE terapeutik</strong></td><td>1 mg/kg SC</td><td>2×/hari</td><td>Atau 1,5 mg/kg 1×/hari (non-kritis)</td></tr>
+            <tr><td><strong>ACS (NSTEMI)</strong></td><td>1 mg/kg SC</td><td>2×/hari</td><td>Loading IV 30 mg opsional</td></tr>
+            <tr><td><strong>Profilaksis standar</strong></td><td>40 mg SC</td><td>1×/hari</td><td>Mulai 12 jam sebelum/sesudah operasi</td></tr>
+            <tr><td><strong>Profilaksis obesitas berat</strong></td><td>40 mg SC</td><td>2×/hari</td><td>BMI &gt; 40 atau BB &gt; 120 kg</td></tr>
+            <tr><td><strong>CrCl &lt; 30 mL/mnt</strong></td><td>Kurangi 50%</td><td>1×/hari</td><td>Monitor anti-Xa ketat</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sh">Monitoring Anti-Xa untuk LMWH — Kapan Diperlukan?</h3>
+  <div class="callout rust">
+    <div class="cl-label">⚠️ Wajib Monitor Anti-Xa pada:</div>
+    <p>Gangguan ginjal (CrCl &lt; 30 mL/mnt) · Obesitas ekstrem (BB &gt; 120 kg atau BMI &gt; 40) · Pasien kurus (BB &lt; 45 kg) · Kehamilan · Risiko perdarahan/trombosis tinggi · Pasien ICU dengan fluktuasi fungsi ginjal</p>
+  </div>
+  <div class="formula">
+    <span class="fl">Target Anti-Xa LMWH</span>
+    <div class="fm">Terapeutik 2×/hari: 0,6–1,0 IU/mL (4 jam post-dosis)</div>
+    <div class="fm">Terapeutik 1×/hari: 1,0–2,0 IU/mL (4 jam post-dosis)</div>
+    <div class="fm">Profilaksis: 0,2–0,5 IU/mL (4 jam post-dosis)</div>
+    <span class="fn">Sample diambil 4 jam setelah injeksi SC untuk peak level</span>
+  </div>
+
+  <h3 class="sh">Masalah LMWH di Setting ICU</h3>
+  <div class="accordion">
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>🔄 Fluktuasi Fungsi Ginjal</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>LMWH dieliminasi terutama via ginjal. Pasien ICU sering mengalami AKI yang berubah cepat — dosis yang tepat hari ini bisa overdosis atau underdosis besok. <strong>Solusi: UFH IV lebih aman pada AKI fluktuatif</strong> karena dapat dihentikan segera dan ditigrasi real-time.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>💉 Absorpsi SC yang Tidak Terprediksi</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Edema masif, vasokonstrisi (vasopressor), dan hipoperfusi perifer pada pasien syok dapat memperlambat atau mengurangi absorpsi LMWH SC secara signifikan. Pada pasien syok yang membutuhkan antikoagulasi terapeutik — UFH IV lebih andal.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>⚖️ Reversal Parsial</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Protamin hanya menetralisir ~60–80% aktivitas LMWH (fraksi anti-IIa) — aktivitas anti-Xa tetap tersisa. Ini berbeda dengan UFH yang dapat dinetralkan hampir sempurna. Untuk operasi darurat pada pasien LMWH — pertimbangkan waktu penundaan atau gunakan FFP/andexanet alfa jika tersedia.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(1)">← UFH</button>
+    <button class="nav-btn next" onclick="goTo(3)">Fondaparinux →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════ -->
+<!-- 3 — FONDAPARINUX -->
+<!-- ══════════════════════ -->
+<div class="section" id="s3">
+  <div class="section-header">
+    <div class="section-num">// 04</div>
+    <div class="section-title">Fondaparinux</div>
+    <div class="section-lead">Inhibitor Xa selektif sintetik — tidak menyebabkan HIT (pilihan pada HIT terkonfirmasi tanpa trombosis aktif), tapi eliminasi renal murni membuatnya berbahaya pada gangguan ginjal.</div>
+  </div>
+
+  <div class="drug-card">
+    <div class="drug-header">
+      <div class="drug-header-left">
+        <div class="drug-name">Fondaparinux (Arixtra)</div>
+        <div class="drug-class">Synthetic Pentasaccharide · Selective Factor Xa Inhibitor</div>
+        <div class="drug-tags">
+          <span class="dtag rust">Terapeutik VTE</span>
+          <span class="dtag sage">Profilaksis</span>
+          <span class="dtag blue">Non-HIT</span>
+        </div>
+      </div>
+      <div class="drug-badge"><span class="badge sc">SC</span></div>
+    </div>
+    <div class="drug-body">
+      <div class="drug-grid">
+        <div class="drug-section">
+          <div class="ds-label">Mekanisme & PK</div>
+          <div class="ds-content">Inhibisi selektif faktor Xa via AT III — tidak menginhibisi thrombin (IIa). Bioavailabilitas SC 100%. t½ 17–21 jam. <strong>Eliminasi 100% renal</strong> — akumulasi bermakna pada CrCl &lt; 50 mL/mnt. Tidak berikatan dengan PF4 → tidak menyebabkan HIT.</div>
+        </div>
+        <div class="drug-section">
+          <div class="ds-label">Keunggulan Klinis</div>
+          <div class="ds-content">Tidak menyebabkan HIT — aman sebagai antikoagulasi non-heparin pada HIT yang sudah terlewati fase akut. Respons dosis lebih prediktabel dari LMWH. Tidak berinteraksi dengan PF4.</div>
+        </div>
+      </div>
+
+      <div class="ds-label" style="margin-bottom:8px;">Dosis</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Indikasi</th><th>Dosis</th><th>Catatan</th></tr></thead>
+          <tbody>
+            <tr><td><strong>DVT/PE terapeutik</strong></td><td>BB &lt;50 kg: 5 mg SC 1×/hari<br>BB 50–100 kg: 7,5 mg SC 1×/hari<br>BB &gt;100 kg: 10 mg SC 1×/hari</td><td>CrCl &lt; 30 mL/mnt: kontraindikasi absolut</td></tr>
+            <tr><td><strong>Profilaksis</strong></td><td>2,5 mg SC 1×/hari</td><td>Mulai 6–8 jam pasca operasi. CrCl &lt; 50: gunakan dengan hati-hati</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="drug-section" style="margin-top:14px;">
+        <div class="ds-label">Kontraindikasi Penting</div>
+        <div class="ds-content">
+          <ul class="dot">
+            <li><strong>CrCl &lt; 30 mL/mnt</strong> — kontraindikasi absolut untuk dosis terapeutik</li>
+            <li><strong>Berat badan &lt; 50 kg</strong> — hati-hati untuk dosis terapeutik (gunakan 5 mg)</li>
+            <li>Endokarditis bakterial aktif</li>
+            <li>Trombositopenia &lt; 100.000/µL — evaluasi ulang risiko</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout rust">
+    <div class="cl-label">⚠️ Reversal</div>
+    <p><strong>Tidak ada antidot spesifik yang disetujui untuk fondaparinux.</strong> Pada perdarahan berat: pertimbangkan rFVIIa (recombinant Factor VIIa) — off-label, bukti terbatas. Hemodialisis tidak efektif untuk eliminasi fondaparinux. Andexanet alfa (antidot anti-Xa) belum disetujui spesifik untuk fondaparinux di semua negara.</p>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(2)">← LMWH</button>
+    <button class="nav-btn next" onclick="goTo(4)">Argatroban & Bivalirudin →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════ -->
+<!-- 4 — ARGATROBAN & BIVALIRUDIN -->
+<!-- ══════════════════════ -->
+<div class="section" id="s4">
+  <div class="section-header">
+    <div class="section-num">// 05</div>
+    <div class="section-title">Argatroban &amp; Bivalirudin</div>
+    <div class="section-lead">Direct Thrombin Inhibitor (DTI) — pilihan utama pada HIT terkonfirmasi dengan trombosis aktif. Tidak bergantung pada AT III, tidak menyebabkan HIT, dan dapat dimonitor dengan aPTT.</div>
+  </div>
+
+  <div class="drug-card">
+    <div class="drug-header">
+      <div class="drug-header-left">
+        <div class="drug-name">Argatroban</div>
+        <div class="drug-class">Direct Thrombin Inhibitor · Hepatic Elimination</div>
+        <div class="drug-tags">
+          <span class="dtag rust">HIT + Trombosis</span>
+          <span class="dtag blue">Gagal Ginjal Aman</span>
+          <span class="dtag gold">PCI</span>
+        </div>
+      </div>
+      <div class="drug-badge"><span class="badge iv">IV Kontinu</span></div>
+    </div>
+    <div class="drug-body">
+      <div class="drug-grid">
+        <div class="drug-section">
+          <div class="ds-label">Keunggulan Utama</div>
+          <div class="ds-content"><strong>Eliminasi hepatik</strong> — aman pada gagal ginjal berat. Tidak bergantung AT III. Tidak menyebabkan HIT. Dapat dimonitor dengan aPTT rutin. Onest cepat (menit).</div>
+        </div>
+        <div class="drug-section">
+          <div class="ds-label">Perhatian Khusus</div>
+          <div class="ds-content"><strong>Meningkatkan INR</strong> secara palsu — menyulitkan transisi ke warfarin. Hati-hati pada gagal hati (eliminasi terganggu). Tidak ada antidot spesifik.</div>
+        </div>
+      </div>
+
+      <div class="ds-label" style="margin-bottom:8px;">Dosis Argatroban</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Kondisi</th><th>Dosis Awal</th><th>Target</th><th>Penyesuaian</th></tr></thead>
+          <tbody>
+            <tr><td><strong>HIT terapeutik</strong></td><td>2 mcg/kg/mnt IV (tanpa bolus)</td><td>aPTT 1,5–3× baseline (45–90 detik)</td><td>Cek aPTT 2 jam setelah mulai/titrasi. Titrasi 0,5 mcg/kg/mnt</td></tr>
+            <tr><td><strong>Gagal hati</strong></td><td>0,5 mcg/kg/mnt IV</td><td>aPTT 1,5–3× baseline</td><td>Turunkan dosis secara bermakna pada Child-Pugh B/C</td></tr>
+            <tr><td><strong>Pasca jantung terbuka</strong></td><td>0,5–1,2 mcg/kg/mnt</td><td>aPTT atau ACT target</td><td>Pasien kritis sering butuh dosis lebih rendah</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="drug-card" style="margin-top:20px;">
+    <div class="drug-header">
+      <div class="drug-header-left">
+        <div class="drug-name">Bivalirudin (Angiomax)</div>
+        <div class="drug-class">Direct Thrombin Inhibitor · Enzymatic + Renal Elimination</div>
+        <div class="drug-tags">
+          <span class="dtag rust">HIT</span>
+          <span class="dtag gold">PCI / ECMO</span>
+          <span class="dtag blue">t½ Sangat Pendek</span>
+        </div>
+      </div>
+      <div class="drug-badge"><span class="badge iv">IV Kontinu</span></div>
+    </div>
+    <div class="drug-body">
+      <div class="drug-grid">
+        <div class="drug-section">
+          <div class="ds-label">Keunggulan Utama</div>
+          <div class="ds-content"><strong>t½ hanya 25 menit</strong> — berhenti cepat saat dihentikan. Dieliminasi secara enzimatik (80%) + renal (20%). Tidak meningkatkan INR palsu (berbeda dari argatroban). Pilihan ideal saat butuh antikoagulasi yang bisa dihentikan cepat.</div>
+        </div>
+        <div class="drug-section">
+          <div class="ds-label">Perhatian Khusus</div>
+          <div class="ds-content">Akumulasi pada CrCl &lt; 30 mL/mnt — kurangi dosis. Lebih mahal dari argatroban. Di Indonesia ketersediaan terbatas. Monitoring: aPTT atau ACT.</div>
+        </div>
+      </div>
+
+      <div class="ds-label" style="margin-bottom:8px;">Dosis Bivalirudin</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Indikasi</th><th>Dosis</th><th>Target</th></tr></thead>
+          <tbody>
+            <tr><td><strong>HIT terapeutik</strong></td><td>0,15–0,2 mg/kg/jam IV (tanpa bolus)</td><td>aPTT 1,5–2,5× baseline</td></tr>
+            <tr><td><strong>PCI pada HIT</strong></td><td>0,75 mg/kg bolus + 1,75 mg/kg/jam</td><td>ACT &gt; 300 detik</td></tr>
+            <tr><td><strong>ECMO</strong></td><td>0,03–0,1 mg/kg/jam (titrasi)</td><td>aPTT 60–80 detik atau anti-IIa</td></tr>
+            <tr><td><strong>CrCl &lt; 30 mL/mnt</strong></td><td>Kurangi 20%</td><td>Monitor ketat</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sh">HIT — Diagnosis dan Manajemen Singkat</h3>
+  <div class="callout rust">
+    <div class="cl-label">⚠️ Heparin-Induced Thrombocytopenia (HIT)</div>
+    <p><strong>4T Score</strong> untuk probabilitas HIT: Thrombocytopenia (penurunan platelet ≥50% atau nadir 20–100K) · Timing (hari 5–10 setelah heparin pertama) · Thrombosis · oTher cause (tidak ada penyebab lain).<br><br>
+    Skor 6–8 = probabilitas tinggi → <strong>HENTIKAN semua heparin segera</strong> (UFH dan LMWH) → mulai DTI (argatroban atau bivalirudin) → konfirmasi dengan lab (anti-PF4 antibodi, SRA).<br><br>
+    <strong>JANGAN berikan trombosit</strong> kecuali ada perdarahan aktif mengancam jiwa — transfusi platelet bisa memicu trombosis pada HIT.</p>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(3)">← Fondaparinux</button>
+    <button class="nav-btn next" onclick="goTo(5)">NOAC di ICU →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════ -->
+<!-- 5 — NOAC DI ICU -->
+<!-- ══════════════════════ -->
+<div class="section" id="s5">
+  <div class="section-header">
+    <div class="section-num">// 06</div>
+    <div class="section-title">NOAC di Setting ICU</div>
+    <div class="section-lead">Pasien yang sebelumnya pakai NOAC dan masuk ICU, atau pertimbangan memulai NOAC saat keluar ICU — beberapa hal penting yang harus diketahui apoteker klinis.</div>
+  </div>
+
+  <div class="callout rust">
+    <div class="cl-label">⚠️ Prinsip Umum</div>
+    <p>NOAC oral <strong>umumnya tidak dimulai</strong> selama fase akut kritis di ICU — absorpsi oral tidak dapat diandalkan, tidak ada bentuk IV (kecuali penelitian), dan tidak ada monitoring real-time yang mudah. NOAC lebih relevan untuk <strong>transisi ke/dari ICU</strong> atau pasien ICU yang stabil.</p>
+  </div>
+
+  <h3 class="sh">Ringkasan NOAC yang Relevan di ICU</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Agen</th><th>Target</th><th>t½</th><th>Eliminasi Renal</th><th>Reversal</th><th>Monitoring</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Dabigatran</strong></td><td>IIa langsung</td><td>12–17 jam</td><td class="tr">80% — sangat ginjal-dependen</td><td class="tg">Idarucizumab ✓</td><td>TT, ECT, dTT</td></tr>
+        <tr><td><strong>Rivaroksaban</strong></td><td>Xa langsung</td><td>5–9 jam</td><td class="to">33% — sebagian renal</td><td class="tg">Andexanet alfa ✓</td><td>Anti-Xa (kalibrasi khusus)</td></tr>
+        <tr><td><strong>Apixaban</strong></td><td>Xa langsung</td><td>8–15 jam</td><td class="tg">27% — paling sedikit renal</td><td class="tg">Andexanet alfa ✓</td><td>Anti-Xa (kalibrasi khusus)</td></tr>
+        <tr><td><strong>Edoksaban</strong></td><td>Xa langsung</td><td>10–14 jam</td><td class="to">50% renal</td><td class="tg">Andexanet alfa ✓</td><td>Anti-Xa (kalibrasi khusus)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">Masalah Utama NOAC di ICU</h3>
+  <div class="accordion">
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>🚨 Pasien NOAC Masuk ICU dengan Kondisi Darurat</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Langkah pertama: <strong>kapan dosis terakhir diminum?</strong> Efek antikoagulasi paling kuat dalam 2–4 jam setelah dosis. Setelah 24 jam (fungsi ginjal normal), efek mulai berkurang.</p>
+        <p style="margin-top:10px;"><strong>Jika perlu operasi darurat:</strong> tunda jika memungkinkan (minimal 24–48 jam untuk operasi elektif). Jika tidak bisa tunda → pertimbangkan reversal agent. Cek kadar NOAC jika tersedia (anti-Xa untuk rivaroksaban/apixaban, TT/dTT untuk dabigatran).</p>
+        <p style="margin-top:10px;"><strong>Jika perdarahan aktif:</strong> hentikan NOAC, berikan reversal agent spesifik, pertimbangkan PCC (Prothrombin Complex Concentrate) jika reversal spesifik tidak tersedia.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>🔄 Transisi dari Antikoagulan ICU ke NOAC Saat Pulang</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Dari UFH IV ke NOAC oral: mulai NOAC 2–4 jam setelah menghentikan infus UFH. Dari LMWH SC ke NOAC: mulai NOAC pada waktu dosis LMWH berikutnya seharusnya diberikan (jangan overlap).</p>
+        <p style="margin-top:10px;"><strong>Pastikan fungsi ginjal stabil</strong> sebelum memulai NOAC — terutama dabigatran yang sangat renal-dependen. CrCl &lt; 30: hindari dabigatran, pertimbangkan apixaban (eliminasi renal paling kecil).</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>💊 Interaksi Obat NOAC yang Penting di ICU</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <ul class="dot">
+          <li><strong>Amiodaron</strong> + dabigatran/rivaroksaban: inhibisi P-gp → kadar NOAC meningkat</li>
+          <li><strong>Rifampisin</strong>: induksi kuat P-gp dan CYP3A4 → kadar semua NOAC turun drastis</li>
+          <li><strong>Antijamur azol</strong> (flukonazol, itrakonazol): inhibisi CYP3A4 → kadar NOAC naik</li>
+          <li><strong>Antiepilepsi</strong> (fenitoin, karbamazepin): induksi → kadar NOAC turun</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(4)">← Argatroban & Bivalirudin</button>
+    <button class="nav-btn next" onclick="goTo(6)">Reversal Agent →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════ -->
+<!-- 6 — REVERSAL -->
+<!-- ══════════════════════ -->
+<div class="section" id="s6">
+  <div class="section-header">
+    <div class="section-num">// 07</div>
+    <div class="section-title">Reversal Agent Antikoagulan</div>
+    <div class="section-lead">Mengetahui kapan dan bagaimana membalik efek antikoagulan adalah kompetensi kritis apoteker ICU — terutama saat perdarahan berat atau operasi darurat.</div>
+  </div>
+
+  <div class="drug-card">
+    <div class="drug-header">
+      <div class="drug-header-left">
+        <div class="drug-name">Protamin Sulfat</div>
+        <div class="drug-class">Reversal UFH dan Parsial LMWH</div>
+        <div class="drug-tags">
+          <span class="dtag rust">UFH — Lengkap</span>
+          <span class="dtag gold">LMWH — Parsial</span>
+        </div>
+      </div>
+      <div class="drug-badge"><span class="badge iv">IV Lambat</span></div>
+    </div>
+    <div class="drug-body">
+      <div class="drug-grid">
+        <div class="drug-section">
+          <div class="ds-label">Dosis untuk UFH</div>
+          <div class="ds-content">
+            <ul class="dot">
+              <li>1 mg protamin per 100 unit UFH yang diberikan dalam 2–3 jam terakhir</li>
+              <li>Dosis maksimal: 50 mg per pemberian</li>
+              <li>Jika UFH sudah &gt; 3–4 jam: kurangi dosis protamin (UFH sudah sebagian dimetabolisme)</li>
+              <li>Infus UFH: hitung dosis 30–60 menit terakhir saja</li>
+            </ul>
+          </div>
+        </div>
+        <div class="drug-section">
+          <div class="ds-label">Dosis untuk LMWH</div>
+          <div class="ds-content">
+            <ul class="dot">
+              <li>Enoksaparin ≤ 8 jam: 1 mg protamin per 1 mg enoksaparin</li>
+              <li>Enoksaparin 8–12 jam: 0,5 mg protamin per 1 mg enoksaparin</li>
+              <li><strong>Catatan: hanya netralisasi ~60–80%</strong> — aktivitas anti-Xa tersisa</li>
+              <li>Dosis kedua 0,5 mg/mg jika perdarahan berlanjut</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="callout rust" style="margin-top:12px;">
+        <div class="cl-label">⚠️ Cara Pemberian</div>
+        <p>Berikan IV lambat (tidak lebih cepat dari 5 mg/menit atau 50 mg dalam 10 menit). Terlalu cepat → hipotensi berat, bradikardi, bronkospasme. Risiko reaksi meningkat pada pasien yang pernah terpapar protamin (insulin NPH mengandung protamin) atau alergi ikan.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sh">Reversal NOAC Spesifik</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Agen</th><th>Reversal Spesifik</th><th>Dosis</th><th>Onset</th><th>Alternatif</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Dabigatran</strong></td>
+          <td class="tg">Idarucizumab (Praxbind)</td>
+          <td>5 g IV (2 × 2,5 g) dalam 15 menit</td>
+          <td class="tg">&lt; 5 menit</td>
+          <td>Hemodialisis (dabigatran dapat didialisis)</td>
+        </tr>
+        <tr>
+          <td><strong>Rivaroksaban, Apixaban, Edoksaban</strong></td>
+          <td class="tg">Andexanet Alfa (Ondexxya)</td>
+          <td>Dosis rendah atau tinggi tergantung NOAC dan waktu dosis terakhir</td>
+          <td class="tg">Segera</td>
+          <td>4F-PCC (off-label, bukti terbatas)</td>
+        </tr>
+        <tr>
+          <td><strong>Semua NOAC (jika reversal spesifik tidak ada)</strong></td>
+          <td class="to">PCC 4-faktor (Beriplex, Octaplex)</td>
+          <td>25–50 IU/kg IV</td>
+          <td class="to">15–30 menit</td>
+          <td>FFP (volume besar, efek lebih lambat)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">Kapan Memberikan Reversal — Panduan Singkat</h3>
+  <div class="steps">
+    <div class="step"><div class="step-n">1</div><div><div class="step-t">Perdarahan Intrakranial</div><div class="step-b">Reversal segera tanpa menunggu konfirmasi kadar antikoagulan. Waktu adalah nyawa.</div></div></div>
+    <div class="step"><div class="step-n">2</div><div><div class="step-t">Perdarahan Mayor Lain (GI, retroperitoneal)</div><div class="step-b">Reversal jika perdarahan tidak terkontrol dengan manajemen lokal. Pertimbangkan intervensi endoskopi/radiologi bersamaan.</div></div></div>
+    <div class="step"><div class="step-n">3</div><div><div class="step-t">Operasi Darurat yang Tidak Bisa Ditunda</div><div class="step-b">Reversal sebelum operasi. Pertimbangkan kadar antikoagulan jika tersedia untuk memastikan reversal adekuat sebelum insisi.</div></div></div>
+    <div class="step"><div class="step-n">4</div><div><div class="step-t">Perdarahan Ringan-Sedang</div><div class="step-b">Observasi, tunda dosis berikutnya, pertimbangkan intervensi lokal dulu sebelum reversal sistemik.</div></div></div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(5)">← NOAC di ICU</button>
+    <button class="nav-btn next" onclick="goTo(7)">Situasi Khusus →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════ -->
+<!-- 7 — SITUASI KHUSUS -->
+<!-- ══════════════════════ -->
+<div class="section" id="s7">
+  <div class="section-header">
+    <div class="section-num">// 08</div>
+    <div class="section-title">Antikoagulasi di Situasi Klinis Khusus</div>
+    <div class="section-lead">Beberapa kondisi di ICU memerlukan pendekatan antikoagulasi yang berbeda dari standar umum.</div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>🫘 Gagal Ginjal &amp; CRRT</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p><strong>Prinsip:</strong> Hindari agen dengan eliminasi renal dominan. UFH IV lebih aman karena dapat ditigrasi real-time. LMWH hanya jika CrCl > 30 mL/mnt dengan monitoring anti-Xa ketat.</p>
+        <p style="margin-top:10px;"><strong>Antikoagulasi untuk CRRT:</strong></p>
+        <ul class="dot">
+          <li><strong>Regional citrate anticoagulation (RCA)</strong> — pilihan utama saat ini. Sitrat chelasi kalsium di sirkuit → antikoagulan lokal. Tidak ada efek sistemik. Monitor kalsium ionisasi post-filter dan sistemik.</li>
+          <li><strong>UFH sistemik</strong> — alternatif jika RCA tidak bisa. Target anti-Xa 0,25–0,35 IU/mL pre-filter.</li>
+          <li><strong>Argatroban</strong> — pilihan pada HIT yang membutuhkan CRRT.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>🫀 ECMO</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>ECMO membutuhkan antikoagulasi kontinu untuk mencegah trombosis sirkuit. UFH IV adalah standar di sebagian besar pusat. Bivalirudin digunakan pada HIT atau ketika heparin tidak efektif.</p>
+        <ul class="dot">
+          <li>Target ACT: 180–220 detik (bervariasi per protokol pusat)</li>
+          <li>Atau anti-Xa: 0,3–0,7 IU/mL</li>
+          <li>Trombositopenia pada ECMO — faktor mekanik + konsumsi. Pertahankan platelet > 50.000/µL (atau > 80.000 jika risiko perdarahan tinggi)</li>
+          <li>Monitor D-dimer dan fibrinogen untuk deteksi fibrinolysis</li>
+        </ul>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>⚖️ Obesitas Ekstrem (BB &gt; 120 kg / BMI &gt; 40)</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>Pasien obesitas sering mendapat dosis profilaksis standar yang tidak adekuat — berisiko VTE yang tinggi. Pendekatan:</p>
+        <ul class="dot">
+          <li>Enoksaparin profilaksis: 40 mg SC 2×/hari (bukan 40 mg 1×/hari)</li>
+          <li>Beberapa protokol menggunakan dosis berbasis berat badan: 0,5 mg/kg 1×/hari</li>
+          <li><strong>Monitor anti-Xa</strong> untuk konfirmasi adequacy dosis pada obesitas ekstrem</li>
+          <li>Pertimbangkan tambahan mekanik (stocking kompresi, IPC) bersamaan</li>
+        </ul>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>🤰 Kehamilan di ICU</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p><strong>LMWH adalah pilihan utama</strong> — tidak melewati plasenta, aman untuk janin, dapat dimonitor dengan anti-Xa.</p>
+        <ul class="dot">
+          <li>UFH IV boleh digunakan untuk kondisi kritis akut (PE masif, HIT)</li>
+          <li><strong>Kontraindikasi mutlak:</strong> warfarin (trimester 1 dan mendekati persalinan), NOAC (data keamanan tidak cukup)</li>
+          <li>Argatroban — data terbatas, digunakan pada HIT dengan kehamilan jika LMWH tidak bisa</li>
+          <li>Hentikan LMWH 24 jam sebelum persalinan yang direncanakan. UFH 4–6 jam sebelumnya jika persalinan segera</li>
+        </ul>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span>🧬 DIC (Disseminated Intravascular Coagulation)</span>
+        <span class="acc-arrow">⌄</span>
+      </div>
+      <div class="acc-body">
+        <p>DIC adalah kondisi paradoks — koagulasi dan perdarahan terjadi bersamaan. Antikoagulasi pada DIC sangat kontroversial.</p>
+        <ul class="dot">
+          <li><strong>Pengobatan utama:</strong> atasi penyebab dasar (sepsis, trauma, obstetri)</li>
+          <li>UFH dosis rendah: mungkin bermanfaat pada DIC dominan trombotik (purpura fulminan, trombosis vena yang mengancam)</li>
+          <li><strong>Hindari antikoagulan</strong> pada DIC dengan perdarahan aktif dominan</li>
+          <li>Transfusi FFP, trombosit, dan kriopresipitat sesuai parameter koagulasi</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(6)">← Reversal Agent</button>
+    <button class="nav-btn next" onclick="goTo(8)">Checklist →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════ -->
+<!-- 8 — CHECKLIST -->
+<!-- ══════════════════════ -->
+<div class="section" id="s8">
+  <div class="section-header">
+    <div class="section-num">// 09</div>
+    <div class="section-title">Checklist Antikoagulasi ICU</div>
+    <div class="section-lead">Gunakan checklist ini saat menginisiasi, memonitor, atau menghentikan antikoagulasi di ICU.</div>
+  </div>
+
+  <h3 class="sh">Sebelum Memulai Antikoagulasi</h3>
+  <ul class="checklist">
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Indikasi jelas — terapeutik atau profilaksis?</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Kontraindikasi sudah dievaluasi (perdarahan aktif, platelet, INR baseline)</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Fungsi ginjal diperiksa (CrCl) — pilihan agen sesuai</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Berat badan aktual tersedia untuk kalkulasi dosis</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Riwayat HIT atau alergi heparin ditanyakan</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Reversal agent tersedia atau diketahui lokasinya</span></li>
+  </ul>
+
+  <h3 class="sh">Monitoring Selama Antikoagulasi</h3>
+  <ul class="checklist">
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>UFH IV: aPTT/anti-Xa setiap 6 jam sampai stabil → setiap 24 jam</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Platelet hari ke-4 dan ke-14 (screening HIT) pada semua pasien heparin</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Fungsi ginjal dimonitor berkala — sesuaikan dosis LMWH/NOAC jika berubah</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Tanda perdarahan dievaluasi: Hb/Ht, tempat akses vaskular, urin, feses</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Interaksi obat baru diperiksa setiap ada penambahan obat</span></li>
+  </ul>
+
+  <h3 class="sh">Saat Menghentikan / Transisi</h3>
+  <ul class="checklist">
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Durasi total antikoagulasi sesuai indikasi (DVT proksimal: 3 bulan, PE: 3–6 bulan)</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Bridging plan tersedia jika transisi ke antikoagulan oral</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Fungsi ginjal stabil sebelum memulai NOAC</span></li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div><span>Pasien/keluarga diedukasi tentang antikoagulan yang akan dilanjutkan</span></li>
+  </ul>
+
+  <div class="highlight">
+    <div class="hl-label">📌 Dari ApotekerRy</div>
+    <p>Antikoagulasi di ICU adalah salah satu area farmasi klinis yang paling dinamis — keputusan dosis bisa berubah setiap hari seiring kondisi pasien. <strong>Apoteker klinis yang aktif visite, monitoring lab, dan komunikasi real-time dengan tim ICU adalah kunci optimasi terapi antikoagulan.</strong> Konten ini adalah panduan ringkas — untuk kedalaman lebih, rujuk ke panduan ISTH, ASH, atau ACCP terbaru.</p>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(7)">← Situasi Khusus</button>
+    <button class="nav-btn next" disabled>Selesai ✓</button>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<!-- REFERENSI -->
+<div style="background:var(--lgray); border-top:1px solid var(--border); padding:52px 40px 60px;">
+  <div style="max-width:860px; margin:0 auto;">
+    <div style="font-family:'DM Mono',monospace; font-size:11px; color:var(--dust); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:8px;">// Referensi</div>
+    <div style="font-family:'Syne',sans-serif; font-size:1.5rem; font-weight:700; color:var(--ink); margin-bottom:28px;">Daftar Pustaka</div>
+    <ol style="list-style:decimal; padding-left:20px; display:flex; flex-direction:column; gap:14px;">
+      <li style="font-size:0.9rem; line-height:1.75; color:#3A3028;">
+        Garcia, D. A., Baglin, T. P., Weitz, J. I., &amp; Samama, M. M. (2012). Parenteral anticoagulants: Antithrombotic therapy and prevention of thrombosis, 9th ed: American College of Chest Physicians Evidence-Based Clinical Practice Guidelines. <em>Chest, 141</em>(2 Suppl), e24S–e43S. <a href="https://doi.org/10.1378/chest.11-2291" style="color:var(--rust); text-decoration:none;">https://doi.org/10.1378/chest.11-2291</a>
+      </li>
+      <li style="font-size:0.9rem; line-height:1.75; color:#3A3028;">
+        Cuker, A., Arepally, G. M., Chong, B. H., Cines, D. B., Greinacher, A., Gruel, Y., Linkins, L. A., Rodner, S. B., Selleng, S., Warkentin, T. E., Wex, A., Mustafa, R. A., Morgan, R. L., &amp; Santesso, N. (2018). American Society of Hematology 2018 guidelines for management of venous thromboembolism: Heparin-induced thrombocytopenia. <em>Blood Advances, 2</em>(22), 3360–3392. <a href="https://doi.org/10.1182/bloodadvances.2018024489" style="color:var(--rust); text-decoration:none;">https://doi.org/10.1182/bloodadvances.2018024489</a>
+      </li>
+      <li style="font-size:0.9rem; line-height:1.75; color:#3A3028;">
+        Stevens, S. M., Woller, S. C., Baumann Kreuziger, L., Bounameaux, H., Doerschug, K., Geersing, G. J., Huisman, M. V., Kearon, C., King, C. S., Knighton, A. J., Lake, E., Murin, S., Vintch, J. R. E., Wells, P. S., &amp; Moores, L. K. (2021). Antithrombotic therapy for VTE disease: Second update of the CHEST guideline and expert panel report. <em>Chest, 160</em>(6), e545–e608. <a href="https://doi.org/10.1016/j.chest.2021.07.055" style="color:var(--rust); text-decoration:none;">https://doi.org/10.1016/j.chest.2021.07.055</a>
+      </li>
+      <li style="font-size:0.9rem; line-height:1.75; color:#3A3028;">
+        Connors, J. M. (2015). Antidote for factor Xa anticoagulants. <em>New England Journal of Medicine, 373</em>(25), 2471–2472. <a href="https://doi.org/10.1056/NEJMe1513651" style="color:var(--rust); text-decoration:none;">https://doi.org/10.1056/NEJMe1513651</a>
+      </li>
+      <li style="font-size:0.9rem; line-height:1.75; color:#3A3028;">
+        Pollack, C. V., Jr., Reilly, P. A., van Ryn, J., Eikelboom, J. W., Glund, S., Bernstein, R. A., Dubiel, R., Huisman, M. V., Hylek, E. M., Kam, C. W., Kamphuisen, P. W., Kreuzer, J., Levy, J. H., Royle, G., Sellke, F. W., Stangier, J., Steiner, T., Wang, B., Young, L., &amp; Weitz, J. I. (2017). Idarucizumab for dabigatran reversal — full cohort analysis. <em>New England Journal of Medicine, 377</em>(5), 431–441. <a href="https://doi.org/10.1056/NEJMoa1707278" style="color:var(--rust); text-decoration:none;">https://doi.org/10.1056/NEJMoa1707278</a>
+      </li>
+      <li style="font-size:0.9rem; line-height:1.75; color:#3A3028;">
+        Connors, J. M., &amp; Levy, J. H. (2020). COVID-19 and its implications for thrombosis and anticoagulation. <em>Blood, 135</em>(23), 2033–2040. <a href="https://doi.org/10.1182/blood.2020006000" style="color:var(--rust); text-decoration:none;">https://doi.org/10.1182/blood.2020006000</a>
+      </li>
+      <li style="font-size:0.9rem; line-height:1.75; color:#3A3028;">
+        Monagle, P., Chan, A. K. C., Goldenberg, N. A., Ichord, R. N., Journeycake, J. M., Nowak-Göttl, U., &amp; Vesely, S. K. (2012). Antithrombotic therapy in neonates and children: Antithrombotic therapy and prevention of thrombosis, 9th ed: ACCP Evidence-Based Clinical Practice Guidelines. <em>Chest, 141</em>(2 Suppl), e737S–e801S. <a href="https://doi.org/10.1378/chest.11-2308" style="color:var(--rust); text-decoration:none;">https://doi.org/10.1378/chest.11-2308</a>
+      </li>
+      <li style="font-size:0.9rem; line-height:1.75; color:#3A3028;">
+        Schulman, S., &amp; Kearon, C. (2005). Definition of major bleeding in clinical investigations of antihemostatic medicinal products in non-surgical patients. <em>Journal of Thrombosis and Haemostasis, 3</em>(4), 692–694. <a href="https://doi.org/10.1111/j.1538-7836.2005.01204.x" style="color:var(--rust); text-decoration:none;">https://doi.org/10.1111/j.1538-7836.2005.01204.x</a>
+      </li>
+      <li style="font-size:0.9rem; line-height:1.75; color:#3A3028;">
+        Ranucci, M., Ballotta, A., Kandil, H., Isgrò, G., Carlucci, C., Baryshnikova, E., &amp; Pistuddi, V. (2011). Bivalirudin-based versus conventional heparin anticoagulation for postcardiotomy extracorporeal membrane oxygenation. <em>Critical Care, 15</em>(6), R275. <a href="https://doi.org/10.1186/cc10556" style="color:var(--rust); text-decoration:none;">https://doi.org/10.1186/cc10556</a>
+      </li>
+      <li style="font-size:0.9rem; line-height:1.75; color:#3A3028;">
+        Warkentin, T. E., &amp; Greinacher, A. (2004). Heparin-induced thrombocytopenia: Recognition, treatment, and prevention: The Seventh ACCP Conference on Antithrombotic and Thrombolytic Therapy. <em>Chest, 126</em>(3 Suppl), 311S–337S. <a href="https://doi.org/10.1378/chest.126.3_suppl.311S" style="color:var(--rust); text-decoration:none;">https://doi.org/10.1378/chest.126.3_suppl.311S</a>
+      </li>
+      <li style="font-size:0.9rem; line-height:1.75; color:#3A3028;">
+        Hirsh, J., Raschke, R., Warkentin, T. E., Dalen, J. E., Deykin, D., &amp; Poller, L. (1995). Heparin: Mechanism of action, pharmacokinetics, dosing considerations, monitoring, efficacy, and safety. <em>Chest, 108</em>(4 Suppl), 258S–275S. <a href="https://doi.org/10.1378/chest.108.4_supplement.258s" style="color:var(--rust); text-decoration:none;">https://doi.org/10.1378/chest.108.4_supplement.258s</a>
+      </li>
+      <li style="font-size:0.9rem; line-height:1.75; color:#3A3028;">
+        Nutescu, E. A., Spinler, S. A., Wittkowsky, A., &amp; Dager, W. E. (2009). Low-molecular-weight heparins in renal impairment and obesity: Available evidence and clinical practice recommendations across medical and surgical settings. <em>Annals of Pharmacotherapy, 43</em>(6), 1064–1083. <a href="https://doi.org/10.1345/aph.1L194" style="color:var(--rust); text-decoration:none;">https://doi.org/10.1345/aph.1L194</a>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-logo">Apoteker<span>Ry</span> | Farmasi Klinis</div>
+  <div class="footer-text">Referensi Klinis ICU · Antikoagulasi · © 2025 · Untuk tenaga kesehatan</div>
+</footer>
+
+<script>
+function goTo(idx){
+  document.querySelectorAll('.section').forEach((s,i)=>s.classList.toggle('active',i===idx));
+  document.querySelectorAll('.prog-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleAcc(head){
+  const body=head.nextElementSibling;
+  const isOpen=head.classList.contains('open');
+  head.closest('.section').querySelectorAll('.acc-head').forEach(h=>{
+    h.classList.remove('open');
+    h.nextElementSibling.classList.remove('open');
+  });
+  if(!isOpen){head.classList.add('open');body.classList.add('open');}
+}
+function toggleChk(box){box.classList.toggle('checked');}
+</script>
+</body>
+</html>

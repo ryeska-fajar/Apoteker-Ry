@@ -1,0 +1,1844 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalkulator Dosis Renal | Apoteker Ry</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #F7F2EA;
+  --surface: #FFFFFF;
+  --surface2:#F0EBE1;
+  --border:  #DDD5C8;
+  --ink:     #1C1612;
+  --ink2:    #4a433c;
+  --muted:   #7A6E62;
+  --rust:    #B5451B;
+  --rust-l:  #F5E8E3;
+  --sage:    #3B6357;
+  --sage-l:  #E4EDEA;
+  --gold:    #C8922A;
+  --gold-l:  #FBF3E2;
+  --blue:    #2C4A7A;
+  --blue-l:  #E4EBF5;
+  --ok:      #3B6357;
+  --warn:    #C8922A;
+  --danger:  #B5451B;
+  --mono:    'DM Mono', monospace;
+  --serif:   'Libre Baskerville', Georgia, serif;
+  --display: 'Syne', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+  min-height: 100vh;
+  line-height: 1.75;
+}
+
+/* ── HEADER ── */
+header {
+  background: var(--ink);
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-left h1 {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--bg);
+  line-height: 1;
+}
+
+.header-left h1 span { color: var(--rust); }
+
+.header-left .tagline {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: rgba(247,242,234,0.35);
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  margin-top: 5px;
+}
+
+.header-right { text-align: right; }
+
+.header-right .author {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(247,242,234,0.65);
+  font-weight: 500;
+}
+
+.header-right .refs {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: rgba(247,242,234,0.28);
+  margin-top: 3px;
+  line-height: 1.6;
+}
+
+/* ── CONTAINER ── */
+.container {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 32px 28px 80px;
+}
+
+/* ── DISCLAIMER ── */
+.disclaimer {
+  background: var(--gold-l);
+  border: 1px solid rgba(200,146,42,0.28);
+  border-left: 3px solid var(--gold);
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: #7a5a10;
+  margin-bottom: 22px;
+  line-height: 1.7;
+}
+
+/* ── CRCL CALCULATOR (collapsible) ── */
+.crcl-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(28,22,18,0.05);
+}
+
+.crcl-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 20px;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid transparent;
+  transition: background 0.15s, border-color 0.2s;
+}
+
+.crcl-header:hover { background: var(--surface2); }
+.crcl-header.open { border-bottom-color: var(--border); }
+
+.crcl-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.crcl-header-left .label {
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--ink);
+}
+
+.crcl-header-left .formula {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.crcl-toggle-icon {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  transition: transform 0.2s;
+}
+.crcl-toggle-icon.open { transform: rotate(180deg); }
+
+.crcl-body { display: none; padding: 20px; }
+.crcl-body.open { display: block; }
+
+.crcl-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 600px) { .crcl-grid { grid-template-columns: 1fr 1fr; } }
+
+.field label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.field input, .field select {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 9px 11px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-appearance: none;
+}
+
+.field input:focus, .field select:focus {
+  border-color: var(--blue);
+  background: #fff;
+  box-shadow: 0 0 0 2px var(--blue-l);
+}
+
+.crcl-result-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 12px 16px;
+  background: var(--surface2);
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.crcl-result-value {
+  font-family: var(--display);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--blue);
+}
+
+.crcl-result-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.crcl-formula-note {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  font-style: italic;
+  margin-left: auto;
+}
+
+/* ── MANUAL CrCl INPUT ── */
+.crcl-manual {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(28,22,18,0.05);
+}
+
+.crcl-manual-label {
+  font-family: var(--display);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+.crcl-input-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.crcl-big-input {
+  width: 150px;
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-family: var(--display);
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-appearance: none;
+}
+
+.crcl-big-input:focus {
+  border-color: var(--blue);
+  background: #fff;
+  box-shadow: 0 0 0 3px var(--blue-l);
+}
+
+.crcl-big-input::placeholder { color: var(--border); }
+
+.ckd-stage-display { flex: 1; min-width: 200px; }
+
+.ckd-stage-name {
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 3px;
+}
+
+.ckd-stage-desc {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink2);
+}
+
+.ckd-bar { display: flex; gap: 3px; margin-top: 10px; }
+
+.ckd-seg {
+  height: 5px;
+  border-radius: 3px;
+  flex: 1;
+  opacity: 0.15;
+  transition: opacity 0.3s;
+}
+.ckd-seg.on { opacity: 1; }
+
+/* ── SEARCH ── */
+.search-section { margin-bottom: 14px; }
+
+.search-wrap {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.search-wrap input {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px 12px 44px;
+  font-family: var(--serif);
+  font-size: 14px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-shadow: 0 1px 4px rgba(28,22,18,0.04);
+}
+
+.search-wrap input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px var(--blue-l);
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  pointer-events: none;
+}
+
+/* Category tabs */
+.cat-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.cat-tab {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.cat-tab:hover { border-color: var(--rust); color: var(--rust); background: var(--rust-l); }
+.cat-tab.active { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+
+/* Drug grid */
+.drug-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(172px, 1fr));
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.drug-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+  box-shadow: 0 1px 4px rgba(28,22,18,0.04);
+}
+
+.drug-card:hover {
+  border-color: var(--rust);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(28,22,18,0.09);
+}
+
+.drug-card.selected {
+  border-color: var(--rust);
+  background: var(--rust-l);
+}
+
+.drug-card.selected::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--rust);
+  border-radius: 8px 0 0 8px;
+}
+
+.drug-card-name {
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 3px;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.drug-card-class {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.drug-card-flag {
+  font-family: var(--mono);
+  font-size: 9px;
+  margin-top: 5px;
+}
+
+/* ── RESULT PANEL ── */
+.result-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  animation: fadeUp 0.25s ease;
+  box-shadow: 0 4px 20px rgba(28,22,18,0.08);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.result-head {
+  background: var(--ink);
+  padding: 20px 24px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.result-drug-name {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--bg);
+}
+
+.result-drug-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(247,242,234,0.35);
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.result-crcl-badge {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-weight: 500;
+  white-space: nowrap;
+  align-self: flex-start;
+  letter-spacing: 0.5px;
+  border: 1px solid;
+}
+
+.badge-ok      { background: var(--sage-l); color: var(--sage); border-color: rgba(59,99,87,0.3); }
+.badge-warn    { background: var(--gold-l); color: var(--gold); border-color: rgba(200,146,42,0.3); }
+.badge-danger  { background: var(--rust-l); color: var(--rust); border-color: rgba(181,69,27,0.3); }
+.badge-neutral { background: rgba(247,242,234,0.1); color: rgba(247,242,234,0.45); border-color: rgba(247,242,234,0.15); }
+
+/* Dose summary */
+.result-summary {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 500px) { .result-summary { grid-template-columns: 1fr; } }
+
+.dose-block {
+  padding: 14px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.dose-block-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.dose-block-value {
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.dose-block-sub {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.dose-block.ok     { border-color: rgba(59,99,87,0.3);  background: var(--sage-l); }
+.dose-block.ok     .dose-block-value { color: var(--sage); }
+.dose-block.warn   { border-color: rgba(200,146,42,0.3); background: var(--gold-l); }
+.dose-block.warn   .dose-block-value { color: var(--gold); }
+.dose-block.danger { border-color: rgba(181,69,27,0.3);  background: var(--rust-l); }
+.dose-block.danger .dose-block-value { color: var(--rust); }
+.dose-block.neutral { background: var(--surface2); }
+.dose-block.neutral .dose-block-value { color: var(--blue); }
+
+.tier-note {
+  grid-column: 1 / -1;
+  padding: 11px 14px;
+  background: var(--gold-l);
+  border: 1px solid rgba(200,146,42,0.25);
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: #6a4e10;
+  line-height: 1.7;
+}
+
+/* Sub-indikasi bar */
+.sub-indikasi-bar {
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sub-tab {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.sub-tab.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+
+/* Expand detail */
+.result-detail-toggle {
+  padding: 11px 24px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+}
+
+.expand-btn {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--blue);
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.expand-btn:hover { text-decoration: underline; }
+
+.result-detail { display: none; padding: 22px 24px; }
+.result-detail.open { display: block; }
+
+/* Table */
+.dose-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 11px;
+  margin-bottom: 20px;
+}
+
+.dose-table th {
+  text-align: left;
+  padding: 8px 12px;
+  background: var(--surface2);
+  color: var(--muted);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid var(--border);
+}
+
+.dose-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.55;
+  vertical-align: top;
+}
+
+.dose-table tr:last-child td { border-bottom: none; }
+.dose-table tr.active-row td { background: var(--sage-l); }
+.dose-table tr.active-row td:first-child {
+  border-left: 3px solid var(--sage);
+  font-weight: 700;
+  color: var(--sage);
+}
+
+.detail-section { margin-bottom: 20px; }
+
+.detail-section-title {
+  font-family: var(--display);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.detail-text {
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.8;
+  color: var(--ink2);
+}
+
+/* Dial cards */
+.dial-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+@media (max-width: 500px) { .dial-cards { grid-template-columns: 1fr; } }
+
+.dial-card {
+  padding: 13px 15px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface2);
+}
+
+.dial-card-title {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  margin-bottom: 7px;
+}
+
+.dial-card-value {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink);
+  line-height: 1.7;
+}
+
+.dialyzed-badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 9px;
+  padding: 2px 10px;
+  border-radius: 20px;
+  margin-bottom: 7px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border: 1px solid;
+}
+
+.dialyzed-yes     { background: var(--rust-l); color: var(--rust); border-color: rgba(181,69,27,0.2); }
+.dialyzed-no      { background: var(--sage-l); color: var(--sage); border-color: rgba(59,99,87,0.2); }
+.dialyzed-partial { background: var(--gold-l); color: var(--gold); border-color: rgba(200,146,42,0.2); }
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 56px 20px;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.empty-icon { font-size: 36px; margin-bottom: 12px; opacity: 0.35; }
+.empty-text { font-family: var(--mono); font-size: 12px; color: var(--muted); line-height: 1.8; }
+
+.no-drugs {
+  text-align: center;
+  padding: 20px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* Footer */
+footer {
+  background: var(--ink);
+  margin-top: 56px;
+  padding: 22px 28px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-radius: 10px;
+}
+
+footer .foot-left {
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--bg);
+  line-height: 1.6;
+}
+
+footer .foot-left span { color: var(--rust); }
+
+footer .foot-right {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: rgba(247,242,234,0.3);
+  text-align: right;
+  line-height: 1.7;
+}
+
+@media (max-width: 600px) {
+  header { padding: 14px 20px; }
+  .container { padding: 24px 16px 60px; }
+  .result-summary { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <h1>Kalkulator <span>Dosis Renal</span></h1>
+    <div class="tagline">Penyesuaian dosis berdasarkan fungsi ginjal · ICU &amp; Intermediate Room</div>
+  </div>
+  <div class="header-right">
+    <div class="author">Apoteker Ry | Farmasi Klinis</div>
+    <div class="refs">
+      Referensi: Drug Prescribing in Renal Failure (Aronoff) ·<br>
+      Renal Pharmacist Handbook · Micromedex
+    </div>
+  </div>
+</header>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer">
+  ⚠ ALAT BANTU PENGAMBILAN KEPUTUSAN KLINIS — Selalu verifikasi dengan referensi terkini dan pertimbangan klinis. Bukan pengganti penilaian klinis profesional.
+</div>
+
+<!-- CRCL CALCULATOR (collapsible) -->
+<div class="crcl-section">
+  <div class="crcl-header" id="crclToggle" onclick="toggleCrCl()">
+    <div class="crcl-header-left">
+      <span class="label">🧮 Kalkulator CrCl</span>
+      <span class="formula">Cockcroft-Gault</span>
+    </div>
+    <span class="crcl-toggle-icon" id="crclIcon">▼</span>
+  </div>
+  <div class="crcl-body" id="crclBody">
+    <div class="crcl-grid">
+      <div class="field">
+        <label>Usia (tahun)</label>
+        <input type="number" id="cgAge" placeholder="mis. 65" min="1" max="120" oninput="calcCG()">
+      </div>
+      <div class="field">
+        <label>Berat Badan (kg)</label>
+        <input type="number" id="cgWeight" placeholder="mis. 60" step="0.1" oninput="calcCG()">
+      </div>
+      <div class="field">
+        <label>Kreatinin Serum (mg/dL)</label>
+        <input type="number" id="cgScr" placeholder="mis. 2.5" step="0.01" oninput="calcCG()">
+      </div>
+      <div class="field">
+        <label>Jenis Kelamin</label>
+        <select id="cgSex" onchange="calcCG()">
+          <option value="">— pilih —</option>
+          <option value="L">Laki-laki</option>
+          <option value="P">Perempuan</option>
+        </select>
+      </div>
+    </div>
+    <div class="field" style="margin-bottom:12px;">
+      <label>Tipe Berat Badan</label>
+      <select id="cgWtType" onchange="calcCG()" style="max-width:280px;">
+        <option value="actual">Actual Body Weight (ABW)</option>
+        <option value="ibw">Ideal Body Weight (IBW) — otomatis hitung</option>
+        <option value="adj">Adjusted Body Weight (AdjBW) — untuk obesitas/edema</option>
+      </select>
+    </div>
+    <div id="wtNote" style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:10px;display:none;"></div>
+    <div class="crcl-result-row">
+      <div>
+        <div class="crcl-result-label">CrCl (Cockcroft-Gault)</div>
+        <div class="crcl-result-value" id="cgResult">—</div>
+      </div>
+      <div>
+        <div class="crcl-result-label">mL/menit</div>
+      </div>
+      <div class="crcl-formula-note" id="cgFormula"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MANUAL CrCl INPUT -->
+<div class="crcl-manual">
+  <div class="crcl-manual-label">Input CrCl / eGFR Pasien (mL/menit)</div>
+  <div class="crcl-input-row">
+    <input type="number" class="crcl-big-input" id="crcl" placeholder="—" min="0" max="200" oninput="onCrClInput()">
+    <div class="ckd-stage-display">
+      <div class="ckd-stage-name" id="ckdName" style="color:var(--muted)">Masukkan nilai CrCl</div>
+      <div class="ckd-stage-desc" id="ckdDesc">untuk memulai penyesuaian dosis</div>
+      <div class="ckd-bar">
+        <div class="ckd-seg" style="background:#2a7a4a" id="seg1"></div>
+        <div class="ckd-seg" style="background:#6aaa5a" id="seg2"></div>
+        <div class="ckd-seg" style="background:#c8aa30" id="seg3"></div>
+        <div class="ckd-seg" style="background:#c87a20" id="seg4"></div>
+        <div class="ckd-seg" style="background:#b82b2b" id="seg5"></div>
+        <div class="ckd-seg" style="background:#6b2bb8" id="seg6"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DRUG SEARCH -->
+<div class="search-section">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="drugSearch" placeholder="Cari nama obat..." oninput="filterDrugs()">
+  </div>
+  <div class="cat-tabs" id="catTabs"></div>
+</div>
+
+<!-- DRUG GRID -->
+<div class="drug-grid" id="drugGrid"></div>
+
+<!-- RESULT -->
+<div id="resultArea"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-left">
+    Apoteker Ry | Farmasi Klinis<br>
+    ICU &amp; Intermediate Room
+  </div>
+  <div class="foot-right">
+    Drug Prescribing in Renal Failure (Aronoff) · Renal Pharmacist Handbook<br>
+    Micromedex · AHA/ACLS Guidelines
+  </div>
+</footer>
+
+</div><!-- /container -->
+
+<script>
+// ═══════════════════════════════════════════════
+// DATABASE OBAT
+// ═══════════════════════════════════════════════
+const OBAT = [
+
+  // ── INOTROPIK / VASOAKTIF ──
+  {
+    id: 'milrinon', nama: 'Milrinon', kategori: 'Inotropik/Vasoaktif', kelas: 'Inhibitor PDE-3',
+    dosisnormal: 'Loading 50 mcg/kg (opsional), maintenance 0.375–0.75 mcg/kg/menit IV',
+    flag: '⚠ Adjustmen signifikan',
+    terdialisis: 'no', terdialisis_label: 'Tidak terdialisis secara signifikan',
+    tiers: [
+      { min:51, max:999, dosis:'0.375–0.75 mcg/kg/menit', interval:'Kontinu (titrasi)', catatan:'Dosis normal. Loading 50 mcg/kg boleh diberikan.' },
+      { min:21, max:50,  dosis:'0.375–0.5 mcg/kg/menit', interval:'Kontinu (tanpa loading)', catatan:'Kurangi maintenance. Hindari loading dose.' },
+      { min:0,  max:20,  dosis:'0.2–0.375 mcg/kg/menit', interval:'Kontinu (titrasi ketat)', catatan:'⚠ Reduksi signifikan. Monitor hemodinamik ketat. Hindari loading dose.' }
+    ],
+    hd: 'Tidak terdialisis. Gunakan dosis range CrCl ≤20.',
+    cvvh: '0.2–0.375 mcg/kg/menit — monitor hemodinamik ketat.',
+    catatan_klinis: '⚠ Eliminasi ~90% renal. Akumulasi menyebabkan hipotensi berkepanjangan. Hindari loading dose pada CrCl <50. Hati-hati pada AKI akut tanpa monitoring ketat.'
+  },
+  {
+    id: 'dopamin', nama: 'Dopamin', kategori: 'Inotropik/Vasoaktif', kelas: 'Katekolamin',
+    dosisnormal: 'Renal: 1–3 mcg/kg/mnt | Inotropik: 3–10 mcg/kg/mnt | Vasopressor: >10 mcg/kg/mnt',
+    flag: '',
+    terdialisis: 'no', terdialisis_label: 'Tidak terdialisis',
+    tiers: [
+      { min:0, max:999, dosis:'Titrasi per efek klinis', interval:'Kontinu', catatan:'Tidak ada renal dose adjustment formal. "Renal dose dopamin" (1–3 mcg/kg/mnt) TIDAK terbukti mencegah AKI — tidak direkomendasikan untuk proteksi ginjal (Bellomo et al.).' }
+    ],
+    hd: 'Tidak terdialisis. Tidak ada adjustment.',
+    cvvh: 'Tidak ada adjustment. Titrasi per hemodinamik.',
+    catatan_klinis: 'Tidak ada renal dose adjustment yang direkomendasikan. "Renal-dose dopamine" sudah tidak direkomendasikan — tidak terbukti mencegah AKI. Titrasi berdasarkan respons hemodinamik dan indikasi klinis.'
+  },
+  {
+    id: 'dobutamin', nama: 'Dobutamin', kategori: 'Inotropik/Vasoaktif', kelas: 'Katekolamin',
+    dosisnormal: '2–20 mcg/kg/menit IV kontinu',
+    flag: '',
+    terdialisis: 'no', terdialisis_label: 'Tidak terdialisis secara signifikan',
+    tiers: [
+      { min:0, max:999, dosis:'2–20 mcg/kg/menit', interval:'Kontinu (titrasi)', catatan:'Tidak ada renal dose adjustment. Titrasi berdasarkan respons klinis dan hemodinamik.' }
+    ],
+    hd: 'Tidak terdialisis. Tidak ada adjustment.',
+    cvvh: 'Tidak ada adjustment. Titrasi per hemodinamik.',
+    catatan_klinis: 'Metabolisme hepatik dominan. Tidak ada renal dose adjustment. Hati-hati takikardia pada dosis tinggi. Titrasi per respons klinis.'
+  },
+  {
+    id: 'norepinefrin', nama: 'Norepinefrin', kategori: 'Inotropik/Vasoaktif', kelas: 'Katekolamin',
+    dosisnormal: '0.01–3 mcg/kg/menit IV kontinu (titrasi)',
+    flag: '',
+    terdialisis: 'no', terdialisis_label: 'Tidak terdialisis',
+    tiers: [
+      { min:0, max:999, dosis:'0.01–3 mcg/kg/menit', interval:'Kontinu (titrasi per MAP)', catatan:'Tidak ada renal dose adjustment. Titrasi per target MAP (umumnya ≥65 mmHg).' }
+    ],
+    hd: 'Tidak terdialisis. Tidak ada adjustment.',
+    cvvh: 'Tidak ada adjustment. Titrasi per hemodinamik.',
+    catatan_klinis: 'Metabolisme via COMT dan MAO — tidak bergantung renal clearance. Vasokonstriksi renal pada dosis tinggi dapat memperburuk AKI. Titrasi per MAP target.'
+  },
+  {
+    id: 'vasopressin', nama: 'Vasopressin', kategori: 'Inotropik/Vasoaktif', kelas: 'Vasopresor',
+    dosisnormal: '0.01–0.04 unit/menit IV kontinu (fixed dose)',
+    flag: '',
+    terdialisis: 'no', terdialisis_label: 'Tidak terdialisis',
+    tiers: [
+      { min:0, max:999, dosis:'0.01–0.04 unit/menit', interval:'Kontinu (fixed, tidak dititrasi)', catatan:'Tidak ada renal dose adjustment. Dosis >0.04 unit/mnt meningkatkan risiko iskemia.' }
+    ],
+    hd: 'Tidak terdialisis. Tidak ada adjustment.',
+    cvvh: 'Tidak ada adjustment.',
+    catatan_klinis: 'Metabolisme enzimatik (vasopressinase) dan hepatik — bukan renal. Digunakan sebagai adjunct norepinefrin pada sepsis. Dosis >0.04 unit/mnt dikaitkan dengan iskemia miokard, mesenterik, dan digital. Hati-hati pada transplantasi jantung (efek memanjang).'
+  },
+  {
+    id: 'levosimendan', nama: 'Levosimendan', kategori: 'Inotropik/Vasoaktif', kelas: 'Sensitizer Kalsium',
+    dosisnormal: 'Loading 6–12 mcg/kg selama 10 mnt (opsional), maintenance 0.05–0.2 mcg/kg/menit × 24 jam',
+    flag: '⚠ Hati-hati CrCl ≤30',
+    terdialisis: 'partial', terdialisis_label: 'Metabolit aktif tidak terdialisis efektif',
+    tiers: [
+      { min:31, max:999, dosis:'0.05–0.2 mcg/kg/menit', interval:'24 jam (loading opsional)', catatan:'Dosis normal. Loading dapat diberikan.' },
+      { min:0,  max:30,  dosis:'Gunakan dengan sangat hati-hati', interval:'Data terbatas', catatan:'⚠ Loading dihindari. Metabolit aktif OR-1896 terakumulasi. Efek hemodinamik dapat berlangsung berminggu-minggu.' }
+    ],
+    hd: 'Data sangat terbatas. Metabolit aktif OR-1896 terakumulasi — half-life memanjang drastis. Gunakan hanya bila manfaat jelas.',
+    cvvh: 'Data tidak cukup untuk rekomendasi dosis spesifik.',
+    catatan_klinis: '⚠ Metabolit aktif OR-1896 dieliminasi renal dengan half-life 80–96 jam (normal), jauh lebih panjang pada renal impairment. Efek hemodinamik dapat berlangsung hingga 2 minggu. Risiko utama: hipotensi berkepanjangan pada CrCl ≤30.'
+  },
+
+  // ── ANTIBIOTIK HIGH-ALERT ──
+  {
+    id: 'vancomycin', nama: 'Vankomisin', kategori: 'Antibiotik', kelas: 'Glikopeptida',
+    dosisnormal: '15–20 mg/kg q8–12h IV (panduan AUC/MIC)',
+    flag: '⚠ TDM wajib',
+    terdialisis: 'partial', terdialisis_label: 'Tidak terdialisis signifikan (kecuali membran high-flux)',
+    tiers: [
+      { min:70,  max:999, dosis:'15–20 mg/kg',         interval:'q8–12h',           catatan:'TDM wajib. Target AUC/MIC 400–600 mg·h/L.' },
+      { min:40,  max:69,  dosis:'15–20 mg/kg',         interval:'q12–24h',          catatan:'Perpanjang interval berdasarkan TDM.' },
+      { min:20,  max:39,  dosis:'15–20 mg/kg',         interval:'q24–48h',          catatan:'Perpanjang interval signifikan. Monitor AUC.' },
+      { min:0,   max:19,  dosis:'Loading 20–25 mg/kg', interval:'Maintenance per TDM (q48–96h)', catatan:'⚠ TDM-ONLY. Monitoring trough saja tidak cukup — gunakan AUC-guided bila tersedia.' }
+    ],
+    hd: 'Tidak terdialisis signifikan (kecuali high-flux membrane). 500 mg–1 g setelah setiap sesi HD, konfirmasi dengan TDM.',
+    cvvh: '15–20 mg/kg q24–48h — sangat bergantung pada effluent rate dan jenis membran. TDM wajib.',
+    catatan_klinis: '⚠ AUC/MIC-guided monitoring lebih direkomendasikan daripada trough-only (target AUC 400–600 mg·h/L). Hindari kombinasi dengan piperasilin-tazobaktam bila ada alternatif (risiko nefrotoksisitas sinergis). Infus minimal 60 menit untuk mencegah Red Man Syndrome.'
+  },
+  {
+    id: 'meropenem', nama: 'Meropenem', kategori: 'Antibiotik', kelas: 'Karbapenem',
+    dosisnormal: '0.5–2 g q8h IV',
+    flag: '',
+    terdialisis: 'yes', terdialisis_label: 'Terdialisis — supplemental dose diperlukan',
+    tiers: [
+      { min:51, max:999, dosis:'0.5–2 g',   interval:'q8h',  catatan:'Dosis normal.' },
+      { min:26, max:50,  dosis:'0.5–1 g',   interval:'q12h', catatan:'Kurangi dosis dan/atau perpanjang interval.' },
+      { min:10, max:25,  dosis:'0.5–1 g',   interval:'q24h', catatan:'Reduksi signifikan diperlukan.' },
+      { min:0,  max:9,   dosis:'0.5 g',     interval:'q24h', catatan:'⚠ Dosis minimal. Monitor tanda neurotoksisitas.' }
+    ],
+    hd: '0.5 g setelah setiap sesi HD.',
+    cvvh: '0.5–1 g q12h. Untuk effluent rate tinggi (>2 L/jam): pertimbangkan 1 g q12h.',
+    catatan_klinis: 'PK/PD target: %T>MIC. Pertimbangkan extended infusion (3–4 jam) untuk organisme dengan MIC tinggi atau pasien kritis. Monitor tanda neurotoksisitas pada renal impairment berat.'
+  },
+  {
+    id: 'pip_tazo', nama: 'Piperasilin/Tazobaktam', kategori: 'Antibiotik', kelas: 'Penisilin + BLI',
+    dosisnormal: '3.375–4.5 g q6–8h IV',
+    flag: '⚠ Hindari + vankomisin',
+    terdialisis: 'yes', terdialisis_label: 'Terdialisis — supplemental dose diperlukan',
+    tiers: [
+      { min:41, max:999, dosis:'3.375–4.5 g', interval:'q6–8h', catatan:'Dosis normal.' },
+      { min:20, max:40,  dosis:'2.25–3.375 g',interval:'q6–8h', catatan:'Kurangi dosis. Untuk Pseudomonas: pertimbangkan extended infusion 3.375 g q8h.' },
+      { min:0,  max:19,  dosis:'2.25 g',      interval:'q8h',   catatan:'Reduksi signifikan. Maksimal 2.25 g q8h.' }
+    ],
+    hd: '2.25 g q12h + 0.75 g setelah setiap sesi HD.',
+    cvvh: '2.25–3.375 g q6–8h tergantung effluent rate dan indikasi.',
+    catatan_klinis: '⚠ Kombinasi dengan vankomisin meningkatkan risiko AKI secara sinergis — hindari bila ada alternatif. Extended infusion (4 jam) meningkatkan target attainment PK/PD untuk Pseudomonas. Tazobaktam juga terakumulasi pada renal failure.'
+  },
+  {
+    id: 'amikacin', nama: 'Amikasin', kategori: 'Antibiotik', kelas: 'Aminoglikosida',
+    dosisnormal: '15–20 mg/kg q24h IV (extended interval)',
+    flag: '⚠ Nefrotoksik · TDM wajib',
+    terdialisis: 'yes', terdialisis_label: 'Terdialisis — supplemental dose diperlukan',
+    subIndikasi: ['Infeksi Umum', 'Infeksi Endokarditis (IE)'],
+    tiers: [
+      { min:61, max:999, dosis:'15–20 mg/kg', interval:'q24h', catatan:'TDM wajib. Target peak 56–64 mg/L, trough <5 mg/L.' },
+      { min:40, max:60,  dosis:'12–15 mg/kg', interval:'q36h', catatan:'Perpanjang interval. TDM wajib.' },
+      { min:20, max:39,  dosis:'7.5–10 mg/kg',interval:'q48h', catatan:'Reduksi signifikan. TDM esensial.' },
+      { min:0,  max:19,  dosis:'TDM-guided only', interval:'q48–72h atau per kadar', catatan:'⚠ RISIKO TINGGI nefrotoksisitas. Hindari bila ada alternatif. Bila harus digunakan: dosis hanya berdasarkan TDM.' }
+    ],
+    tiers_ie: [
+      { min:0, max:999, dosis:'7.5 mg/kg', interval:'q12h (low-dose untuk sinergi)', catatan:'⚠ Khusus sinergi IE. Target peak 15–20 mg/L, trough <5 mg/L. Monitor fungsi ginjal ketat. Pertimbangkan hindari bila CrCl <50.' }
+    ],
+    hd: '5–7.5 mg/kg setelah setiap sesi HD, guided kadar serum.',
+    cvvh: '7.5–10 mg/kg q24–48h — TDM wajib. CRRT mempengaruhi clearance secara signifikan.',
+    catatan_klinis: '⚠ Nefrotoksik dan ototoksik. Hindari bila ada alternatif pada renal impairment. Bila digunakan: single daily dosing lebih aman, TDM wajib. Target peak (Cmax) 56–64 mg/L, trough <5 mg/L. Monitor fungsi pendengaran pada penggunaan >5 hari.\n\nKhusus IE (sinergi): dosis lebih rendah (7.5 mg/kg q12h), target peak 15–20 mg/L. Pertimbangkan menghindari aminoglikosida pada CrCl <50 untuk konteks IE — konsultasikan ke guideline AHA/ESC IE.'
+  },
+  {
+    id: 'gentamicin', nama: 'Gentamisin', kategori: 'Antibiotik', kelas: 'Aminoglikosida',
+    dosisnormal: '5–7 mg/kg q24h IV (extended interval)',
+    flag: '⚠ Nefrotoksik · TDM wajib',
+    terdialisis: 'yes', terdialisis_label: 'Terdialisis — supplemental dose diperlukan',
+    subIndikasi: ['Infeksi Umum', 'Sinergi Endokarditis (IE)'],
+    tiers: [
+      { min:61, max:999, dosis:'5–7 mg/kg',    interval:'q24h', catatan:'TDM direkomendasikan. Trough <1 mg/L.' },
+      { min:40, max:60,  dosis:'3.5–5 mg/kg',  interval:'q36h', catatan:'Perpanjang interval. TDM wajib.' },
+      { min:20, max:39,  dosis:'2.5–3.5 mg/kg',interval:'q48h', catatan:'Risiko tinggi. Hindari bila memungkinkan.' },
+      { min:0,  max:19,  dosis:'TDM-guided only', interval:'per kadar', catatan:'⚠ HINDARI. Risiko nefrotoksisitas sangat tinggi.' }
+    ],
+    tiers_ie: [
+      { min:50, max:999, dosis:'1 mg/kg', interval:'q8h (sinergi IE)', catatan:'Protokol sinergi IE. Target peak 3–4 mg/L, trough <1 mg/L. Berbeda dari dosing infeksi umum.' },
+      { min:0,  max:49,  dosis:'⚠ Pertimbangkan hindari', interval:'Konsultasi spesialis', catatan:'⚠ Guideline AHA/ESC menyarankan menghindari aminoglikosida untuk sinergi IE bila CrCl <50. Diskusikan alternatif dengan Tim ID.' }
+    ],
+    hd: '1.5–2 mg/kg setelah setiap sesi HD, guided kadar serum.',
+    cvvh: '1.5–2.5 mg/kg q24–48h — TDM wajib.',
+    catatan_klinis: '⚠ Nefrotoksik dan ototoksik.\n\nDosing infeksi umum: extended interval, trough <1 mg/L.\n\nDosing sinergi IE: 1 mg/kg q8h, target peak 3–4 mg/L, trough <1 mg/L — berbeda secara fundamental dari dosing infeksi lain. Hindari bila CrCl <50 untuk konteks IE (lihat guideline AHA/ESC).'
+  },
+
+  // ── ANTIARITMIA ──
+  {
+    id: 'amiodaron', nama: 'Amiodaron', kategori: 'Antiaritmia', kelas: 'Antiaritmia Kelas III',
+    dosisnormal: 'Bolus 150 mg/10 mnt → 360 mg/6 jam (1 mg/mnt) → 540 mg/18 jam (0.5 mg/mnt)',
+    flag: '',
+    terdialisis: 'no', terdialisis_label: 'Tidak terdialisis (Vd sangat besar)',
+    tiers: [
+      { min:0, max:999, dosis:'Bolus 150 mg → 360 mg/6 jam → 540 mg/18 jam', interval:'Total 24 jam = 1050 mg', catatan:'Tidak ada renal dose adjustment. Hari berikutnya: 720 mg/24 jam (0.5 mg/mnt) sampai switch oral.' }
+    ],
+    hd: 'Tidak terdialisis — volume distribusi sangat besar (60 L/kg). Tidak ada adjustment dosis.',
+    cvvh: 'Tidak terdialisis secara signifikan. Tidak ada adjustment.',
+    catatan_klinis: 'Metabolisme hepatik dominan via CYP2C8/3A4. Tidak ada renal dose adjustment. Pelarut IV (polysorbate 80) dapat berakumulasi pada renal failure jika penggunaan IV berkepanjangan — pertimbangkan switch ke oral bila memungkinkan. Monitor QTc, fungsi tiroid, hepatotoksisitas. Half-life sangat panjang (40–55 hari).'
+  },
+  {
+    id: 'lidokain', nama: 'Lidokain', kategori: 'Antiaritmia', kelas: 'Antiaritmia Kelas Ib',
+    dosisnormal: 'Loading 1–1.5 mg/kg IV bolus, maintenance 1–4 mg/menit infus',
+    flag: '⚠ Monitor toksisitas CNS',
+    terdialisis: 'no', terdialisis_label: 'Tidak terdialisis secara signifikan',
+    tiers: [
+      { min:0, max:999, dosis:'Loading 1–1.5 mg/kg, dapat diulang 0.5–0.75 mg/kg tiap 5–10 mnt (max 3 mg/kg)', interval:'Maintenance: 1–4 mg/menit infus', catatan:'⚠ Tidak ada adjustment dosis, namun metabolit aktif MEGX/GX terakumulasi pada renal failure — monitor toksisitas CNS lebih ketat.' }
+    ],
+    hd: 'Tidak terdialisis secara signifikan. Tidak ada adjustment dosis.',
+    cvvh: 'Tidak terdialisis. Tidak ada adjustment.',
+    catatan_klinis: '⚠ Metabolit aktif MEGX (monoethylglycinexylidide) dan GX (glycinexylidide) terakumulasi pada renal failure — risiko toksisitas CNS (kejang, confusion) meningkat meski dosis tidak diubah. Monitor tanda toksisitas lebih ketat. Metabolisme hepatik dominan — hati-hati pada gagal hati bersamaan.'
+  },
+  {
+    id: 'adenosin', nama: 'Adenosin', kategori: 'Antiaritmia', kelas: 'Antiaritmia (SVT)',
+    dosisnormal: '6 mg IV bolus cepat, dapat diulang 12 mg bila tidak respons',
+    flag: '',
+    terdialisis: 'no', terdialisis_label: 'Tidak relevan — t½ <10 detik',
+    tiers: [
+      { min:0, max:999, dosis:'6 mg bolus cepat, dapat diulang 12 mg', interval:'Dosis tunggal / per kebutuhan', catatan:'Tidak ada renal adjustment. Half-life <10 detik, dimetabolisme di eritrosit dan endotel — tidak bergantung renal clearance.' }
+    ],
+    hd: 'Tidak relevan. Half-life <10 detik.',
+    cvvh: 'Tidak relevan.',
+    catatan_klinis: 'Half-life sangat pendek (<10 detik). Berikan via vena sentral atau antekubital besar dengan flush cepat. Hati-hati pada pasien transplantasi jantung — efek dapat memanjang dan lebih sensitif.'
+  },
+  {
+    id: 'digoksin', nama: 'Digoksin', kategori: 'Antiaritmia', kelas: 'Glikosida Jantung',
+    dosisnormal: '0.125–0.25 mg q24h PO/IV',
+    flag: '⚠ Narrow TI · Monitor elektrolit',
+    terdialisis: 'no', terdialisis_label: 'Tidak terdialisis (Vd besar) — JANGAN supplemental post-HD',
+    tiers: [
+      { min:51, max:999, dosis:'0.125–0.25 mg',   interval:'q24h',    catatan:'Monitor ECG dan kadar digoksin.' },
+      { min:25, max:50,  dosis:'0.0625–0.125 mg', interval:'q24h',    catatan:'Kurangi dosis 25–50%.' },
+      { min:10, max:24,  dosis:'0.0625 mg',        interval:'q24–48h', catatan:'Reduksi signifikan. TDM rutin.' },
+      { min:0,  max:9,   dosis:'0.0625 mg',        interval:'q48–72h', catatan:'⚠ Narrow TI — TDM esensial. Pertimbangkan alternatif.' }
+    ],
+    hd: '⚠ TIDAK terdialisis secara signifikan. JANGAN berikan supplemental dose setelah HD.',
+    cvvh: 'Tidak terdialisis. Monitoring level dan tanda toksisitas ketat.',
+    catatan_klinis: '⚠ Narrow therapeutic index. Target kadar: 0.5–0.9 ng/mL untuk gagal jantung. Toksisitas: bradikardi, blok AV, mual, gangguan visual (halo kuning-hijau). PENTING: Hipokalemia dan hipomagnesemia — sangat umum di ICU — meningkatkan toksisitas digoksin secara dramatis meski kadar dalam range. Koreksi elektrolit sebelum/selama terapi.'
+  },
+
+  // ── ANTIKOAGULAN ──
+  {
+    id: 'heparin_ufh', nama: 'Heparin UFH', kategori: 'Antikoagulan', kelas: 'Antikoagulan',
+    dosisnormal: 'Terapi: bolus 80 unit/kg, lanjut 18 unit/kg/jam | Profilaksis: 5000 unit q8–12h SC',
+    flag: '',
+    terdialisis: 'no', terdialisis_label: 'Tidak terdialisis — digunakan sbg antikoagulan sirkuit HD',
+    tiers: [
+      { min:0, max:999, dosis:'Terapi: bolus 80 unit/kg + infus 18 unit/kg/jam | Profilaksis: 5000 unit SC', interval:'Titrasi per aPTT', catatan:'Tidak ada renal dose adjustment. Titrasi berdasarkan aPTT (target 60–100 detik, atau per protokol lokal).' }
+    ],
+    hd: 'Tidak terdialisis. Digunakan sebagai antikoagulan sirkuit HD.',
+    cvvh: 'Digunakan sebagai antikoagulan sirkuit CRRT. Dosis sistemik tidak perlu adjustment — titrasi per aPTT.',
+    catatan_klinis: 'Tidak ada renal dose adjustment. Pada AKI/CKD berat, UFH lebih dipilih daripada LMWH karena mudah dimonitor dan efek dapat direverse dengan protamin. Monitoring via aPTT atau anti-Xa heparin. Waspadai HIT (Heparin-Induced Thrombocytopenia) — monitor trombosit.'
+  },
+  {
+    id: 'enoxaparin', nama: 'Enoksaparin (LMWH)', kategori: 'Antikoagulan', kelas: 'LMWH',
+    dosisnormal: 'Terapi: 1 mg/kg q12h SC | Profilaksis: 40 mg q24h SC',
+    flag: '⚠ Adjustment CrCl <30',
+    terdialisis: 'no', terdialisis_label: 'Tidak terdialisis efektif',
+    tiers: [
+      { min:30, max:999, dosis:'Terapi: 1 mg/kg q12h SC | Profilaksis: 40 mg q24h SC', interval:'Per label', catatan:'Dosis normal. Monitor anti-Xa bila CrCl mendekati 30.' },
+      { min:15, max:29,  dosis:'Terapi: 1 mg/kg q24h SC | Profilaksis: 20 mg q24h SC', interval:'Perpanjang interval terapeutik', catatan:'⚠ Risiko akumulasi signifikan. Monitor anti-Xa wajib. Target anti-Xa terapeutik q24h: 1.0–2.0 IU/mL.' },
+      { min:0,  max:14,  dosis:'⚠ Pertimbangkan UFH', interval:'Anti-Xa guided bila LMWH digunakan', catatan:'⚠ Risiko perdarahan tinggi akibat akumulasi. UFH lebih direkomendasikan pada CrCl <15 dan ESRD.' }
+    ],
+    hd: 'UFH lebih direkomendasikan. Bila LMWH digunakan: monitoring anti-Xa wajib.',
+    cvvh: 'UFH preferred sebagai antikoagulan sirkuit. Bila enoksaparin digunakan untuk indikasi lain: monitor anti-Xa ketat.',
+    catatan_klinis: 'Target anti-Xa: 0.5–1.0 IU/mL (terapeutik q12h) | 1.0–2.0 IU/mL (terapeutik q24h) | 0.2–0.4 IU/mL (profilaksis). Monitoring anti-Xa direkomendasikan bila CrCl <30, obesitas, atau kehamilan. UFH lebih dipilih pada CrCl <15 dan ESRD.'
+  },
+  {
+    id: 'fondaparinux', nama: 'Fondaparinuks', kategori: 'Antikoagulan', kelas: 'Anti-Xa',
+    dosisnormal: 'Profilaksis: 2.5 mg q24h SC | Terapi: 5–10 mg q24h SC (weight-based)',
+    flag: '⚠ KI pada CrCl <30',
+    terdialisis: 'no', terdialisis_label: 'Tidak terdialisis efektif — KI pada CrCl <30',
+    tiers: [
+      { min:50, max:999, dosis:'Profilaksis: 2.5 mg SC | Terapi: 5–10 mg SC', interval:'q24h', catatan:'Dosis normal.' },
+      { min:30, max:49,  dosis:'Profilaksis: 2.5 mg SC | Terapi: gunakan hati-hati', interval:'q24h', catatan:'⚠ Risiko akumulasi meningkat. Monitor tanda perdarahan ketat.' },
+      { min:0,  max:29,  dosis:'⚠ KONTRAINDIKASI', interval:'—', catatan:'⚠ Eliminasi renal >77%. Akumulasi sangat signifikan. Kontraindikasi absolut.' }
+    ],
+    hd: 'Kontraindikasi. Tidak terdialisis efektif.',
+    cvvh: 'Kontraindikasi pada CrCl <30. Data CRRT sangat terbatas.',
+    catatan_klinis: '⚠ Eliminasi hampir eksklusif renal. Kontraindikasi pada CrCl <30 mL/min. Keuntungan: tidak menyebabkan HIT — digunakan sebagai alternatif pada pasien HIT yang membutuhkan antikoagulan.'
+  },
+  {
+    id: 'warfarin', nama: 'Warfarin', kategori: 'Antikoagulan', kelas: 'Antikoagulan Oral (VKA)',
+    dosisnormal: 'Individual berdasarkan INR. Target INR 2–3 (umum) atau 2.5–3.5 (katup mekanik)',
+    flag: '',
+    terdialisis: 'no', terdialisis_label: 'Tidak terdialisis',
+    tiers: [
+      { min:0, max:999, dosis:'Individual — titrasi per INR', interval:'q24h', catatan:'Tidak ada adjustment berbasis CrCl. Pasien CKD/ESRD lebih sensitif — mulai dari dosis lebih rendah. Titrasi per INR.' }
+    ],
+    hd: 'Tidak terdialisis. Pasien HD cenderung lebih sensitif — monitor INR lebih ketat.',
+    cvvh: 'Tidak terdialisis. Monitoring INR tetap standar.',
+    catatan_klinis: 'Tidak ada renal dose adjustment formal. Namun pasien CKD/ESRD lebih sensitif terhadap warfarin. Interaksi obat sangat luas (CYP2C9). Pada ESRD dengan AF: warfarin vs DOAC masih diperdebatkan — beberapa studi menunjukkan warfarin meningkatkan risiko kalsifikasi vaskular pada dialisis.'
+  },
+  {
+    id: 'rivaroxaban', nama: 'Rivaroksaban', kategori: 'Antikoagulan', kelas: 'DOAC (Anti-Xa)',
+    dosisnormal: 'AF: 20 mg q24h PO | DVT/PE: 15 mg q12h × 21 hari, lanjut 20 mg q24h',
+    flag: '⚠ KI pada CrCl <15',
+    terdialisis: 'no', terdialisis_label: 'Tidak direkomendasikan pada dialisis',
+    tiers: [
+      { min:50, max:999, dosis:'AF: 20 mg q24h | DVT/PE: per protokol', interval:'Per indikasi', catatan:'Dosis normal.' },
+      { min:30, max:49,  dosis:'AF: 15 mg q24h | DVT/PE: hati-hati', interval:'q24h', catatan:'Kurangi dosis AF menjadi 15 mg.' },
+      { min:15, max:29,  dosis:'⚠ Tidak direkomendasikan', interval:'—', catatan:'Pertimbangkan warfarin.' },
+      { min:0,  max:14,  dosis:'⚠ KONTRAINDIKASI', interval:'—', catatan:'⚠ Gunakan warfarin atau UFH.' }
+    ],
+    hd: 'Tidak direkomendasikan. Warfarin lebih dipilih untuk AF pada pasien HD.',
+    cvvh: 'Data tidak cukup untuk rekomendasi. Hindari bila memungkinkan.',
+    catatan_klinis: '33% eliminasi renal. Tidak direkomendasikan pada CrCl <15 atau ESRD. Tidak ada antidot spesifik yang tersedia luas (andexanet alfa terbatas).'
+  },
+  {
+    id: 'apixaban', nama: 'Apiksaban', kategori: 'Antikoagulan', kelas: 'DOAC (Anti-Xa)',
+    dosisnormal: 'AF: 5 mg q12h PO (atau 2.5 mg q12h bila ≥2 kriteria reduksi)',
+    flag: '',
+    terdialisis: 'partial', terdialisis_label: 'Data emerging pada dialisis — paling banyak di antara DOAC',
+    tiers: [
+      { min:25, max:999, dosis:'5 mg q12h (atau 2.5 mg q12h bila ≥2 kriteria)', interval:'q12h', catatan:'Kriteria reduksi dosis: ≥2 dari 3: usia ≥80 th, BB ≤60 kg, SCr ≥1.5 mg/dL.' },
+      { min:0,  max:24,  dosis:'2.5 mg q12h', interval:'q12h', catatan:'Gunakan hati-hati. Data ESRD terbatas namun berkembang.' }
+    ],
+    hd: '2.5 mg q12h — paling banyak bukti di antara DOAC untuk pasien dialisis. Bukti emerging mendukung penggunaan. Monitor perdarahan.',
+    cvvh: 'Data terbatas. Bila digunakan: 2.5 mg q12h dengan monitoring ketat.',
+    catatan_klinis: 'Eliminasi renal paling rendah di antara DOAC (27%) — menjadikannya DOAC pilihan bila harus digunakan pada CKD berat/ESRD. Kriteria reduksi: ≥2 dari 3 (usia ≥80, BB ≤60 kg, SCr ≥1.5 mg/dL).'
+  },
+
+  // ── SEFALOSPORIN ──
+  {
+    id: 'ceftriaxone', nama: 'Seftriakson', kategori: 'Antibiotik', kelas: 'Sefalosporin Gen-3',
+    dosisnormal: '1–2 g q12–24h IV/IM',
+    flag: '✓ Tidak perlu adjustment',
+    terdialisis: 'no', terdialisis_label: 'Tidak terdialisis — eliminasi bilier dominan',
+    tiers: [
+      { min:0, max:999, dosis:'1–2 g', interval:'q12–24h', catatan:'Tidak ada renal dose adjustment. Eliminasi bilier dominan. Aman pada ESRD.' }
+    ],
+    hd: 'Tidak perlu adjustment. Tidak perlu supplemental dose.',
+    cvvh: 'Tidak perlu adjustment.',
+    catatan_klinis: 'Satu-satunya sefalosporin yang tidak butuh renal adjustment. Hati-hati pada gagal hati bersamaan. Hindari pada neonatus dengan hiperbilirubinemia.'
+  },
+  {
+    id: 'ceftazidime', nama: 'Seftazidim', kategori: 'Antibiotik', kelas: 'Sefalosporin Gen-3',
+    dosisnormal: '1–2 g q8–12h IV',
+    flag: '',
+    terdialisis: 'yes', terdialisis_label: 'Terdialisis — supplemental dose diperlukan',
+    tiers: [
+      { min:51, max:999, dosis:'1–2 g', interval:'q8–12h', catatan:'Dosis normal.' },
+      { min:31, max:50,  dosis:'1 g',   interval:'q12h',   catatan:'Kurangi frekuensi.' },
+      { min:16, max:30,  dosis:'1 g',   interval:'q24h',   catatan:'Reduksi signifikan.' },
+      { min:6,  max:15,  dosis:'0.5–1 g',interval:'q24h',  catatan:'Renal impairment berat.' },
+      { min:0,  max:5,   dosis:'0.5 g', interval:'q48h',   catatan:'ESRD/dialisis.' }
+    ],
+    hd: '0.5–1 g setelah setiap sesi HD.',
+    cvvh: '1–2 g q12h tergantung effluent rate.',
+    catatan_klinis: 'Penetrasi CNS baik. Digunakan untuk meningitis gram negatif dan febrile neutropenia. Eliminasi renal dominan — adjustment signifikan diperlukan.'
+  },
+  {
+    id: 'cefepime', nama: 'Sefepim', kategori: 'Antibiotik', kelas: 'Sefalosporin Gen-4',
+    dosisnormal: '1–2 g q8–12h IV',
+    flag: '⚠ Neurotoksisitas pada akumulasi',
+    terdialisis: 'yes', terdialisis_label: 'Terdialisis — supplemental dose diperlukan',
+    tiers: [
+      { min:61, max:999, dosis:'1–2 g',    interval:'q8–12h', catatan:'Dosis normal.' },
+      { min:30, max:60,  dosis:'1–2 g',    interval:'q12–24h',catatan:'Reduksi ringan–sedang.' },
+      { min:11, max:29,  dosis:'0.5–1 g',  interval:'q24h',   catatan:'Reduksi signifikan.' },
+      { min:0,  max:10,  dosis:'0.25–0.5 g',interval:'q24h',  catatan:'⚠ Risiko neurotoksisitas tinggi. Adjust agresif.' }
+    ],
+    hd: '0.5–1 g setelah setiap sesi HD.',
+    cvvh: '1–2 g q12h — sesuaikan dengan effluent rate.',
+    catatan_klinis: '⚠ Neurotoksisitas (ensefalopati, mioklonus, kejang) pada akumulasi — renal impairment adalah faktor risiko utama. Adjust dosis agresif. Monitor status mental secara rutin pada pasien dengan CrCl rendah.'
+  },
+
+  // ── ANTIBIOTIK LAIN ──
+  {
+    id: 'linezolid', nama: 'Linezolid', kategori: 'Antibiotik', kelas: 'Oksazolidinon',
+    dosisnormal: '600 mg q12h IV/PO',
+    flag: '✓ Tidak perlu adjustment',
+    terdialisis: 'partial', terdialisis_label: 'Metabolit inaktif terakumulasi — tidak signifikan klinis',
+    tiers: [
+      { min:0, max:999, dosis:'600 mg', interval:'q12h', catatan:'Tidak ada renal dose adjustment untuk semua tingkat renal impairment.' }
+    ],
+    hd: 'Berikan dosis setelah dialisis bila memungkinkan. Metabolit inaktif terakumulasi namun tidak signifikan secara klinis.',
+    cvvh: 'Tidak ada adjustment. Monitor toksisitas.',
+    catatan_klinis: 'Tidak ada renal adjustment. ⚠ Risiko trombositopenia — monitor CBC. Aktivitas MAO-I lemah — hindari kombinasi obat serotonergik. Bioavailabilitas oral ~100% — IV dan PO dapat dipertukarkan.'
+  },
+  {
+    id: 'metronidazol', nama: 'Metronidazol', kategori: 'Antibiotik', kelas: 'Nitroimidazol',
+    dosisnormal: '500 mg q8h IV/PO',
+    flag: '',
+    terdialisis: 'partial', terdialisis_label: 'Sebagian terdialisis',
+    tiers: [
+      { min:11, max:999, dosis:'500 mg', interval:'q8h',    catatan:'Dosis normal.' },
+      { min:0,  max:10,  dosis:'500 mg', interval:'q8–12h', catatan:'Perpanjang interval bila CrCl sangat rendah karena akumulasi metabolit.' }
+    ],
+    hd: 'Pertimbangkan dosis setelah dialisis.',
+    cvvh: 'Tidak ada adjustment signifikan.',
+    catatan_klinis: 'Metabolit terakumulasi pada renal failure namun umumnya inaktif secara klinis. Reaksi disulfiram dengan alkohol. Neuropati perifer pada penggunaan >2 minggu.'
+  },
+  {
+    id: 'cotrimoxazole', nama: 'Ko-trimoksazol (TMP/SMX)', kategori: 'Antibiotik', kelas: 'Antagonis Folat',
+    dosisnormal: 'TMP 160 mg/SMX 800 mg q12h IV/PO',
+    flag: '⚠ KI pada CrCl <15',
+    terdialisis: 'yes', terdialisis_label: 'Terdialisis — dosis setelah HD',
+    tiers: [
+      { min:31, max:999, dosis:'Dosis standar', interval:'q12h', catatan:'Dosis normal.' },
+      { min:15, max:30,  dosis:'50% dosis standar', interval:'q12h', catatan:'Kurangi dosis setengahnya.' },
+      { min:0,  max:14,  dosis:'⚠ HINDARI', interval:'—', catatan:'⚠ Risiko hiperkalemia, nefrotoksisitas, supresi sumsum tulang.' }
+    ],
+    hd: 'Dosis setelah sesi dialisis.',
+    cvvh: 'Data terbatas. Bila digunakan untuk PCP: konsultasi spesialis.',
+    catatan_klinis: '⚠ TMP meningkatkan serum kreatinin via inhibisi sekresi tubular — bukan refleksi penurunan GFR sejati. Risiko hiperkalemia. Hindari pada CrCl <15.'
+  },
+
+  // ── ANTIVIRAL ──
+  {
+    id: 'acyclovir', nama: 'Asiklovir IV', kategori: 'Antiviral', kelas: 'Analog Nukleosida',
+    dosisnormal: '5–10 mg/kg q8h IV (5 mg/kg HSV, 10 mg/kg HSV ensefalitis/VZV)',
+    flag: '⚠ Nefrotoksik — hidrasi wajib',
+    terdialisis: 'yes', terdialisis_label: 'Terdialisis — supplemental dose diperlukan',
+    tiers: [
+      { min:51, max:999, dosis:'5–10 mg/kg', interval:'q8h',  catatan:'Dosis normal. Infus ≥1 jam, hidrasi adekuat.' },
+      { min:25, max:50,  dosis:'5–10 mg/kg', interval:'q12h', catatan:'Perpanjang interval.' },
+      { min:10, max:24,  dosis:'5–10 mg/kg', interval:'q24h', catatan:'Perpanjang interval signifikan.' },
+      { min:0,  max:9,   dosis:'2.5–5 mg/kg',interval:'q24h', catatan:'⚠ Nefrotoksik — hidrasi wajib. Risiko kristal nefropati tinggi.' }
+    ],
+    hd: '2.5 mg/kg setelah setiap sesi HD.',
+    cvvh: '5–7.5 mg/kg q24h — sesuaikan dengan effluent rate.',
+    catatan_klinis: '⚠ Nefrotoksik — infus minimal 1 jam, hidrasi adekuat wajib (minimal 1–2 L/hari). Risiko kristal nefropati terutama pada pasien dehidrasi atau renal impairment pre-existing.'
+  },
+  {
+    id: 'ganciclovir', nama: 'Gansiklovir IV', kategori: 'Antiviral', kelas: 'Analog Nukleosida',
+    dosisnormal: 'Induksi: 5 mg/kg q12h IV | Maintenance: 5 mg/kg q24h IV',
+    flag: '⚠ Mielosupresi',
+    terdialisis: 'yes', terdialisis_label: 'Terdialisis — dosis setelah HD',
+    tiers: [
+      { min:70, max:999, dosis:'Induksi: 5 mg/kg q12h',     interval:'Maintenance: 5 mg/kg q24h',     catatan:'Dosis normal.' },
+      { min:50, max:69,  dosis:'Induksi: 2.5 mg/kg q12h',   interval:'Maintenance: 2.5 mg/kg q24h',   catatan:'Reduksi dosis.' },
+      { min:25, max:49,  dosis:'Induksi: 2.5 mg/kg q24h',   interval:'Maintenance: 1.25 mg/kg q24h',  catatan:'Perpanjang interval.' },
+      { min:10, max:24,  dosis:'Induksi: 1.25 mg/kg q24h',  interval:'Maintenance: 0.625 mg/kg q24h', catatan:'Reduksi signifikan.' },
+      { min:0,  max:9,   dosis:'1.25 mg/kg 3x/minggu post-HD',interval:'0.625 mg/kg 3x/minggu post-HD',catatan:'⚠ Mielosupresi — monitor CBC ketat.' }
+    ],
+    hd: 'Dosis setelah setiap sesi HD (3x/minggu).',
+    cvvh: '2.5 mg/kg q24h — TDM bila tersedia.',
+    catatan_klinis: '⚠ Mielosupresi (neutropenia, trombositopenia) — monitor CBC secara rutin dan ketat. Teratogenik dan berpotensi karsinogenik.'
+  },
+
+  // ── ANTIFUNGAL ──
+  {
+    id: 'flukonazol', nama: 'Flukonazol', kategori: 'Antifungal', kelas: 'Triazol',
+    dosisnormal: '200–800 mg q24h IV/PO (loading 2× dosis maintenance)',
+    flag: '',
+    terdialisis: 'yes', terdialisis_label: 'Terdialisis signifikan — dosis penuh setelah HD',
+    tiers: [
+      { min:51, max:999, dosis:'100–800 mg',           interval:'q24h', catatan:'Dosis normal. Loading dose tidak berubah.' },
+      { min:0,  max:50,  dosis:'50% dosis maintenance', interval:'q24h', catatan:'Kurangi maintenance 50%. Loading dose tetap tidak berubah (2× maintenance).' }
+    ],
+    hd: 'Dosis penuh setelah setiap sesi HD (flukonazol terdialisis secara signifikan).',
+    cvvh: 'Dosis normal — flukonazol terdialisis signifikan oleh CRRT. Pertimbangkan 400–800 mg q24h untuk CVVH effluent rate tinggi.',
+    catatan_klinis: 'Loading dose (2× dosis maintenance) selalu diberikan tanpa memandang fungsi renal. Inhibitor CYP2C9/3A4 kuat — interaksi luas dengan warfarin, calcineurin inhibitor, statin.'
+  },
+  {
+    id: 'vorikonazol', nama: 'Vorikonazol IV', kategori: 'Antifungal', kelas: 'Triazol',
+    dosisnormal: 'Loading 6 mg/kg q12h × 2 dosis, maintenance 4 mg/kg q12h IV',
+    flag: '⚠ Ganti oral bila CrCl <50',
+    terdialisis: 'no', terdialisis_label: 'Vehicle SBECD tidak terdialisis efektif',
+    tiers: [
+      { min:50, max:999, dosis:'Loading 6 mg/kg q12h × 2, maintenance 4 mg/kg q12h IV', interval:'q12h', catatan:'Dosis IV normal.' },
+      { min:0,  max:49,  dosis:'⚠ GANTI KE ORAL VORIKONAZOL', interval:'PO lebih diutamakan', catatan:'⚠ Vehicle IV (SBECD/cyclodextrin) terakumulasi pada CrCl <50 dan bersifat toksik. Bioavailabilitas oral ~96%.' }
+    ],
+    hd: 'Gunakan formulasi oral. SBECD tidak tereliminasi efektif oleh dialisis.',
+    cvvh: 'Gunakan formulasi oral bila memungkinkan.',
+    catatan_klinis: '⚠ Formulasi IV mengandung SBECD (sulfobutylether beta-cyclodextrin) yang terakumulasi pada CrCl <50 dan bersifat toksik. GANTI KE ORAL bila CrCl <50. Bioavailabilitas oral ~96%. TDM direkomendasikan — target trough 1–5.5 mg/L.'
+  },
+
+  // ── DIABETES ──
+  {
+    id: 'metformin', nama: 'Metformin', kategori: 'Diabetes', kelas: 'Biguanid',
+    dosisnormal: '500–1000 mg q8–12h PO (maks 2550 mg/hari)',
+    flag: '⚠ KI pada CrCl <30',
+    terdialisis: 'no', terdialisis_label: 'Kontraindikasi pada dialisis',
+    tiers: [
+      { min:60, max:999, dosis:'500–1000 mg', interval:'q8–12h', catatan:'Dosis normal.' },
+      { min:45, max:59,  dosis:'500–1000 mg', interval:'q12h',   catatan:'Kurangi dosis. Evaluasi ulang secara berkala.' },
+      { min:30, max:44,  dosis:'500 mg',       interval:'q12h (maks 1 g/hari)', catatan:'⚠ Risiko asidosis laktat meningkat. Monitor ketat.' },
+      { min:0,  max:29,  dosis:'⚠ KONTRAINDIKASI', interval:'—', catatan:'⚠ HENTIKAN METFORMIN. Risiko asidosis laktat fatal.' }
+    ],
+    hd: 'Kontraindikasi absolut.',
+    cvvh: 'Kontraindikasi.',
+    catatan_klinis: '⚠ Kontraindikasi bila eGFR/CrCl <30 mL/menit. Stop sebelum prosedur dengan kontras IV — resume setelah fungsi renal dikonfirmasi stabil (48 jam post-kontras).'
+  },
+  {
+    id: 'sitagliptin', nama: 'Sitagliptin', kategori: 'Diabetes', kelas: 'Inhibitor DPP-4',
+    dosisnormal: '100 mg q24h PO',
+    flag: '✓ Aman pada CKD',
+    terdialisis: 'partial', terdialisis_label: 'Sebagian terdialisis — timing tidak kritis',
+    tiers: [
+      { min:45, max:999, dosis:'100 mg', interval:'q24h', catatan:'Dosis normal.' },
+      { min:30, max:44,  dosis:'50 mg',  interval:'q24h', catatan:'Kurangi menjadi 50 mg/hari.' },
+      { min:0,  max:29,  dosis:'25 mg',  interval:'q24h', catatan:'25 mg/hari. Aman hingga ESRD.' }
+    ],
+    hd: '25 mg q24h. Waktu pemberian relatif terhadap dialisis tidak kritis.',
+    cvvh: 'Tidak ada data spesifik. Gunakan dosis sesuai CrCl.',
+    catatan_klinis: 'Salah satu antidiabetik paling aman pada CKD. Risiko hipoglikemia rendah. Dapat digunakan hingga ESRD dengan penyesuaian dosis.'
+  },
+
+  // ── NEUROLOGI ──
+  {
+    id: 'gabapentin', nama: 'Gabapentin', kategori: 'Neurologi', kelas: 'Antikonvulsan/Neuropatik',
+    dosisnormal: '300–1200 mg q8h PO',
+    flag: '⚠ Adjustment signifikan',
+    terdialisis: 'yes', terdialisis_label: 'Terdialisis — supplemental dose diperlukan',
+    tiers: [
+      { min:60, max:999, dosis:'300–1200 mg', interval:'q8h',  catatan:'Dosis normal. Maks 3600 mg/hari.' },
+      { min:30, max:59,  dosis:'200–700 mg',  interval:'q12h', catatan:'Kurangi dosis dan frekuensi.' },
+      { min:15, max:29,  dosis:'200–700 mg',  interval:'q24h', catatan:'Reduksi signifikan.' },
+      { min:0,  max:14,  dosis:'100–300 mg',  interval:'q24h', catatan:'⚠ Risiko depresi CNS signifikan. Somnolens, ensefalopati.' }
+    ],
+    hd: '100–300 mg supplemental setelah setiap sesi HD.',
+    cvvh: '200–300 mg q24h — monitor sedasi ketat.',
+    catatan_klinis: '⚠ Eliminasi 100% renal. Akumulasi menyebabkan depresi CNS, somnolens, ataksia, ensefalopati. Adjust dosis agresif pada renal impairment.'
+  },
+
+  // ── GASTROPROTEKSI ──
+  {
+    id: 'pantoprazol', nama: 'Pantoprazol', kategori: 'Gastroproteksi', kelas: 'Proton Pump Inhibitor',
+    dosisnormal: '40 mg q24h IV/PO',
+    flag: '✓ Tidak perlu adjustment',
+    terdialisis: 'no', terdialisis_label: 'Tidak terdialisis secara signifikan',
+    tiers: [
+      { min:0, max:999, dosis:'40 mg', interval:'q24h', catatan:'Tidak ada renal dose adjustment. Metabolisme hepatik dominan.' }
+    ],
+    hd: 'Tidak perlu adjustment. Tidak perlu supplemental dose.',
+    cvvh: 'Tidak perlu adjustment.',
+    catatan_klinis: 'Metabolisme hepatik dominan. Tidak ada renal adjustment. PPI pilihan di ICU untuk profilaksis stres ulkus.'
+  },
+
+  // ── ANALGESIK ──
+  {
+    id: 'morfin', nama: 'Morfin', kategori: 'Analgesik', kelas: 'Opioid',
+    dosisnormal: '2–10 mg q2–6h IV/SC/IM (titrasi per indikasi)',
+    flag: '⚠ Hindari CrCl <10',
+    terdialisis: 'partial', terdialisis_label: 'M6G tidak tereliminasi efektif oleh HD',
+    tiers: [
+      { min:30, max:999, dosis:'Dosis normal',          interval:'Titrasi per respons', catatan:'Gunakan dengan kewaspadaan standar.' },
+      { min:10, max:29,  dosis:'Kurangi 25–50%, perpanjang interval', interval:'Per respons klinis', catatan:'Metabolit aktif M6G mulai terakumulasi — risiko depresi napas berkepanjangan.' },
+      { min:0,  max:9,   dosis:'⚠ HINDARI — gunakan fentanil atau hidromorfon', interval:'—', catatan:'⚠ M6G terakumulasi → depresi napas berkepanjangan dan fatal.' }
+    ],
+    hd: 'Hindari. M6G tidak tereliminasi efektif oleh HD.',
+    cvvh: 'Hindari bila memungkinkan. Gunakan fentanil.',
+    catatan_klinis: '⚠ Metabolit aktif morfin-6-glukuronida (M6G) lebih poten dari parent drug dan dieliminasi renal. Akumulasi pada renal failure menyebabkan depresi napas berkepanjangan yang berpotensi fatal. Fentanil atau hidromorfon lebih aman pada CrCl <10.'
+  },
+  {
+    id: 'tramadol', nama: 'Tramadol', kategori: 'Analgesik', kelas: 'Opioid/NE-5HT',
+    dosisnormal: '50–100 mg q4–6h PO (maks 400 mg/hari)',
+    flag: '⚠ Risiko kejang',
+    terdialisis: 'no', terdialisis_label: 'Hindari pada dialisis',
+    tiers: [
+      { min:30, max:999, dosis:'50–100 mg', interval:'q4–6h (maks 400 mg/hari)', catatan:'Dosis normal.' },
+      { min:0,  max:29,  dosis:'50–100 mg', interval:'q12h (maks 200 mg/hari)',  catatan:'⚠ Risiko kejang dan serotonin syndrome meningkat akibat akumulasi.' }
+    ],
+    hd: 'Hindari bila memungkinkan.',
+    cvvh: 'Hindari bila memungkinkan.',
+    catatan_klinis: '⚠ Menurunkan ambang kejang — hindari pada riwayat epilepsi atau pasien dengan obat serotonergik lain. Akumulasi pada renal failure meningkatkan risiko kejang.'
+  }
+];
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let crcl = null;
+let obatTerpilih = null;
+let kategoriAktif = 'Semua';
+let query = '';
+let subAktif = {}; // {drug_id: index}
+let detailOpen = {}; // {drug_id: bool}
+
+// ═══════════════════════════════════════════════
+// COCKCROFT-GAULT
+// ═══════════════════════════════════════════════
+function calcCG() {
+  const age = parseFloat(document.getElementById('cgAge').value);
+  const wt  = parseFloat(document.getElementById('cgWeight').value);
+  const scr = parseFloat(document.getElementById('cgScr').value);
+  const sex = document.getElementById('cgSex').value;
+  const wtType = document.getElementById('cgWtType').value;
+
+  if (!age || !wt || !scr || !sex) {
+    document.getElementById('cgResult').textContent = '—';
+    document.getElementById('cgFormula').textContent = '';
+    document.getElementById('wtNote').style.display = 'none';
+    return;
+  }
+
+  // IBW
+  const ibw = sex === 'L'
+    ? 50 + 2.3 * Math.max(0, (/* asumsi tinggi 170cm */ 170 - 152.4) / 2.54)
+    : 45.5 + 2.3 * Math.max(0, (170 - 152.4) / 2.54);
+
+  let usedWt = wt;
+  let wtNote = '';
+
+  if (wtType === 'ibw') {
+    // Hanya pakai IBW murni — tapi kita tidak punya tinggi badan, gunakan wt yang diinput sebagai IBW
+    usedWt = wt;
+    wtNote = 'Menggunakan berat yang diinput sebagai IBW. Masukkan IBW yang sudah dihitung manual.';
+  } else if (wtType === 'adj') {
+    // AdjBW = IBW + 0.4 × (ABW - IBW) — tanpa tinggi, gunakan ABW saja dengan catatan
+    const ibwEst = sex === 'L' ? 50 + 0.9 * 10 : 45.5 + 0.9 * 10; // estimasi kasar
+    if (wt > ibwEst * 1.2) {
+      usedWt = ibwEst + 0.4 * (wt - ibwEst);
+      wtNote = `AdjBW estimasi: ${usedWt.toFixed(1)} kg (IBW est. ${ibwEst.toFixed(0)} kg + 40% kelebihan). Masukkan tinggi badan untuk hasil akurat.`;
+    } else {
+      usedWt = wt;
+      wtNote = 'ABW digunakan karena berat tidak melebihi 120% IBW estimasi.';
+    }
+  }
+
+  let result = ((140 - age) * usedWt) / (72 * scr);
+  if (sex === 'P') result *= 0.85;
+  result = Math.round(result * 10) / 10;
+
+  document.getElementById('cgResult').textContent = result;
+  document.getElementById('cgFormula').textContent =
+    `(140 - ${age}) × ${usedWt.toFixed(1)} kg / (72 × ${scr})${sex==='P'?' × 0.85':''}`;
+
+  const noteEl = document.getElementById('wtNote');
+  if (wtNote) {
+    noteEl.style.display = 'block';
+    noteEl.textContent = wtNote;
+  } else {
+    noteEl.style.display = 'none';
+  }
+
+  // Auto-fill CrCl input
+  document.getElementById('crcl').value = result;
+  crcl = result;
+  updateCkdStage();
+  if (obatTerpilih) renderHasil();
+}
+
+// ═══════════════════════════════════════════════
+// CKD STAGE
+// ═══════════════════════════════════════════════
+function getCkdStage(val) {
+  if (val >= 90) return { label: 'CKD G1 — Normal / Tinggi',      desc: 'Fungsi ginjal normal atau tinggi',          warna: '#2a7a4a', segs: [1,0,0,0,0,0] };
+  if (val >= 60) return { label: 'CKD G2 — Ringan',               desc: 'Penurunan fungsi ginjal ringan',            warna: '#6aaa5a', segs: [1,1,0,0,0,0] };
+  if (val >= 45) return { label: 'CKD G3a — Ringan-Sedang',       desc: 'Penurunan fungsi ginjal ringan-sedang',     warna: '#c8aa30', segs: [1,1,1,0,0,0] };
+  if (val >= 30) return { label: 'CKD G3b — Sedang-Berat',        desc: 'Penurunan fungsi ginjal sedang-berat',      warna: '#c87a20', segs: [1,1,1,1,0,0] };
+  if (val >= 15) return { label: 'CKD G4 — Berat',                desc: 'Penurunan fungsi ginjal berat',             warna: '#b82b2b', segs: [1,1,1,1,1,0] };
+  return           { label: 'CKD G5 / ESRD — Gagal Ginjal',       desc: 'Gagal ginjal — pertimbangkan dialisis',    warna: '#6b2bb8', segs: [1,1,1,1,1,1] };
+}
+
+function onCrClInput() {
+  const val = parseFloat(document.getElementById('crcl').value);
+  crcl = isNaN(val) ? null : val;
+  updateCkdStage();
+  if (obatTerpilih) renderHasil();
+}
+
+function updateCkdStage() {
+  if (crcl === null || isNaN(crcl)) {
+    document.getElementById('ckdName').textContent = 'Masukkan nilai CrCl';
+    document.getElementById('ckdName').style.color = 'var(--muted)';
+    document.getElementById('ckdDesc').textContent = 'untuk memulai penyesuaian dosis';
+    ['seg1','seg2','seg3','seg4','seg5','seg6'].forEach(id => document.getElementById(id).classList.remove('on'));
+    return;
+  }
+  const s = getCkdStage(crcl);
+  document.getElementById('ckdName').textContent = s.label;
+  document.getElementById('ckdName').style.color = s.warna;
+  document.getElementById('ckdDesc').textContent = s.desc;
+  ['seg1','seg2','seg3','seg4','seg5','seg6'].forEach((id, i) => {
+    document.getElementById(id).classList.toggle('on', s.segs[i] === 1);
+  });
+}
+
+// ═══════════════════════════════════════════════
+// TOGGLE CRCL CALC
+// ═══════════════════════════════════════════════
+function toggleCrCl() {
+  const body = document.getElementById('crclBody');
+  const icon = document.getElementById('crclIcon');
+  const header = document.getElementById('crclToggle');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  icon.classList.toggle('open', !isOpen);
+  header.classList.toggle('open', !isOpen);
+}
+
+// ═══════════════════════════════════════════════
+// KATEGORI
+// ═══════════════════════════════════════════════
+function buildKategori() {
+  const kats = ['Semua', ...new Set(OBAT.map(o => o.kategori))];
+  document.getElementById('catTabs').innerHTML = kats.map(k =>
+    `<button class="cat-tab ${k === 'Semua' ? 'active' : ''}" onclick="pilihKategori('${k}')">${k}</button>`
+  ).join('');
+}
+
+function pilihKategori(kat) {
+  kategoriAktif = kat;
+  document.querySelectorAll('.cat-tab').forEach(t =>
+    t.classList.toggle('active', t.textContent === kat));
+  renderDrugGrid();
+}
+
+function filterDrugs() {
+  query = document.getElementById('drugSearch').value.toLowerCase();
+  renderDrugGrid();
+}
+
+// ═══════════════════════════════════════════════
+// DRUG GRID
+// ═══════════════════════════════════════════════
+function renderDrugGrid() {
+  const filtered = OBAT.filter(o => {
+    const katOk = kategoriAktif === 'Semua' || o.kategori === kategoriAktif;
+    const qOk = !query || o.nama.toLowerCase().includes(query) || o.kelas.toLowerCase().includes(query);
+    return katOk && qOk;
+  });
+
+  const grid = document.getElementById('drugGrid');
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="no-drugs">Obat tidak ditemukan</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(o => `
+    <div class="drug-card ${obatTerpilih && obatTerpilih.id === o.id ? 'selected' : ''}"
+         onclick="pilihObat('${o.id}')">
+      <div class="drug-card-name">${o.nama}</div>
+      <div class="drug-card-class">${o.kelas}</div>
+      ${o.flag ? `<div class="drug-card-flag" style="color:${o.flag.startsWith('⚠') ? 'var(--danger)' : o.flag.startsWith('✓') ? 'var(--ok)' : 'var(--warn)'}">${o.flag}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════════
+// PILIH OBAT
+// ═══════════════════════════════════════════════
+function pilihObat(id) {
+  obatTerpilih = OBAT.find(o => o.id === id);
+  if (!detailOpen[id]) detailOpen[id] = false;
+  if (!subAktif[id]) subAktif[id] = 0;
+  renderDrugGrid();
+  renderHasil();
+  setTimeout(() => {
+    document.getElementById('resultArea').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 50);
+}
+
+// ═══════════════════════════════════════════════
+// GET TIER
+// ═══════════════════════════════════════════════
+function getTier(tiers, val) {
+  if (val === null) return null;
+  for (const t of tiers) {
+    if (val >= t.min && val <= t.max) return t;
+  }
+  return tiers[tiers.length - 1];
+}
+
+// ═══════════════════════════════════════════════
+// BADGE CLASS
+// ═══════════════════════════════════════════════
+function getBadgeClass(val) {
+  if (val === null) return 'badge-neutral';
+  if (val >= 30) return 'badge-ok';
+  if (val >= 15) return 'badge-warn';
+  return 'badge-danger';
+}
+
+function getDoseClass(val) {
+  if (val === null) return 'neutral';
+  if (val >= 30) return 'ok';
+  if (val >= 15) return 'warn';
+  return 'danger';
+}
+
+// ═══════════════════════════════════════════════
+// RENDER HASIL
+// ═══════════════════════════════════════════════
+function renderHasil() {
+  const area = document.getElementById('resultArea');
+  if (!obatTerpilih) {
+    area.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">💊</div>
+        <div class="empty-text">Pilih obat di atas untuk melihat rekomendasi dosis<br>berdasarkan CrCl pasien</div>
+      </div>`;
+    return;
+  }
+
+  const o = obatTerpilih;
+  const dc = getDoseClass(crcl);
+  const bc = getBadgeClass(crcl);
+  const ckd = crcl !== null ? getCkdStage(crcl) : null;
+
+  // Sub-indikasi
+  const hasSubIndikasi = !!(o.subIndikasi && o.tiers_ie);
+  const subIdx = subAktif[o.id] || 0;
+  const activeTiers = (hasSubIndikasi && subIdx === 1) ? o.tiers_ie : o.tiers;
+
+  const tier = getTier(activeTiers, crcl);
+
+  // Badge terdialisis
+  const dialBadgeClass = o.terdialisis === 'yes' ? 'dialyzed-yes' :
+                         o.terdialisis === 'no' ? 'dialyzed-no' : 'dialyzed-partial';
+  const dialBadgeLabel = o.terdialisis === 'yes' ? 'Terdialisis' :
+                         o.terdialisis === 'no' ? 'Tidak Terdialisis' : 'Sebagian Terdialisis';
+
+  // CrCl badge text
+  const badgeText = crcl !== null
+    ? `CrCl ${crcl} mL/mnt · ${ckd.label.split(' — ')[0]}`
+    : 'CrCl belum diinput';
+
+  // Dosis & interval
+  let dosisBlock = '';
+  let intervalBlock = '';
+  let tierNote = '';
+
+  if (crcl !== null && tier) {
+    dosisBlock = `
+      <div class="dose-block ${dc}">
+        <div class="dose-block-label">Dosis yang Direkomendasikan</div>
+        <div class="dose-block-value">${tier.dosis}</div>
+        <div class="dose-block-sub">untuk CrCl ${tier.min}–${tier.max === 999 ? '≥'+tier.min : tier.max} mL/mnt</div>
+      </div>`;
+    intervalBlock = `
+      <div class="dose-block ${dc}">
+        <div class="dose-block-label">Interval / Frekuensi</div>
+        <div class="dose-block-value">${tier.interval}</div>
+        <div class="dose-block-sub">interval pemberian</div>
+      </div>`;
+    tierNote = `<div class="tier-note">⚡ ${tier.catatan}</div>`;
+  } else {
+    dosisBlock = `
+      <div class="dose-block neutral" style="grid-column:1/-1">
+        <div class="dose-block-label">Masukkan CrCl untuk rekomendasi dosis</div>
+        <div class="dose-block-value" style="font-size:14px;color:var(--muted)">
+          Input nilai CrCl pasien di bagian atas halaman
+        </div>
+      </div>`;
+  }
+
+  // Sub-indikasi bar
+  const subBar = hasSubIndikasi ? `
+    <div class="sub-indikasi-bar">
+      ${o.subIndikasi.map((s, i) => `
+        <button class="sub-tab ${subIdx === i ? 'active' : ''}"
+                onclick="gantiSubIndikasi('${o.id}', ${i})">${s}</button>
+      `).join('')}
+    </div>` : '';
+
+  // Detail table
+  const tableRows = activeTiers.map(t => {
+    const isActive = crcl !== null && crcl >= t.min && crcl <= t.max;
+    const rangeLabel = t.min === 0 && t.max === 999 ? 'Semua' :
+                       t.max === 999 ? `≥${t.min}` : `${t.min}–${t.max}`;
+    return `<tr class="${isActive ? 'active-row' : ''}">
+      <td>${rangeLabel}</td>
+      <td>${t.dosis}</td>
+      <td>${t.interval}</td>
+      <td style="color:var(--ink2)">${t.catatan}</td>
+    </tr>`;
+  }).join('');
+
+  const isDetailOpen = detailOpen[o.id];
+  const catatanKlinis = o.catatan_klinis.replace(/\n/g, '<br>');
+
+  area.innerHTML = `
+    <div class="result-panel">
+      <div class="result-head">
+        <div>
+          <div class="result-drug-name">${o.nama}</div>
+          <div class="result-drug-meta">${o.kelas} · ${o.kategori}</div>
+          <div style="font-family:var(--mono);font-size:10px;color:#6a6460;margin-top:4px;">
+            Dosis normal: ${o.dosisnormal}
+          </div>
+        </div>
+        <span class="result-crcl-badge ${bc}">${badgeText}</span>
+      </div>
+
+      ${subBar}
+
+      <div class="result-summary">
+        ${dosisBlock}
+        ${intervalBlock}
+        ${tierNote}
+      </div>
+
+      <div class="result-detail-toggle">
+        <button class="expand-btn" onclick="toggleDetail('${o.id}')">
+          ${isDetailOpen ? '▲ Sembunyikan detail' : '▼ Lihat detail lengkap (tabel semua tier, dialisis, CVVH, catatan klinis)'}
+        </button>
+      </div>
+
+      <div class="result-detail ${isDetailOpen ? 'open' : ''}">
+
+        <div class="detail-section">
+          <div class="detail-section-title">📊 Tabel Dosis Semua Tier CrCl</div>
+          <div style="overflow-x:auto;">
+            <table class="dose-table">
+              <thead>
+                <tr>
+                  <th>CrCl (mL/mnt)</th>
+                  <th>Dosis</th>
+                  <th>Interval</th>
+                  <th>Keterangan</th>
+                </tr>
+              </thead>
+              <tbody>${tableRows}</tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <div class="detail-section-title">🔄 Dialisis &amp; CVVH/CRRT</div>
+          <div class="dial-cards">
+            <div class="dial-card">
+              <div class="dial-card-title">Status Dialisis</div>
+              <span class="dialyzed-badge ${dialBadgeClass}">${dialBadgeLabel}</span>
+              <div class="dial-card-value">${o.terdialisis_label}</div>
+            </div>
+            <div class="dial-card">
+              <div class="dial-card-title">Hemodialisis (HD)</div>
+              <div class="dial-card-value">${o.hd}</div>
+            </div>
+            <div class="dial-card" style="grid-column:1/-1">
+              <div class="dial-card-title">CVVH / CRRT</div>
+              <div class="dial-card-value">${o.cvvh}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <div class="detail-section-title">📋 Catatan Klinis</div>
+          <div class="detail-text">${catatanKlinis}</div>
+        </div>
+
+      </div>
+    </div>`;
+}
+
+function gantiSubIndikasi(id, idx) {
+  subAktif[id] = idx;
+  renderHasil();
+}
+
+function toggleDetail(id) {
+  detailOpen[id] = !detailOpen[id];
+  renderHasil();
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+buildKategori();
+renderDrugGrid();
+renderHasil();
+</script>
+</body>
+</html>
