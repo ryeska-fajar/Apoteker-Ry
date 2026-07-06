@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antibiotik di ICU — ApotekerRy | Farmasi Klinis</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap');
+
+:root {
+  --ink:    #1C1612;
+  --cream:  #F7F2EA;
+  --rust:   #B5451B;
+  --rust-l: #F5E8E3;
+  --rust-d: #8C3412;
+  --sage:   #3B6357;
+  --sage-l: #E4EDEA;
+  --gold:   #C8922A;
+  --gold-l: #FBF3E2;
+  --blue:   #2C4A7A;
+  --blue-l: #E4EBF5;
+  --plum:   #5C2D6E;
+  --plum-l: #F0E8F5;
+  --dust:   #7A6E62;
+  --border: #DDD5C8;
+  --white:  #FFFFFF;
+  --lgray:  #F9F6F2;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--cream); color:var(--ink); font-family:'Libre Baskerville',Georgia,serif; line-height:1.75; }
+
+.nav { background:var(--ink); padding:14px 40px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
+.nav-left { display:flex; flex-direction:column; }
+.nav-logo { font-family:'Syne',sans-serif; font-size:14px; font-weight:800; color:var(--cream); letter-spacing:0.08em; text-decoration:none; }
+.nav-logo span { color:var(--rust); }
+.nav-sub { font-family:'DM Mono',monospace; font-size:10px; color:rgba(255,255,255,0.3); letter-spacing:0.14em; margin-top:1px; }
+.nav-back { font-family:'DM Mono',monospace; font-size:11px; color:rgba(255,255,255,0.35); text-decoration:none; letter-spacing:0.08em; transition:color 0.2s; }
+.nav-back:hover { color:rgba(255,255,255,0.75); }
+
+.hero { background:var(--ink); padding:72px 40px 64px; position:relative; overflow:hidden; }
+.hero::before { content:''; position:absolute; top:-100px; right:-60px; width:480px; height:480px; border-radius:50%; background:radial-gradient(circle,rgba(181,69,27,0.18) 0%,transparent 65%); }
+.hero::after { content:''; position:absolute; bottom:-100px; left:20%; width:380px; height:380px; border-radius:50%; background:radial-gradient(circle,rgba(44,74,122,0.14) 0%,transparent 65%); }
+.hero-inner { max-width:820px; margin:0 auto; position:relative; z-index:2; }
+.hero-tag { display:inline-flex; align-items:center; gap:8px; font-family:'DM Mono',monospace; font-size:11px; font-weight:500; color:var(--gold); letter-spacing:0.18em; text-transform:uppercase; margin-bottom:22px; border:1px solid rgba(200,146,42,0.35); background:rgba(200,146,42,0.08); padding:4px 14px; border-radius:20px; }
+.hero h1 { font-family:'Syne',sans-serif; font-size:clamp(2rem,4.5vw,3.2rem); font-weight:800; color:var(--white); line-height:1.06; margin-bottom:14px; }
+.hero h1 em { font-style:italic; font-family:'Libre Baskerville',serif; color:#AABFD4; font-weight:400; }
+.hero-sub { font-size:1rem; color:rgba(255,255,255,0.5); max-width:580px; line-height:1.72; margin-bottom:32px; }
+.hero-pills { display:flex; gap:10px; flex-wrap:wrap; }
+.hero-pill { font-family:'DM Mono',monospace; font-size:11px; color:rgba(255,255,255,0.55); background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12); padding:5px 14px; border-radius:4px; }
+
+.prog-nav { background:var(--white); border-bottom:1px solid var(--border); padding:0 40px; display:flex; gap:0; overflow-x:auto; -webkit-overflow-scrolling:touch; position:sticky; top:49px; z-index:99; }
+.prog-nav::-webkit-scrollbar { height:3px; }
+.prog-nav::-webkit-scrollbar-thumb { background:var(--border); }
+.prog-btn { font-family:'DM Mono',monospace; font-size:11px; font-weight:500; color:var(--dust); padding:14px 16px; border:none; background:none; border-bottom:2px solid transparent; cursor:pointer; white-space:nowrap; letter-spacing:0.05em; transition:all 0.2s; }
+.prog-btn:hover { color:var(--ink); }
+.prog-btn.active { color:var(--rust); border-bottom-color:var(--rust); }
+
+.main { max-width:860px; margin:0 auto; padding:52px 40px 100px; }
+.section { display:none; }
+.section.active { display:block; }
+
+.section-header { margin-bottom:36px; }
+.section-num { font-family:'DM Mono',monospace; font-size:11px; color:var(--dust); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:8px; }
+.section-title { font-family:'Syne',sans-serif; font-size:clamp(1.5rem,3vw,2.1rem); font-weight:700; color:var(--ink); line-height:1.15; margin-bottom:10px; }
+.section-lead { font-size:1rem; color:var(--dust); line-height:1.75; max-width:680px; border-left:3px solid var(--rust); padding-left:16px; }
+
+.prose { font-size:0.975rem; line-height:1.8; color:#3A3028; margin-bottom:20px; }
+.prose strong { font-weight:700; color:var(--ink); }
+h3.sh { font-family:'Syne',sans-serif; font-size:1.08rem; font-weight:700; color:var(--ink); margin:32px 0 12px; display:flex; align-items:center; gap:8px; }
+h3.sh::before { content:''; display:inline-block; width:14px; height:3px; background:var(--rust); flex-shrink:0; }
+
+.callout { border-radius:8px; padding:16px 20px; margin:18px 0; border-left:4px solid; }
+.callout.rust  { background:var(--rust-l); border-color:var(--rust); }
+.callout.sage  { background:var(--sage-l); border-color:var(--sage); }
+.callout.gold  { background:var(--gold-l); border-color:var(--gold); }
+.callout.blue  { background:var(--blue-l); border-color:var(--blue); }
+.callout.plum  { background:var(--plum-l); border-color:var(--plum); }
+.cl-label { font-family:'DM Mono',monospace; font-size:9.5px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:5px; }
+.callout.rust  .cl-label { color:var(--rust); }
+.callout.sage  .cl-label { color:var(--sage); }
+.callout.gold  .cl-label { color:var(--gold); }
+.callout.blue  .cl-label { color:var(--blue); }
+.callout.plum  .cl-label { color:var(--plum); }
+.callout p, .callout li { font-size:0.93rem; line-height:1.7; }
+.callout ul { padding-left:16px; }
+
+.tbl-wrap { overflow-x:auto; margin:16px 0; }
+table { width:100%; border-collapse:collapse; font-size:0.875rem; background:var(--white); border-radius:8px; overflow:hidden; box-shadow:0 2px 10px rgba(28,22,18,0.05); }
+thead th { background:var(--ink); color:var(--cream); padding:10px 14px; text-align:left; font-family:'DM Mono',monospace; font-size:9.5px; letter-spacing:0.1em; text-transform:uppercase; font-weight:500; }
+tbody td { padding:9px 14px; border-bottom:1px solid var(--border); vertical-align:top; line-height:1.5; font-size:0.88rem; }
+tbody tr:last-child td { border-bottom:none; }
+tbody tr:nth-child(even) { background:var(--lgray); }
+.tg { color:var(--sage); font-weight:700; }
+.tr { color:var(--rust); font-weight:700; }
+.to { color:var(--gold); font-weight:700; }
+.tb { color:var(--blue); font-weight:700; }
+
+.accordion { margin:14px 0; }
+.acc-item { background:var(--white); border:1px solid var(--border); border-radius:8px; margin-bottom:8px; overflow:hidden; }
+.acc-head { padding:13px 18px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; font-family:'Syne',sans-serif; font-size:0.92rem; font-weight:700; user-select:none; transition:background 0.2s; }
+.acc-head:hover { background:#FAF7F2; }
+.acc-head.open { background:#FAF7F2; color:var(--rust); }
+.acc-arrow { font-size:16px; transition:transform 0.25s; color:var(--dust); font-family:'DM Mono',monospace; }
+.acc-head.open .acc-arrow { transform:rotate(180deg); color:var(--rust); }
+.acc-body { display:none; padding:14px 18px 18px; font-size:0.9rem; line-height:1.75; color:#3A3028; border-top:1px solid var(--border); }
+.acc-body.open { display:block; }
+
+.steps { margin:16px 0; }
+.step { display:flex; gap:14px; margin-bottom:16px; position:relative; }
+.step:not(:last-child)::after { content:''; position:absolute; left:16px; top:38px; width:2px; height:calc(100% + 4px); background:var(--border); }
+.step-n { width:34px; height:34px; border-radius:50%; background:var(--rust); color:white; font-family:'Syne',sans-serif; font-size:0.9rem; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; position:relative; z-index:1; }
+.step-t { font-family:'Syne',sans-serif; font-size:0.95rem; font-weight:700; color:var(--ink); margin-bottom:4px; }
+.step-b { font-size:0.88rem; color:var(--dust); line-height:1.65; }
+
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0; }
+.col-box { background:var(--white); border-radius:8px; padding:16px 18px; border:1px solid var(--border); }
+.col-box.rust-bg { background:var(--rust-l); border-color:rgba(181,69,27,0.2); }
+.col-box.sage-bg { background:var(--sage-l); border-color:rgba(59,99,87,0.2); }
+.col-box.gold-bg { background:var(--gold-l); border-color:rgba(200,146,42,0.2); }
+.col-box.blue-bg { background:var(--blue-l); border-color:rgba(44,74,122,0.2); }
+.col-title { font-family:'Syne',sans-serif; font-size:0.92rem; font-weight:700; color:var(--ink); margin-bottom:6px; }
+.col-body { font-size:0.87rem; color:var(--dust); line-height:1.6; }
+
+.formula { background:var(--ink); border-radius:8px; padding:16px 20px; margin:14px 0; font-family:'DM Mono',monospace; font-size:0.88rem; color:var(--cream); line-height:1.85; }
+.formula .fl { color:var(--gold); font-size:0.76rem; letter-spacing:0.15em; text-transform:uppercase; display:block; margin-bottom:6px; }
+.formula .fm { color:var(--white); font-size:0.96rem; }
+.formula .fn { color:rgba(247,242,234,0.4); font-size:0.8rem; margin-top:6px; display:block; }
+
+ul.dot { list-style:none; padding:0; margin:10px 0; }
+ul.dot li { padding:4px 0 4px 18px; position:relative; font-size:0.92rem; color:#3A3028; line-height:1.65; }
+ul.dot li::before { content:'—'; position:absolute; left:0; color:var(--rust); font-weight:700; }
+
+.highlight { background:var(--rust); border-radius:8px; padding:18px 22px; margin:16px 0; }
+.hl-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.55); margin-bottom:6px; }
+.highlight p { font-size:0.93rem; line-height:1.7; color:rgba(255,255,255,0.9); }
+.highlight strong { color:white; }
+
+.checklist { list-style:none; padding:0; margin:14px 0; }
+.checklist li { display:flex; align-items:flex-start; gap:12px; padding:9px 0; border-bottom:1px solid #F0EBE4; font-size:0.92rem; line-height:1.6; }
+.checklist li:last-child { border-bottom:none; }
+.chk-box { width:20px; height:20px; border-radius:4px; border:2px solid var(--border); flex-shrink:0; margin-top:2px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+.chk-box.checked { background:var(--rust); border-color:var(--rust); }
+.chk-box.checked::after { content:'✓'; color:white; font-size:11px; }
+
+.nav-btns { display:flex; justify-content:space-between; margin-top:52px; padding-top:24px; border-top:1px solid var(--border); }
+.nav-btn { font-family:'Syne',sans-serif; font-size:0.88rem; font-weight:700; padding:10px 22px; border-radius:6px; border:none; cursor:pointer; transition:all 0.2s; }
+.nav-btn.prev { background:var(--white); color:var(--ink); border:1px solid var(--border); }
+.nav-btn.prev:hover { background:#F0EBE4; }
+.nav-btn.next { background:var(--rust); color:var(--white); }
+.nav-btn.next:hover { background:var(--rust-d); }
+.nav-btn:disabled { opacity:0.3; cursor:not-allowed; }
+
+.footer { background:var(--ink); padding:36px 40px; text-align:center; }
+.footer-logo { font-family:'Syne',sans-serif; font-size:15px; font-weight:800; color:var(--cream); margin-bottom:8px; }
+.footer-logo span { color:var(--rust); }
+.footer-text { font-family:'DM Mono',monospace; font-size:10px; color:rgba(255,255,255,0.3); letter-spacing:0.12em; }
+
+@media(max-width:600px) {
+  .two-col { grid-template-columns:1fr; }
+  .main { padding:36px 20px 80px; }
+  .hero { padding:48px 20px 40px; }
+  .prog-nav { padding:0 16px; }
+  .nav { padding:14px 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-left">
+    <a class="nav-logo" href="index.html">Apoteker<span>Ry</span> <span style="color:rgba(255,255,255,0.3);font-weight:400;">|</span> <span style="color:rgba(255,255,255,0.7);font-size:13px;font-weight:600;">Farmasi Klinis</span></a>
+    <div class="nav-sub">Referensi Klinis · ICU</div>
+  </div>
+  <a class="nav-back" href="index.html">← Kembali</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Referensi Klinis · ICU</div>
+    <h1>Antibiotik<br><em>di ICU</em></h1>
+    <p class="hero-sub">PK/PD-optimized dosing, terapi empiris berdasarkan fokus infeksi, TDM, extended/continuous infusion, de-eskalasi, dan peran apoteker klinis dalam antimicrobial stewardship di setting kritis.</p>
+    <div class="hero-pills">
+      <span class="hero-pill">PK/PD Dosing</span>
+      <span class="hero-pill">Beta-Laktam · EI/CI</span>
+      <span class="hero-pill">Vankomisin · TDM</span>
+      <span class="hero-pill">Aminoglikosida</span>
+      <span class="hero-pill">Terapi Empiris</span>
+      <span class="hero-pill">De-eskalasi</span>
+    </div>
+  </div>
+</div>
+
+<div class="prog-nav" id="progNav">
+  <button class="prog-btn active" onclick="goTo(0)">01 · PK/PD</button>
+  <button class="prog-btn" onclick="goTo(1)">02 · Beta-Laktam</button>
+  <button class="prog-btn" onclick="goTo(2)">03 · Vankomisin</button>
+  <button class="prog-btn" onclick="goTo(3)">04 · Aminoglikosida</button>
+  <button class="prog-btn" onclick="goTo(4)">05 · Anti-Gram Negatif Lain</button>
+  <button class="prog-btn" onclick="goTo(5)">06 · Antifungal</button>
+  <button class="prog-btn" onclick="goTo(6)">07 · Terapi Empiris</button>
+  <button class="prog-btn" onclick="goTo(7)">08 · De-eskalasi</button>
+  <button class="prog-btn" onclick="goTo(8)">09 · Checklist</button>
+</div>
+
+<div class="main">
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 0: PK/PD                       -->
+<!-- ═══════════════════════════════════════ -->
+<div class="section active">
+  <div class="section-header">
+    <div class="section-num">Bagian 01</div>
+    <div class="section-title">Prinsip PK/PD Antibiotik</div>
+    <div class="section-lead">Dosing antibiotik di ICU tidak bisa mengikuti dosis "standar" — perubahan farmakokinetik pada pasien kritis (augmented renal clearance, third spacing, hipoalbuminemia, ECMO, CRRT) mengubah paparan obat secara signifikan.</div>
+  </div>
+
+  <h3 class="sh">Tiga Pola PK/PD Kill</h3>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Pola</th><th>Parameter Target</th><th>Antibiotik</th><th>Strategi Dosing</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tg">Time-dependent</span></td><td><strong>%fT &gt; MIC</strong><br>Waktu kadar bebas di atas MIC</td><td>Beta-laktam (penisilin, sefalosporin, karbapenem)</td><td>Frekuensi pemberian lebih sering, extended infusion (EI) 3–4 jam, atau continuous infusion (CI) 24 jam</td></tr>
+        <tr><td><span class="tb">Concentration-dependent</span></td><td><strong>Cmax/MIC</strong><br>Rasio kadar puncak terhadap MIC</td><td>Aminoglikosida, daptomisin, metronidazol, colistin (loading)</td><td>Dosis tinggi, interval diperpanjang. Aminoglikosida: target Cmax/MIC ≥ 8–10</td></tr>
+        <tr><td><span class="to">AUC/MIC-dependent</span></td><td><strong>AUC₂₄/MIC</strong><br>Luas area di bawah kurva per 24 jam</td><td>Vankomisin, fluorokuinolon, linezolid, tigesiklin</td><td>Optimasi total paparan harian. Vankomisin: target AUC₂₄/MIC 400–600</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">Perubahan PK pada Pasien Kritis</h3>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Perubahan</th><th>Mekanisme</th><th>Efek pada Antibiotik</th><th>Implikasi Dosing</th></tr></thead>
+      <tbody>
+        <tr><td><strong>↑ Volume distribusi (Vd)</strong></td><td>Third spacing, resusitasi cairan agresif, edema</td><td>↓ Cmax obat hidrofilik (beta-laktam, aminoglikosida, vankomisin)</td><td>Loading dose lebih tinggi</td></tr>
+        <tr><td><strong>Hipoalbuminemia</strong></td><td>Inflamasi, kebocoran kapiler</td><td>↑ Free fraction obat dengan protein binding tinggi (ceftriaxone, ertapenem, daptomisin, teicoplanin)</td><td>Kadar total bisa rendah tapi free drug adekuat — interpretasi TDM harus hati-hati</td></tr>
+        <tr><td><strong>Augmented Renal Clearance (ARC)</strong></td><td>Hiperdinamik, pasien muda, trauma, luka bakar</td><td>↑ Klirens obat eliminasi renal → kadar subterapeutik</td><td>Dosis lebih tinggi / interval lebih pendek / CI</td></tr>
+        <tr><td><strong>AKI / CRRT</strong></td><td>Penurunan fungsi ginjal atau RRT</td><td>↓ Klirens obat eliminasi renal → akumulasi</td><td>Penyesuaian dosis renal + pertimbangkan efek CRRT (flow rate, filter)</td></tr>
+        <tr><td><strong>ECMO</strong></td><td>Sekuestrasi obat pada sirkuit + ↑Vd</td><td>Obat lipofilik dan protein-bound tinggi lebih terpengaruh</td><td>Loading dose lebih tinggi, monitor kadar ketat, TDM wajib</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout sage">
+    <div class="cl-label">Peran Apoteker</div>
+    <p>Apoteker klinis ICU harus mampu mengidentifikasi pasien dengan perubahan PK yang signifikan dan merekomendasikan strategi dosing yang sesuai. <strong>ARC</strong> sering tidak terdeteksi — curigai pada pasien &lt; 50 tahun dengan trauma, luka bakar, atau sepsis awal yang CrCl &gt; 130 mL/min (hitung dengan Cockcroft-Gault, bukan eGFR CKD-EPI). Pasien ARC membutuhkan dosis beta-laktam yang lebih agresif.</p>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" disabled>← Sebelumnya</button>
+    <button class="nav-btn next" onclick="goTo(1)">Beta-Laktam →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 1: BETA-LAKTAM                 -->
+<!-- ═══════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">Bagian 02</div>
+    <div class="section-title">Beta-Laktam di ICU</div>
+    <div class="section-lead">Beta-laktam adalah time-dependent — efikasi ditentukan oleh durasi kadar bebas di atas MIC (%fT &gt; MIC). Target minimal tradisional bervariasi per kelas (40–70% fT &gt; MIC), tetapi pada infeksi berat di ICU — terutama pada pasien dengan syok septik, ARC, inokulum tinggi, atau patogen dengan MIC tinggi — banyak praktik klinis menargetkan hingga 100% fT &gt; MIC atau 100% fT &gt; 4×MIC. Target agresif ini harus disesuaikan dengan kondisi pasien, MIC lokal, dan ketersediaan TDM beta-laktam.</div>
+  </div>
+
+  <h3 class="sh">Extended vs Continuous Infusion</h3>
+
+  <div class="two-col">
+    <div class="col-box sage-bg">
+      <div class="col-title">Extended Infusion (EI)</div>
+      <div class="col-body">
+        — Infus selama <strong>3–4 jam</strong> (bukan 30 menit standar)<br>
+        — Frekuensi tetap sama<br>
+        — Lebih praktis — tidak perlu dedicated line<br>
+        — Contoh: meropenem 2 g tiap 8 jam, infus selama 3 jam
+      </div>
+    </div>
+    <div class="col-box blue-bg">
+      <div class="col-title">Continuous Infusion (CI)</div>
+      <div class="col-body">
+        — Infus 24 jam non-stop setelah loading dose<br>
+        — Memaksimalkan %fT &gt; MIC mendekati 100%<br>
+        — Membutuhkan dedicated line + perhatian stabilitas<br>
+        — Contoh: piperasilin-tazobaktam 13,5 g/24 jam CI setelah LD 4,5 g
+      </div>
+    </div>
+  </div>
+
+  <div class="callout blue">
+    <div class="cl-label">Evidence</div>
+    <p><strong>Meta-analisis (Roberts et al., 2016; Falagas et al., 2013)</strong> menunjukkan asosiasi prolonged infusion beta-laktam dengan perbaikan outcome klinis pada sepsis berat/syok septik, terutama saat MIC patogen mendekati breakpoint. <strong>SSC 2021 menyarankan prolonged infusion untuk dosis maintenance beta-laktam setelah loading dose awal pada sepsis/syok septik.</strong> Strategi ini bertujuan meningkatkan probabilitas pencapaian target %fT&gt;MIC, tetapi tetap harus mempertimbangkan stabilitas obat, akses intravena, kompatibilitas, dan fungsi ginjal.</p>
+  </div>
+
+  <h3 class="sh">Dosis Beta-Laktam untuk Infeksi Berat di ICU</h3>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Antibiotik</th><th>Intermittent (standar)</th><th>Extended Infusion</th><th>Continuous Infusion</th><th>Stabilitas CI (25°C)</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Piperasilin-Tazobaktam</strong></td><td>4,5 g tiap 6–8 jam (30 min)</td><td>4,5 g tiap 6–8 jam (infus 4 jam)</td><td>LD 4,5 g → 13,5–18 g/24 jam</td><td>24 jam</td></tr>
+        <tr><td><strong>Meropenem</strong></td><td>1–2 g tiap 8 jam (30 min)</td><td>2 g tiap 8 jam (infus 3 jam)</td><td>LD 2 g → 3–6 g/24 jam</td><td>8 jam (kurang stabil — EI lebih dipilih)</td></tr>
+        <tr><td><strong>Cefepim</strong></td><td>2 g tiap 8 jam (30 min)</td><td>2 g tiap 8 jam (infus 3–4 jam)</td><td>LD 2 g → 6 g/24 jam</td><td>24 jam</td></tr>
+        <tr><td><strong>Ceftazidim</strong></td><td>2 g tiap 8 jam (30 min)</td><td>2 g tiap 8 jam (infus 3–4 jam)</td><td>LD 2 g → 6 g/24 jam</td><td>24 jam</td></tr>
+        <tr><td><strong>Ampisilin-Sulbaktam</strong></td><td>3 g tiap 6 jam (30 min)</td><td>3 g tiap 6 jam (infus 4 jam)</td><td>LD 3 g → 9–12 g/24 jam</td><td>8 jam (terbatas)</td></tr>
+        <tr><td><strong>Doripenem</strong></td><td>500 mg tiap 8 jam (1 jam)</td><td>500 mg–1 g tiap 8 jam (infus 4 jam)</td><td>Tidak direkomendasikan (↑mortalitas pada studi VAP)</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout rust">
+    <div class="cl-label">⚠️ Perhatian Stabilitas</div>
+    <p><strong>Meropenem</strong> tidak stabil untuk CI penuh 24 jam pada suhu ruang — gunakan EI 3 jam sebagai gantinya, atau CI 6–8 jam dengan penggantian syringe. <strong>Ampisilin-sulbaktam</strong> juga stabilitas terbatas. Selalu verifikasi data stabilitas dengan farmasi RS masing-masing — bisa bervariasi tergantung konsentrasi dan pelarut.</p>
+  </div>
+
+  <div class="callout gold">
+    <div class="cl-label">Neurotoksisitas Beta-Laktam</div>
+    <p>Perhatikan risiko neurotoksisitas (kejang, myoklonus, ensefalopati) terutama pada: <strong>cefepim</strong> (paling sering — risiko meningkat pada gangguan ginjal, dosis tidak disesuaikan), <strong>meropenem/imipenem</strong> (imipenem risiko kejang lebih tinggi daripada meropenem), dan <strong>penisilin dosis tinggi</strong>. Penyesuaian dosis renal sangat penting untuk cefepim.</p>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(0)">← PK/PD</button>
+    <button class="nav-btn next" onclick="goTo(2)">Vankomisin →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 2: VANKOMISIN                  -->
+<!-- ═══════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">Bagian 03</div>
+    <div class="section-title">Vankomisin</div>
+    <div class="section-lead">Guideline 2020 (ASHP/IDSA/SIDP/PIDS) menggeser paradigma monitoring dari trough-based ke AUC-guided dosing. Target <strong>AUC₂₄/MIC 400–600</strong> (asumsi MIC ≤ 1 mcg/mL) berlaku terutama untuk <strong>infeksi MRSA serius</strong> (bakteremia, endokarditis, pneumonia berat, osteomielitis) — bukan untuk semua indikasi vankomisin.</div>
+  </div>
+
+  <h3 class="sh">Loading Dose & Maintenance</h3>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Parameter</th><th>Rekomendasi</th><th>Catatan</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Loading dose</strong></td><td>25–30 mg/kg (actual body weight)</td><td>Diberikan pada infeksi serius untuk cepat mencapai target. Maks kecepatan infus 1 g/jam (cegah Red Man Syndrome). Boleh dibulatkan ke 250 mg terdekat.</td></tr>
+        <tr><td><strong>Maintenance</strong></td><td>15–20 mg/kg tiap 8–12 jam</td><td>Berdasarkan actual body weight. Interval tergantung fungsi ginjal. Pada ARC: interval tiap 8 jam atau bahkan tiap 6 jam.</td></tr>
+        <tr><td><strong>Obesitas (BMI &gt; 30)</strong></td><td>Gunakan actual body weight untuk LD, adjusted body weight untuk MD jika ABW sangat tinggi</td><td>ABW = IBW + 0,4 × (TBW − IBW). Loading dose tetap berdasarkan actual BW, maks ~3 g.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">AUC-Guided Dosing (Guideline 2020)</h3>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">1</div>
+      <div>
+        <div class="step-t">Metode Bayesian (Preferred)</div>
+        <div class="step-b">Menggunakan software Bayesian (PrecisePK, InsightRx, DoseMeRx) dengan minimal <strong>1 kadar</strong> (trough atau random) untuk estimasi AUC. Lebih akurat karena menggunakan population PK priors + data individual pasien. <strong>Ini metode yang direkomendasikan oleh guideline 2020.</strong></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <div>
+        <div class="step-t">Metode Dua Kadar (First-Order PK)</div>
+        <div class="step-b">Ambil <strong>peak</strong> (1–2 jam post-infus) dan <strong>trough</strong> (30 min pre-dosis), lalu hitung AUC secara manual dengan rumus trapezoid. Lebih mudah tanpa software tapi butuh 2 sampling time yang tepat.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">3</div>
+      <div>
+        <div class="step-t">Trough-Only (Jika AUC Tidak Feasible)</div>
+        <div class="step-b">Jika software Bayesian dan 2 kadar tidak tersedia: trough 15–20 mcg/mL masih bisa digunakan sebagai <strong>surrogate</strong>, tapi kurang akurat untuk mencapai AUC target. Trough &gt; 20 → risiko nefrotoksisitas meningkat signifikan.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="formula">
+    <span class="fl">Target AUC₂₄/MIC</span>
+    <span class="fm">400–600 (dengan asumsi MIC ≤ 1 mcg/mL via broth microdilution)</span>
+    <span class="fn">Target ini berlaku untuk infeksi MRSA serius. AUC &lt; 400 → risiko treatment failure. AUC &gt; 600 → ↑risiko nefrotoksisitas tanpa tambahan efikasi. Jika MIC &gt; 1 → pertimbangkan alternatif: daptomisin (BUKAN untuk pneumonia — inaktivasi oleh surfaktan paru) atau linezolid, disesuaikan dengan fokus infeksi. Pada infeksi ringan atau profilaksis, target ini tidak otomatis perlu diterapkan.</span>
+  </div>
+
+  <div class="callout rust">
+    <div class="cl-label">⚠️ Nefrotoksisitas</div>
+    <ul>
+      <li>Risiko meningkat jika: AUC &gt; 600, trough &gt; 20, kombinasi dengan <strong>piperasilin-tazobaktam</strong> (vs meropenem atau cefepim), vasopressor, kontras, aminoglikosida</li>
+      <li>Cek kreatinin setiap 48–72 jam (tiap hari jika ICU / hemodinamik tidak stabil)</li>
+      <li>Nefrotoksisitas vancomycin biasanya reversibel jika terdeteksi dini</li>
+    </ul>
+  </div>
+
+  <div class="callout sage">
+    <div class="cl-label">Vanko + Pip-Tazo = ↑ AKI?</div>
+    <p>Multiple meta-analisis (Luther et al., 2018; Hammond et al., 2017) menunjukkan <strong>kombinasi vancomycin + piperacillin-tazobactam dikaitkan dengan peningkatan AKI dibandingkan vancomycin + meropenem atau + cefepim</strong>. Mekanisme kemungkinan terkait interstitial nephritis. Saat ini, banyak institusi meminimalkan kombinasi ini — pertimbangkan alternatif jika memungkinkan, terutama pada pasien dengan faktor risiko nefrotoksisitas.</p>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(1)">← Beta-Laktam</button>
+    <button class="nav-btn next" onclick="goTo(3)">Aminoglikosida →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 3: AMINOGLIKOSIDA              -->
+<!-- ═══════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">Bagian 04</div>
+    <div class="section-title">Aminoglikosida</div>
+    <div class="section-lead">Concentration-dependent killing + post-antibiotic effect (PAE) yang panjang menjadi dasar once-daily dosing (extended-interval aminoglycoside dosing / EIAD). Target: <strong>Cmax/MIC ≥ 8–10</strong>.</div>
+  </div>
+
+  <h3 class="sh">Dosis & Strategi</h3>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Obat</th><th>Once-Daily (EIAD)</th><th>Conventional</th><th>Target Cmax/MIC</th><th>Target Trough</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Gentamisin</strong></td><td>5–7 mg/kg tiap 24 jam</td><td>1,5–2,5 mg/kg tiap 8 jam</td><td>≥ 8–10</td><td>&lt; 1 mcg/mL (EIAD); &lt; 2 (konvensional)</td></tr>
+        <tr><td><strong>Tobramycin</strong></td><td>5–7 mg/kg tiap 24 jam</td><td>1,5–2,5 mg/kg tiap 8 jam</td><td>≥ 8–10</td><td>&lt; 1 mcg/mL (EIAD); &lt; 2 (konvensional)</td></tr>
+        <tr><td><strong>Amikasin</strong></td><td>15–20 mg/kg tiap 24 jam</td><td>7,5 mg/kg tiap 12 jam</td><td>≥ 8–10</td><td>&lt; 5 mcg/mL (EIAD); &lt; 10 (konvensional)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout gold">
+    <div class="cl-label">Once-Daily TIDAK untuk Semua</div>
+    <p>EIAD <strong>tidak digunakan</strong> pada: endokarditis, kehamilan, luka bakar &gt; 20% TBSA, asites signifikan, CrCl &lt; 20 mL/min, neonatus. Pada kondisi ini, gunakan conventional dosing + TDM peak &amp; trough.</p>
+  </div>
+
+  <h3 class="sh">Hartford Nomogram (EIAD — 7 mg/kg Gentamisin)</h3>
+
+  <div class="prose">Ambil kadar random 6–14 jam setelah dosis pertama. Plot pada nomogram Hartford untuk menentukan interval: <strong>tiap 24 jam</strong> (zona Q24), <strong>tiap 36 jam</strong> (zona Q36), atau <strong>tiap 48 jam</strong> (zona Q48). Jika kadar di atas zona Q48, pertimbangkan TDM konvensional.</div>
+
+  <div class="callout rust">
+    <div class="cl-label">⚠️ Toksisitas</div>
+    <ul>
+      <li><strong>Nefrotoksisitas:</strong> Terkait akumulasi di tubulus proksimal — risiko meningkat pada terapi &gt; 7 hari, kombinasi dengan vankomisin/amfoterisin B/NSAID/kontras, dehidrasi. Monitor kreatinin tiap 48 jam.</li>
+      <li><strong>Ototoksisitas:</strong> Kerusakan koklear (vestibular → gentamisin; auditori → amikasin). Irreversibel. Risiko meningkat pada terapi &gt; 14 hari, gagal ginjal, dan penggunaan bersamaan loop diuretic (furosemid).</li>
+      <li><strong>NMJ blockade:</strong> Jarang tapi bisa memperburuk kelemahan pada myasthenia gravis atau pasien yang menerima neuromuscular blocking agent.</li>
+    </ul>
+  </div>
+
+  <div class="callout sage">
+    <div class="cl-label">Positioning di ICU</div>
+    <p>Pada ICU, aminoglikosida sebaiknya diposisikan sebagai <strong>terapi awal tambahan (adjunct)</strong> untuk meningkatkan probabilitas coverage Gram-negatif pada syok septik atau risiko MDR tinggi — bukan sebagai monoterapi rutin. Setelah kultur tersedia dan pasien stabil secara hemodinamik, aminoglikosida sebaiknya dihentikan sedini mungkin (umumnya 3–5 hari) untuk menurunkan risiko nefrotoksisitas dan ototoksisitas.</p>
+  </div>
+
+  <div class="nav-btns">
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 4: ANTI-GRAM NEGATIF LAIN      -->
+<!-- ═══════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">Bagian 05</div>
+    <div class="section-title">Anti-Gram Negatif Lain</div>
+    <div class="section-lead">Pada infeksi Gram-negatif MDR/XDR, pemilihan antibiotik harus mempertimbangkan <strong>mekanisme resistensi</strong> (ESBL, AmpC, KPC, OXA-48, NDM/VIM/IMP, DTR Pseudomonas, CRAB), bukan hanya nama bakteri. Jika tersedia, beta-laktam/beta-laktamase inhibitor generasi baru atau cefiderocol sering lebih disukai dibanding polymyxin karena profil toksisitas yang lebih baik (IDSA 2024 AMR Guidance). Pemilihan akhir harus mengikuti antibiogram, hasil susceptibility, fokus infeksi, dan ketersediaan lokal.</div>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">Colistin (Polymyxin E) <span class="acc-arrow">▼</span></div>
+      <div class="acc-body">
+        <p><strong>Mekanisme:</strong> Binding ke lipid A pada membran luar → disrupsi membran. Concentration-dependent + PAE.<br>
+        <strong>Formulasi:</strong> Colistimethate sodium (CMS) — prodrug, konversi lambat ke colistin aktif di tubuh.<br>
+        <strong>Dosis (guideline ERS/ESCMID 2019):</strong><br>
+        — <strong>Loading dose: 9 MIU</strong> (300 mg CBA) IV selama 30–60 menit<br>
+        — <strong>Maintenance: 4,5 MIU tiap 12 jam</strong> (total 9 MIU/hari), mulai 12 jam setelah LD<br>
+        — Pada CrCl &lt; 50: penyesuaian dosis maintenance (bukan LD)<br>
+        <strong>Target Css,avg:</strong> 2 mcg/mL (batas toksik sempit)<br>
+        <strong>Toksisitas utama:</strong> Nefrotoksisitas (30–60%, biasanya reversibel), neurotoksisitas (parestesia, kelemahan otot).<br>
+        <strong>Kombinasi:</strong> Sering dikombinasi dengan meropenem atau tigesiklin untuk efek sinergis pada CRE/CRAB.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">Ceftazidime-Avibactam <span class="acc-arrow">▼</span></div>
+      <div class="acc-body">
+        <p><strong>Spektrum:</strong> KPC-producing CRE, AmpC, ESBL, OXA-48 (tapi <strong>TIDAK</strong> untuk metallo-β-laktamase: NDM, VIM, IMP).<br>
+        <strong>Dosis:</strong> 2,5 g (ceftazidime 2 g + avibactam 0,5 g) tiap 8 jam, <strong>infus 2 jam</strong>.<br>
+        <strong>Renal:</strong> Penyesuaian signifikan pada CrCl &lt; 50 mL/min. Dosis interval diperpanjang sampai tiap 12–48 jam.<br>
+        <strong>Kelebihan:</strong> Menghindari toksisitas colistin. Mortalitas lebih rendah vs colistin-based regimen pada CRE (studi CRACKLE-2, meta-analisis Shields et al.).</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">Tigesiklin <span class="acc-arrow">▼</span></div>
+      <div class="acc-body">
+        <p><strong>Kelas:</strong> Glycylcycline (turunan minosiklin).<br>
+        <strong>Spektrum:</strong> Gram-positif (termasuk MRSA, VRE), Gram-negatif MDR (termasuk CRAB), anaerob. <strong>TIDAK</strong> untuk Pseudomonas, Proteus.<br>
+        <strong>Dosis standar:</strong> LD 100 mg → 50 mg tiap 12 jam.<br>
+        <strong>High-dose (untuk infeksi berat/HAP):</strong> LD 200 mg → 100 mg tiap 12 jam — evidence menunjukkan high-dose diperlukan untuk mencapai target PK yang adekuat di ICU (kadar jaringan tinggi, kadar serum rendah).<br>
+        <strong>Perhatian:</strong> FDA black box warning — peningkatan mortalitas pada studi meta-analisis (terutama VAP). Gunakan jika tidak ada alternatif lebih baik. Jangan monoterapi untuk bloodstream infection (kadar serum rendah).</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">Meropenem-Vaborbactam · Imipenem-Relebactam · Cefiderocol <span class="acc-arrow">▼</span></div>
+      <div class="acc-body">
+        <p><strong>Meropenem-vaborbactam (Vabomere):</strong> Efektif terhadap KPC-producing CRE. Dosis: 4 g tiap 8 jam, infus 3 jam. Vaborbactam menginhibisi KPC serin β-laktamase.<br><br>
+        <strong>Imipenem-relebactam (Recarbrio):</strong> Efektif terhadap KPC, AmpC, OXA-48. Dosis: 1,25 g tiap 6 jam, infus 30 menit.<br><br>
+        <strong>Cefiderocol:</strong> Siderophore cephalosporin — unik karena memanfaatkan sistem transport besi bakteri untuk penetrasi. Spektrum luas termasuk <strong>metallo-β-laktamase (NDM, VIM, IMP)</strong>, KPC, OXA. Dosis: 2 g tiap 8 jam, infus 3 jam. <em>Perhatian:</em> Studi CREDIBLE-CR menunjukkan mortalitas numerik lebih tinggi vs BAT pada subgrup CRE tertentu — interpretasi masih diperdebatkan.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(3)">← Aminoglikosida</button>
+    <button class="nav-btn next" onclick="goTo(5)">Antifungal →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 5: ANTIFUNGAL                  -->
+<!-- ═══════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">Bagian 06</div>
+    <div class="section-title">Antifungal di ICU</div>
+    <div class="section-lead">Invasive fungal infection (IFI) di ICU membawa mortalitas 40–60%. Candida adalah penyebab tersering bloodstream infection nosokomial ke-4, dengan pergeseran ke spesies non-albicans yang resisten flukonazol.</div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Obat</th><th>Kelas</th><th>Dosis ICU</th><th>Spektrum</th><th>Monitoring/Catatan</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Flukonazol</strong></td><td>Azol</td><td>LD 800 mg → 400 mg/hari (candidemia) atau 200–400 mg/hari (non-invasif)</td><td>C. albicans, C. parapsilosis, C. tropicalis. <span class="tr">TIDAK</span> C. krusei (intrinsik resisten), C. glabrata (resistensi dose-dependent → naikkan ke 800 mg)</td><td>Interaksi CYP2C9, 2C19, 3A4. Hepatotoksisitas. Tidak perlu TDM rutin.</td></tr>
+        <tr><td><strong>Vorikonazol</strong></td><td>Azol</td><td>LD 6 mg/kg tiap 12 jam × 2 dosis → 4 mg/kg tiap 12 jam</td><td>Aspergillus (lini pertama), Candida spp., Fusarium, Scedosporium</td><td><strong>TDM wajib:</strong> target trough 1–5,5 mcg/mL. CYP2C19 polymorphism. Neurotoksisitas, hepatotoksisitas, visual disturbances. Formulasi IV mengandung SBECD — akumulasi pada CrCl &lt; 50 (gunakan oral jika memungkinkan).</td></tr>
+        <tr><td><strong>Kaspofungin</strong></td><td>Echinocandin</td><td>LD 70 mg → 50 mg/hari (70 mg jika BB &gt; 80 kg)</td><td>Candida spp. (termasuk C. glabrata, C. krusei). Aspergillus (salvage)</td><td>Tidak perlu penyesuaian renal. Hepatic adjustment: Child-Pugh B → 35 mg maintenance. Interaksi minimal. Tidak aktif terhadap Cryptococcus atau Mucor.</td></tr>
+        <tr><td><strong>Mikafungin</strong></td><td>Echinocandin</td><td>100 mg/hari (candidemia); 150 mg/hari (esofagitis)</td><td>Sama dengan kaspofungin</td><td>Tidak perlu loading dose. Tidak perlu penyesuaian renal/hepatik. Profil interaksi lebih bersih.</td></tr>
+        <tr><td><strong>Amfoterisin B lipid complex (ABLC)</strong></td><td>Poliene</td><td>3–5 mg/kg/hari</td><td>Spektrum paling luas — Candida, Aspergillus, Mucor/Rhizopus, Cryptococcus, endemik</td><td>Nefrotoksisitas (lebih rendah dari conventional AmB), hipokalemia, hipomagnesemia. Premedikasi: paracetamol + difenhidramin ± meperidin untuk rigors. Monitoring K, Mg, kreatinin harian.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout sage">
+    <div class="cl-label">Candida Empiris — Kapan Echinocandin vs Flukonazol?</div>
+    <ul>
+      <li><strong>Echinocandin</strong> (lini pertama empiris pada candidemia): pasien kritis, hemodinamik tidak stabil, riwayat azol exposure, curiga C. glabrata/C. krusei</li>
+      <li><strong>Flukonazol</strong>: pasien stabil, non-neutropeni, tidak ada riwayat azol, spesies diketahui susceptible</li>
+      <li><strong>Step-down:</strong> dari echinocandin ke flukonazol oral jika kultur menunjukkan C. albicans susceptible, pasien stabil, dan mampu menerima oral. Durasi candidemia: minimum 14 hari setelah kultur negatif pertama.</li>
+    </ul>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(4)">← Anti-Gram Negatif Lain</button>
+    <button class="nav-btn next" onclick="goTo(6)">Terapi Empiris →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 6: TERAPI EMPIRIS              -->
+<!-- ═══════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">Bagian 07</div>
+    <div class="section-title">Terapi Empiris Berdasarkan Fokus Infeksi</div>
+    <div class="section-lead">Pemilihan empiris harus mempertimbangkan fokus infeksi, patogen tersering, pola resistensi lokal (antibiogram), faktor risiko MDR, dan severitas sepsis. Antibiotik empiris harus diberikan dalam 1 jam pada sepsis/syok septik (SSC 2021).</div>
+  </div>
+
+  <div class="callout rust">
+    <div class="cl-label">⚠️ Prinsip Kritis</div>
+    <p><strong>Pada syok septik atau sepsis dengan probabilitas infeksi tinggi, antibiotik empiris spektrum luas harus diberikan sesegera mungkin</strong> (idealnya dalam 1 jam) setelah kultur diambil, tanpa menunda terapi untuk menunggu hasil. Setiap jam keterlambatan pada syok septik dikaitkan dengan peningkatan mortalitas (Kumar et al., 2006). Pada pasien tanpa syok dan probabilitas infeksi tidak jelas, evaluasi klinis cepat tetap penting — tetapi antibiotik tidak harus diberikan refleks tanpa asesmen, untuk menghindari overtreatment.</p>
+  </div>
+
+  <div class="accordion">
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">HAP / VAP (Hospital-Acquired / Ventilator-Associated Pneumonia) <span class="acc-arrow">▼</span></div>
+      <div class="acc-body">
+        <p><strong>Patogen tersering:</strong> S. aureus (MSSA/MRSA), Pseudomonas aeruginosa, Klebsiella, Acinetobacter, Enterobacter.<br><br>
+        <strong>Tanpa faktor risiko MDR:</strong><br>
+        — Piperasilin-tazobaktam 4,5 g tiap 6 jam (EI 4 jam), ATAU<br>
+        — Cefepim 2 g tiap 8 jam (EI 3 jam), ATAU<br>
+        — Meropenem 1–2 g tiap 8 jam (EI 3 jam)<br><br>
+        <strong>Dengan faktor risiko MDR (antibiotik IV &gt; 5 hari, syok septik, ARDS, CRRT, resistensi tinggi di antibiogram):</strong><br>
+        — Regimen di atas + <strong>anti-MRSA</strong> (vancomycin atau linezolid) jika prevalensi MRSA &gt; 10–20%<br>
+        — ± <strong>2 anti-Pseudomonal</strong> dari kelas berbeda jika curiga Pseudomonas MDR<br><br>
+        <strong>Guideline ATS/IDSA 2016:</strong> Durasi 7 hari (bukan 14–21 hari). Pertimbangkan prokalsitonin untuk panduan penghentian.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">Sepsis / Syok Septik (Sumber Tidak Jelas) <span class="acc-arrow">▼</span></div>
+      <div class="acc-body">
+        <p><strong>Prinsip:</strong> Empiris broad-spectrum yang mencakup Gram-positif, Gram-negatif, ± anaerob tergantung kecurigaan sumber.<br><br>
+        <strong>Regimen umum:</strong><br>
+        — <strong>Meropenem 1–2 g tiap 8 jam (EI)</strong> + <strong>Vancomycin</strong> (jika curiga MRSA / akses IV / SSTI), ATAU<br>
+        — <strong>Piperasilin-tazobaktam</strong> + Vancomycin (jika tidak curiga CRE)<br><br>
+        <strong>Jika curiga sumber abdominal:</strong> tambahkan coverage anaerob (piperasilin-tazobaktam atau meropenem sudah mencakup; jika pakai cefepim → + metronidazol)<br>
+        <strong>Jika curiga fungal</strong> (riwayat antibiotik lama, TPN, pembedahan abdomen, neutropenia): + echinocandin empiris</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">Infeksi Intra-Abdominal Komplikata <span class="acc-arrow">▼</span></div>
+      <div class="acc-body">
+        <p><strong>Patogen:</strong> E. coli, Klebsiella, Bacteroides fragilis, Enterococcus.<br><br>
+        <strong>Community-acquired, low risk:</strong><br>
+        — Ceftriaxone 2 g/hari + metronidazol 500 mg tiap 8 jam, ATAU<br>
+        — Ertapenem 1 g/hari (single agent)<br><br>
+        <strong>Healthcare-associated / high risk:</strong><br>
+        — Piperasilin-tazobaktam 4,5 g tiap 6 jam (EI), ATAU<br>
+        — Meropenem 1 g tiap 8 jam (EI)<br>
+        — ± Vancomycin jika curiga Enterococcus resisten (VRE → linezolid atau daptomisin)<br><br>
+        <strong>Durasi:</strong> 4 hari setelah source control adekuat (studi STOP-IT). Jika source control tidak tercapai → durasi lebih lama.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">Infeksi Saluran Kemih Komplikata / Urosepsis <span class="acc-arrow">▼</span></div>
+      <div class="acc-body">
+        <p><strong>Patogen:</strong> E. coli (tersering), Klebsiella, Proteus, Enterococcus, Pseudomonas (jika kateter).<br><br>
+        <strong>Empiris:</strong><br>
+        — Ceftriaxone 1–2 g/hari (jika ESBL risk rendah), ATAU<br>
+        — Piperasilin-tazobaktam atau cefepim (jika curiga Pseudomonas), ATAU<br>
+        — Meropenem (jika curiga ESBL/CRE)<br>
+        — ± Ampisilin (jika curiga Enterococcus — terutama dari kultur urin)<br><br>
+        <strong>Durasi:</strong> 7–14 hari tergantung respons. Step-down ke oral jika kultur susceptible dan klinis membaik.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">Meningitis Bakterial <span class="acc-arrow">▼</span></div>
+      <div class="acc-body">
+        <p><strong>Patogen:</strong> S. pneumoniae, N. meningitidis, Listeria (usia &gt; 50 atau immunocompromised), Gram-negatif (nosokomial post-neurosurgery).<br><br>
+        <strong>Community-acquired:</strong><br>
+        — <strong>Ceftriaxone 2 g tiap 12 jam + Vancomycin</strong> (sampai susceptibility diketahui)<br>
+        — + <strong>Ampisilin 2 g tiap 4 jam</strong> jika curiga Listeria (usia &gt; 50, immunocompromised, alkoholisme)<br>
+        — <strong>Deksametason 0,15 mg/kg tiap 6 jam × 4 hari</strong> (berikan sebelum/bersamaan dosis antibiotik pertama — manfaat terbukti terutama untuk S. pneumoniae)<br><br>
+        <strong>Nosokomial (post-neurosurgery):</strong><br>
+        — <strong>Meropenem 2 g tiap 8 jam + Vancomycin</strong><br>
+        — Atau <strong>Cefepim 2 g tiap 8 jam + Vancomycin</strong><br><br>
+        <strong>Catatan:</strong> Dosis antibiotik untuk meningitis lebih tinggi dari standar untuk penetrasi ke CSF.</p>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-head" onclick="toggleAcc(this)">Infeksi Kulit & Jaringan Lunak (SSTI) Berat / Necrotizing <span class="acc-arrow">▼</span></div>
+      <div class="acc-body">
+        <p><strong>Necrotizing fasciitis — selalu surgical emergency:</strong><br>
+        — <strong>Meropenem 1–2 g tiap 8 jam + Vancomycin + Clindamycin 900 mg tiap 8 jam</strong><br>
+        — Clindamycin ditambahkan untuk efek anti-toksin (inhibisi sintesis protein → ↓produksi toksin dan superantigen) dan bekerja bahkan saat inokulum bakteri tinggi (saat beta-laktam kurang efektif karena inoculum effect / Eagle effect pada GAS)<br><br>
+        <strong>SSTI berat non-necrotizing (MRSA):</strong><br>
+        — Vancomycin ATAU linezolid 600 mg tiap 12 jam ATAU daptomisin 6–8 mg/kg/hari</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(5)">← Antifungal</button>
+    <button class="nav-btn next" onclick="goTo(7)">De-eskalasi →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 7: DE-ESKALASI & STEWARDSHIP   -->
+<!-- ═══════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">Bagian 08</div>
+    <div class="section-title">De-eskalasi & Antimicrobial Stewardship</div>
+    <div class="section-lead">Antimicrobial stewardship di ICU bukan hanya tentang mengurangi antibiotik — tapi memastikan pasien mendapat antibiotik yang TEPAT, dosis yang TEPAT, selama durasi yang TEPAT. Apoteker klinis adalah pilar utama program ini.</div>
+  </div>
+
+  <h3 class="sh">Kapan & Bagaimana De-eskalasi</h3>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">1</div>
+      <div>
+        <div class="step-t">Review Kultur 48–72 Jam</div>
+        <div class="step-b">Setelah hasil kultur dan sensitivitas tersedia: <strong>narrow-down</strong> spektrum ke antibiotik paling sempit yang masih efektif. Contoh: meropenem empiris → de-eskalasi ke ceftriaxone jika E. coli ESBL-negatif.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <div>
+        <div class="step-t">Evaluasi Durasi</div>
+        <div class="step-b">Kebanyakan infeksi ICU memerlukan durasi <strong>lebih pendek</strong> dari praktik tradisional. Bukti terkini mendukung durasi pendek untuk banyak kondisi. Gunakan prokalsitonin (PCT) sebagai panduan tambahan — jika PCT turun ≥ 80% dari puncak atau &lt; 0,5 ng/mL, pertimbangkan penghentian.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">3</div>
+      <div>
+        <div class="step-t">IV-to-Oral Switch</div>
+        <div class="step-b">Pertimbangkan switch ke oral jika: pasien membaik secara klinis, mampu menerima oral, saluran cerna berfungsi. Antibiotik dengan bioavailabilitas oral tinggi: fluorokuinolon (~100%), linezolid (~100%), metronidazol (~100%), TMP-SMX (~95%), doksisiklin (~95%), flukonazol (~90%), klindamisin (~90%).</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sh">Durasi Berdasarkan Evidence</h3>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Infeksi</th><th>Durasi Tradisional</th><th>Evidence-Based</th><th>Referensi</th></tr></thead>
+      <tbody>
+        <tr><td><strong>VAP</strong></td><td>14–21 hari</td><td><span class="tg">7 hari</span></td><td>ATS/IDSA 2016; PneumA trial (kecuali Pseudomonas non-fermenter)</td></tr>
+        <tr><td><strong>cIAI (dgn source control)</strong></td><td>10–14 hari</td><td><span class="tg">4 hari</span></td><td>STOP-IT trial (Sawyer et al., NEJM 2015)</td></tr>
+        <tr><td><strong>ISK komplikata</strong></td><td>14 hari</td><td><span class="tg">7 hari</span></td><td>IDSA guideline</td></tr>
+        <tr><td><strong>CAP (rawat inap)</strong></td><td>7–14 hari</td><td><span class="tg">3–5 hari</span> (jika stabil hari ke-3)</td><td>IDSA/ATS 2019; studi PCT-guided</td></tr>
+        <tr><td><strong>Bacteremia (non-complic.)</strong></td><td>14 hari</td><td><span class="tg">7 hari</span> (noninferior vs 14 hari)</td><td>BALANCE trial (NEJM, Nov 2024)</td></tr>
+        <tr><td><strong>SSTI non-necrotizing</strong></td><td>10–14 hari</td><td><span class="tg">5–7 hari</span></td><td>IDSA 2014</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout sage">
+    <div class="cl-label">Peran Apoteker dalam Stewardship</div>
+    <ul>
+      <li><strong>Prospective audit & feedback:</strong> Review antibiotik restricted (karbapenem, vankomisin, colistin) pada 48–72 jam → rekomendasi de-eskalasi ke DPJP</li>
+      <li><strong>Dose optimization:</strong> Rekomendasi EI/CI beta-laktam, AUC-guided vankomisin, renal dose adjustment</li>
+      <li><strong>IV-to-oral switch:</strong> Identifikasi pasien kandidat switch, rekomendasi agen oral equipotent</li>
+      <li><strong>Duration review:</strong> Flagging pasien yang melebihi durasi evidence-based</li>
+      <li><strong>Antibiogram:</strong> Partisipasi dalam penyusunan dan sosialisasi antibiogram lokal</li>
+      <li><strong>TDM coordination:</strong> Timing sampling, interpretasi kadar, penyesuaian dosis</li>
+    </ul>
+  </div>
+
+  <div class="highlight">
+    <div class="hl-label">Key Message</div>
+    <p>Pada pasien yang menunjukkan perbaikan klinis dan memiliki data mikrobiologi yang mendukung, <strong>de-eskalasi antibiotik umumnya aman</strong> dan tidak dikaitkan dengan perburukan outcome bila dilakukan secara terstruktur (Leone et al., 2014; Tabah et al., 2016). Keputusan de-eskalasi harus mempertimbangkan stabilitas hemodinamik, adequacy of source control, hasil kultur, fokus infeksi, dan risiko MDR. De-eskalasi juga membantu mengurangi efek samping antibiotik, risiko infeksi <em>C. difficile</em>, dan tekanan selektif resistensi.</p>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(6)">← Terapi Empiris</button>
+    <button class="nav-btn next" onclick="goTo(8)">Checklist →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SECTION 8: CHECKLIST                   -->
+<!-- ═══════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">Bagian 09</div>
+    <div class="section-title">Checklist Antibiotik Harian</div>
+    <div class="section-lead">Checklist interaktif untuk apoteker klinis ICU — evaluasi antibiotik harian pada setiap pasien.</div>
+  </div>
+
+  <h3 class="sh">Review Antibiotik Harian</h3>
+  <ul class="checklist">
+    <li><div class="chk-box" onclick="toggleChk(this)"></div> Apakah ada indikasi infeksi yang jelas? (kultur, klinis, biomarker) — jika tidak, apakah antibiotik bisa dihentikan?</li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div> Apakah antibiotik empiris sudah tepat untuk fokus infeksi yang dicurigai?</li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div> Apakah dosis sudah dioptimasi untuk PK pasien? (fungsi ginjal, BB, ARC, sepsis, CRRT, ECMO)</li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div> Apakah beta-laktam sudah diberikan sebagai EI/CI? (jika belum, pertimbangkan konversi)</li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div> Apakah ada hasil kultur baru? → evaluasi de-eskalasi</li>
+  </ul>
+
+  <h3 class="sh">TDM & Monitoring</h3>
+  <ul class="checklist">
+    <li><div class="chk-box" onclick="toggleChk(this)"></div> Vankomisin: AUC₂₄/MIC target 400–600? Trough &lt; 20? Kreatinin stabil?</li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div> Aminoglikosida: trough pre-dosis cek? (EIAD: &lt; 1 mcg/mL untuk genta/tobra; &lt; 5 untuk amikasin)</li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div> Vorikonazol: trough 1–5,5 mcg/mL? Cek LFT?</li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div> Colistin: fungsi ginjal dipantau? Tanda neurotoksisitas?</li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div> Cek interaksi obat (azol antifungal, rifampisin, linezolid + serotonergik)</li>
+  </ul>
+
+  <h3 class="sh">Stewardship Harian</h3>
+  <ul class="checklist">
+    <li><div class="chk-box" onclick="toggleChk(this)"></div> Hari ke-berapa antibiotik? Apakah sudah mencapai durasi evidence-based?</li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div> Apakah pasien kandidat IV-to-oral switch? (membaik, oral feasible, GI berfungsi)</li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div> Apakah prokalsitonin tersedia dan bisa digunakan untuk panduan penghentian?</li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div> Apakah ada duplikasi coverage? (misalnya metronidazol + piperasilin-tazobaktam = duplikasi anaerob)</li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div> Dokumentasi DRP terkait antibiotik di catatan farmasi klinis</li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div> Apakah source control sudah dinilai? (drain abses, lepas kateter, kontrol fokus intra-abdominal)</li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div> Apakah ini kolonisasi atau infeksi? (terutama sputum, urine catheter, Candida di sputum, kultur surveilans MDR)</li>
+    <li><div class="chk-box" onclick="toggleChk(this)"></div> Apakah stop date / durasi terapi sudah tertulis di rencana terapi?</li>
+  </ul>
+
+  <div class="highlight">
+    <div class="hl-label">Disclaimer</div>
+    <p>Referensi ini disusun sebagai panduan ringkas untuk tenaga kesehatan dan <strong>bukan pengganti penilaian klinis individual</strong>. Pemilihan antibiotik empiris harus selalu mempertimbangkan antibiogram lokal dan kebijakan rumah sakit. Semua dosis harus disesuaikan dengan kondisi pasien. Selalu verifikasi informasi obat dengan sumber primer terbaru.</p>
+  </div>
+
+  <div class="nav-btns">
+    <button class="nav-btn prev" onclick="goTo(7)">← De-eskalasi</button>
+    <button class="nav-btn next" disabled>Selesai</button>
+  </div>
+</div>
+
+</div><!-- .main -->
+
+<footer class="footer">
+  <div class="footer-logo">Apoteker<span>Ry</span> | Farmasi Klinis</div>
+  <div class="footer-text">Referensi Klinis ICU · Antibiotik · © 2026 · Untuk tenaga kesehatan</div>
+</footer>
+
+<script>
+function goTo(idx){
+  document.querySelectorAll('.section').forEach((s,i)=>s.classList.toggle('active',i===idx));
+  document.querySelectorAll('.prog-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleAcc(head){
+  const body=head.nextElementSibling;
+  const isOpen=head.classList.contains('open');
+  head.closest('.section').querySelectorAll('.acc-head').forEach(h=>{
+    h.classList.remove('open');
+    h.nextElementSibling.classList.remove('open');
+  });
+  if(!isOpen){head.classList.add('open');body.classList.add('open');}
+}
+function toggleChk(box){box.classList.toggle('checked');}
+</script>
+</body>
+</html>
