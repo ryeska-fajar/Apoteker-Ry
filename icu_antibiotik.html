@@ -1,5 +1,155 @@
 <!DOCTYPE html>
 <html lang="id">
+<style>
+/* ── Ebook Promo Banner ── */
+.ebook-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: #141E30;
+  border-top: 1px solid rgba(200,170,100,0.25);
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.35);
+  padding: 0 24px;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  font-family: -apple-system, 'Segoe UI', sans-serif;
+}
+
+.ebook-banner.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.ebook-banner-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  max-width: 960px;
+  width: 100%;
+}
+
+.ebook-banner-cover {
+  width: 36px;
+  height: 48px;
+  border-radius: 3px;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  border: 1px solid rgba(200,170,100,0.3);
+}
+
+.ebook-banner-text {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.ebook-banner-title {
+  color: #FFFFFF;
+  font-size: 13.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+
+.ebook-banner-sub {
+  color: #8A9AB5;
+  font-size: 11.5px;
+  white-space: nowrap;
+  margin-left: 6px;
+  padding-left: 12px;
+  border-left: 1px solid rgba(255,255,255,0.1);
+}
+
+.ebook-banner-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #C8922A, #D4A840);
+  color: #141E30;
+  font-size: 12.5px;
+  font-weight: 800;
+  padding: 8px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.15s;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+
+.ebook-banner-cta:hover {
+  background: linear-gradient(135deg, #D4A840, #E0BC5A);
+  transform: translateY(-1px);
+}
+
+.ebook-banner-dismiss {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.25);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.ebook-banner-dismiss:hover {
+  color: rgba(255,255,255,0.7);
+}
+
+/* Padding supaya banner tidak menutupi konten */
+body.banner-active {
+  padding-bottom: 66px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .ebook-banner {
+    height: 68px;
+    padding: 0 16px;
+    gap: 12px;
+  }
+
+  .ebook-banner-inner {
+    gap: 12px;
+  }
+
+  .ebook-banner-sub {
+    display: none;
+  }
+
+  .ebook-banner-cover {
+    width: 32px;
+    height: 42px;
+  }
+
+  .ebook-banner-title {
+    font-size: 12px;
+  }
+
+  .ebook-banner-cta {
+    font-size: 11.5px;
+    padding: 7px 14px;
+  }
+
+  body.banner-active {
+    padding-bottom: 72px;
+  }
+}
+</style>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -165,6 +315,53 @@ ul.dot li::before { content:'—'; position:absolute; left:0; color:var(--rust);
 }
 </style>
 </head>
+<div class="ebook-banner" id="ebookBanner">
+  <div class="ebook-banner-inner">
+    <img class="ebook-banner-cover" src="cover_diuretika.jpg" alt="Cover Ebook Diuretika">
+    <div class="ebook-banner-text">
+      <span class="ebook-banner-title">Yang Apoteker Harus Tahu: Diuretika</span>
+      <span class="ebook-banner-sub">Panduan klinis praktis · Studi kasus · Cheat sheet visite</span>
+    </div>
+    <a class="ebook-banner-cta" href="https://lynk.id/ryeska/x473g56jmj87" target="_blank" rel="noopener">
+      Beli Rp 75.000 →
+    </a>
+    <button class="ebook-banner-dismiss" onclick="dismissBanner()" aria-label="Tutup">&times;</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  // Cek apakah banner sudah pernah di-dismiss di sesi ini
+  if (sessionStorage.getItem('ebookBannerDismissed')) return;
+
+  var banner = document.getElementById('ebookBanner');
+  var shown = false;
+
+  function checkScroll() {
+    if (shown) return;
+    var scrollPercent = (window.scrollY || window.pageYOffset) / 
+      (document.documentElement.scrollHeight - window.innerHeight) * 100;
+    
+    if (scrollPercent >= 40) {
+      banner.classList.add('visible');
+      document.body.classList.add('banner-active');
+      shown = true;
+      window.removeEventListener('scroll', checkScroll);
+    }
+  }
+
+  window.addEventListener('scroll', checkScroll);
+  // Cek langsung kalau halaman sudah di-scroll saat load
+  checkScroll();
+})();
+
+function dismissBanner() {
+  var banner = document.getElementById('ebookBanner');
+  banner.classList.remove('visible');
+  document.body.classList.remove('banner-active');
+  sessionStorage.setItem('ebookBannerDismissed', 'true');
+}
+</script>
 <body>
 
 <nav class="nav">
