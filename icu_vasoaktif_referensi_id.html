@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.png" type="image/png">
 <title>Referensi Obat Vasoaktif ICU</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -54,6 +55,8 @@
   }
 
   .header-left { display: flex; align-items: center; gap: 12px; }
+  .header-left a { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
+  .header-left a:hover h1 { color: var(--blue); }
 
   .logo-dot {
     width: 10px; height: 10px;
@@ -73,6 +76,7 @@
     font-weight: 500;
     color: var(--text);
     letter-spacing: 0.02em;
+    transition: color 0.15s ease;
   }
 
   .header-badge {
@@ -454,8 +458,10 @@
 
 <div class="header">
   <div class="header-left">
-    <div class="logo-dot"></div>
-    <h1>ICU // Referensi Obat Vasoaktif</h1>
+    <a href="index.html">
+      <div class="logo-dot"></div>
+      <h1>ICU // Referensi Obat Vasoaktif</h1>
+    </a>
   </div>
   <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
     <span style="font-family:var(--mono);font-size:13px;font-weight:500;color:var(--text)">Apoteker Ry</span>
